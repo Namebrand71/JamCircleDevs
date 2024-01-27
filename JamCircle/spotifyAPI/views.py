@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from requests import Request, post
 from rest_framework import status
 from rest_framework.response import Response
-from .util import user_token_func
+from .util import user_token_func, is_authenticated
 #SCOPES VIEWS
 #1 = User
 #2 = Profile
@@ -52,3 +52,7 @@ def spotfy_callback(request, format=None):
     return redirect('frontend:profile')
 
 
+class Authenticated(APIView):
+    def get(self, request, format=None):
+        is_authenticated = is_authenticated(self.request.session.session_key)
+        return Response({'status':is_authenticated}, status=status.HTTP_200_OK)
