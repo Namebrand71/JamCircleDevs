@@ -1,14 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .auth import REDIRECT_URI, CLIENT_ID, CLIENT_SECRET
 from rest_framework.views import APIView
 from requests import Request, post
 from rest_framework import status
 from rest_framework.response import Response
+from .util import user_token_func
 #SCOPES VIEWS
 #1 = User
 #2 = Profile
 
-class AuthURL(APIView):
+class SpotifyLogin(APIView):
     def get(self, request, scope, format=None):
         match scope:
             case 1:
@@ -42,3 +43,12 @@ def spotfy_callback(request, format=None):
     refresh_token = response.get('refresh_token')
     expires_in = response.get('expires_in')
     error = response.get('error')
+
+    if not request.session.exist(request.session.session_key):
+        request.session.create()
+
+    user_token_func(request.session.session_key, access_token, token_type, expires_in, refresh_token)
+
+    return redirect('frontend:profile')
+
+
