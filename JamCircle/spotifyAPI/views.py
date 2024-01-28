@@ -1,23 +1,18 @@
 from django.shortcuts import render, redirect
-from .auth import REDIRECT_URI, CLIENT_ID, CLIENT_SECRET
+from .auth import REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from rest_framework.views import APIView
 from requests import Request, post
 from rest_framework import status
 from rest_framework.response import Response
 from .util import user_token_func, is_authenticated
-#SCOPES VIEWS
-#1 = User
-#2 = Profile
+
+
 
 class SpotifyLogin(APIView):
-    def get(self, request, scope, format=None):
-        match scope:
-            case 1:
-                scopes = "user-read-private user-read-email"
-            case _:
-                exit(1)
+    def get(self, request, format=None):
+        scopes = "user-read-private user-read-email user-top-read"
         
-        url = Request('GET', 'https://accounts.spotify.com/authorize', parama={
+        url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,
             'response_type': 'code',
             'redirect_uri': REDIRECT_URI,
@@ -52,7 +47,8 @@ def spotfy_callback(request, format=None):
     return redirect('frontend:profile')
 
 
-class Authenticated(APIView):
+class Authenticated(APIView): 
     def get(self, request, format=None):
         is_authenticated = is_authenticated(self.request.session.session_key)
         return Response({'status':is_authenticated}, status=status.HTTP_200_OK)
+    
