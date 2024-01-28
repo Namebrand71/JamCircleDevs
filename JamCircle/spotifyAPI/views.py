@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .auth import REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from rest_framework.views import APIView
 from requests import Request, post
+import requests
 from rest_framework import status
 from rest_framework.response import Response
 from .util import user_token_func, is_authenticated
@@ -68,3 +69,19 @@ class Authenticated(APIView):
     def get(self, request, format=None):
         is_authenticated = is_authenticated(self.request.session.session_key)
         return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
+
+
+class GetSpotifyProfile(APIView):
+    def get(self, request, format=None):
+        session_key = request.session.session_key
+        token = SpotifyToken.objects.filter(user=session_key).first()
+        if token:
+            headers = {
+                'Authorization': f'Bearer {token.access_token}'
+            }
+            profile_response = requests.get(
+                'https://api.spotify.com/v1/me', headers=headers)
+            if profile_response.status_code == 200:
+                return Response(profile_response.json(), status=profile_response.status_code)
+            return Response({'error': 'Failed to fetch Spotify profile'}, status=profile_response.status_code)
+        return Response({'error': 'No Spotify token found'}, status=400)
