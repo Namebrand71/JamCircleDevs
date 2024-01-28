@@ -5,13 +5,15 @@ from requests import Request, post
 from rest_framework import status
 from rest_framework.response import Response
 from .util import user_token_func, is_authenticated
-
+from .models import SpotifyToken
+from django.utils import timezone
+from datetime import timedelta
 
 
 class SpotifyLogin(APIView):
     def get(self, request, format=None):
         scopes = "user-read-private user-read-email user-top-read"
-        
+
         url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,
             'response_type': 'code',
@@ -19,7 +21,8 @@ class SpotifyLogin(APIView):
             'client_id': CLIENT_ID,
         }).prepare().url
 
-        return Response({'url':url}, status=status.HTTP_200_OK)
+        return Response({'url': url}, status=status.HTTP_200_OK)
+
 
 def spotfy_callback(request, format=None):
     code = request.GET.get('code')
@@ -39,16 +42,29 @@ def spotfy_callback(request, format=None):
     expires_in = response.get('expires_in')
     error = response.get('error')
 
-    if not request.session.exist(request.session.session_key):
+    if not request.session.exists(request.session.session_key):
         request.session.create()
 
-    user_token_func(request.session.session_key, access_token, token_type, expires_in, refresh_token)
+    user_token_func(request.session.session_key, access_token,
+                    token_type, expires_in, refresh_token)
+
+    expires_in = timezone.now() + timedelta(seconds=response.get('expires_in'))
+
+    # Create/Update spotify token in db
+    SpotifyToken.objects.update_or_create(
+        user=request.session.session_key,
+        defaults={
+            'access_token': access_token,
+            'refresh_token': refresh_token,
+            'token_type': token_type,
+            'expires_in': expires_in
+        }
+    )
 
     return redirect('frontend:profile')
 
 
-class Authenticated(APIView): 
+class Authenticated(APIView):
     def get(self, request, format=None):
         is_authenticated = is_authenticated(self.request.session.session_key)
-        return Response({'status':is_authenticated}, status=status.HTTP_200_OK)
-    
+        return Response({'status': is_authenticated}, status=status.HTTP_200_OK)
