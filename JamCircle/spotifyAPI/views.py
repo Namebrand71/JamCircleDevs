@@ -73,7 +73,9 @@ class Authenticated(APIView):
 
 class GetSpotifyProfile(APIView):
     def get(self, request, format=None):
+        print("GetSpotifyProfile endpoint hit!")
         session_key = request.session.session_key
+        print("Session key: ", session_key)
         token = SpotifyToken.objects.filter(user=session_key).first()
         if token:
             headers = {
@@ -83,5 +85,6 @@ class GetSpotifyProfile(APIView):
                 'https://api.spotify.com/v1/me', headers=headers)
             if profile_response.status_code == 200:
                 return Response(profile_response.json(), status=profile_response.status_code)
+            print("Failed to fetch spotify profile")
             return Response({'error': 'Failed to fetch Spotify profile'}, status=profile_response.status_code)
         return Response({'error': 'No Spotify token found'}, status=400)

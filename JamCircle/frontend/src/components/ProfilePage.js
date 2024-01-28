@@ -18,9 +18,17 @@ export default class ProfilePage extends Component {
 
   componentDidMount() {
     fetch("/auth/profile/")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
       .then((data) => this.setState({ spotifyUsername: data.display_name }))
-      .catch((error) => this.setState({ spotifyUsername: "Failed to load" }));
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        this.setState({ spotifyUsername: "Failed to load" });
+      });
   }
 
   render() {
