@@ -11,6 +11,16 @@ import Navbar from "./NavBar";
 export default class ProfilePage extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      spotifyUsername: "Loading...",
+    };
+  }
+
+  componentDidMount() {
+    fetch("/auth/profile/")
+      .then((response) => response.json())
+      .then((data) => this.setState({ spotifyUsername: data.display_name }))
+      .catch((error) => this.setState({ spotifyUsername: "Failed to load" }));
   }
 
   render() {
@@ -26,7 +36,7 @@ export default class ProfilePage extends Component {
           />
         </Grid>
         <Grid item xs={3}>
-          <h1>Tom Scott</h1>
+          <h1>{this.state.spotifyUsername}</h1>
         </Grid>
       </Grid>
     );
