@@ -1,8 +1,8 @@
 from .models import SpotifyToken
 from django.utils import timezone
 from datetime import timedelta
-from requests import Request, post
-from .auth import CLIENT_ID, CLIENT_SECRET
+from requests import Request, post, put, get
+from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 
 def is_authenticated(session_id):
     token = get_user_token(session_id)
@@ -48,3 +48,41 @@ def user_token_func(session_id, access_token, token_type, expires_in, refresh_to
     else:
         tokens = SpotifyToken(user=session_id, access_token=access_token, refresh_token=refresh_token, expires_in=expires_in,token_type=token_type)
         tokens.save()
+
+def spotify_api_request(session_id, endpoint, ifPost=False,ifPut=False):
+    token = get_user_token(session_id)
+    header = {'Content-Type': 'application/json', 'Authorization': "Bearer " + token.access_token}
+
+    if ifPost:
+        post(SPOTIFY_URL + endpoint, headers=header)
+    if ifPut:
+        put(SPOTIFY_URL + endpoint, headers=header)
+    responce = get(SPOTIFY_URL + endpoint, headers=header)
+    #Might not get something back
+    return responce.json
+
+def getTop10Artist(session_id):
+    responce = spotify_api_request(session_id,'/me/top/artists?time_range=long&limit=10&offset=0', False, False)
+    art_list = responce.get('items')
+    return art_list.json
+
+def getTop10Tracks(session_id):
+    responce = spotify_api_request(session_id,'/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
+    track_list = responce.get('items')
+    return track_list.json
+
+#Give a list of strings of Spotify IDs. Give session_id and list of Spotify IDs
+def checkFollowing(session_id, list):
+    for x in list:
+        idString = idString + "%2C" + x
+    #Removes first %2C
+    idString = idString[3:]
+
+    requestEndpoint = '/me/following/contains?type=user&ids=' + idString
+        
+    responce = spotify_api_request(session_id,requestEndpoint, False, False)
+    return responce.json
+
+def getUserJSON(session_id):
+    responce = spotify_api_request(session_id, "/me", False, False)
+    return responce.json
