@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "spotifyAPI.apps.SpotifyapiConfig",
     "user.apps.UserConfig",
+    "frontend.apps.FrontendConfig",
     'rest_framework',
 ]
 
