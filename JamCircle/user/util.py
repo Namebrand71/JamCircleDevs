@@ -19,12 +19,17 @@ def update_or_create_User(session_id):
     User.objects.update_or_create(
         user=user_id,
         defaults={
-            'recent_session_id': session_id,
             'top_10_artists': top_10_artists,
             'top_10_tracks': top_10_tracks,
             'user_profile': user_profile
         }
     )
-
-def getUser(user_id):
+#Through user ID
+def getUserFromID(user_id):
     user = SpotifyToken.objects.filter(user_id=user_id)
+    return user
+#Through session_id
+def getUserFromToken(session_id):
+    r = get_user_token(session_id)
+    user_id = r.get('user_id')
+    return getUserFromID(user_id)
