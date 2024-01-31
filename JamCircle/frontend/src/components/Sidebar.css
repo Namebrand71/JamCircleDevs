@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 .Brand {
   height: 60px;
   width: 100%;
