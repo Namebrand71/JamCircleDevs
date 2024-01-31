@@ -1,13 +1,16 @@
 from django.shortcuts import render, redirect
 from .auth import REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from rest_framework.views import APIView
-from requests import Request, post
+from requests import Request, post, get
 from rest_framework import status
 from rest_framework.response import Response
 from .util import *
-from user.models import *
+from .models import SpotifyToken
 from user.util import *
-
+from django.utils import timezone
+from datetime import timedelta, datetime
+import pytz
+from base64 import b64encode
 
 
 class SpotifyLogin(APIView):
@@ -38,13 +41,17 @@ def spotfy_callback(request, format=None):
     access_token = response.get('access_token')
     token_type = response.get('token_type')
     refresh_token = response.get('refresh_token')
-    expires_in = response.get('expires_in')
     error = response.get('error')
 
     header = {'Content-Type': 'application/json', 'Authorization': "Bearer " + access_token}
-    user_profile = get(SPOTIFY_URL + "/me", headers=header)
+    user_profile = get(SPOTIFY_URL + "/me", headers=header).json()
     user_id = user_profile.get('id')
 
+    expires_at = timezone.now() + timedelta(hours=1)
+    user_token_func(request.session.session_key, access_token,
+                    token_type, expires_at, refresh_token)
+
+    # Create/Update spotify token in db
     SpotifyToken.objects.update_or_create(
         session_id=request.session.session_key,
         user_id=user_id,
@@ -52,7 +59,7 @@ def spotfy_callback(request, format=None):
             'access_token': access_token,
             'refresh_token': refresh_token,
             'token_type': token_type,
-            'expires_in': expires_in
+            'expires_at': expires_at
         }
     )
 
@@ -73,16 +80,17 @@ class RequestTest(APIView):
 class GetSpotifyProfile(APIView):
     def get(self, request, format=None):
         print("GetSpotifyProfile endpoint hit!")
+        if not request.session.exists(request.session.session_key):
+            request.session.create()
         session_key = request.session.session_key
         print("Session key: ", session_key)
         token = SpotifyToken.objects.filter(user=session_key).first()
-        if token:
-            headers = {
-                'Authorization': f'Bearer {token.access_token}'
-            }
-            profile_response = getUserJSON(session_key)
-            return Response(profile_response.json(), status=profile_response.status_code)
+
+        if is_authenticated(session_key):
+            profile_response = getUserFromToken(session_key)
+            if profile_response:
+                return Response(profile_response, status=200)
             print("Failed to fetch spotify profile")
-            return Response({'error': 'Failed to fetch Spotify profile'}, status=profile_response.status_code)
-        return Response({'error': 'No Spotify token found'}, status=400)
-    
+            return Response({'error': 'Failed to fetch Spotify profile'}, status=400)
+        else:
+            return Response({'error': 'Authentication with Spotify failed or no token found'}, status=403)
