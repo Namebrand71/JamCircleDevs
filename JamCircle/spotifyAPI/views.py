@@ -5,10 +5,12 @@ from requests import Request, post
 import requests
 from rest_framework import status
 from rest_framework.response import Response
-from .util import user_token_func, is_authenticated
+from .util import user_token_func, is_authenticated, refresh_token, get_user_token
 from .models import SpotifyToken
 from django.utils import timezone
-from datetime import timedelta
+from datetime import timedelta, datetime
+import pytz
+from base64 import b64encode
 
 
 class SpotifyLogin(APIView):
@@ -74,10 +76,24 @@ class Authenticated(APIView):
 class GetSpotifyProfile(APIView):
     def get(self, request, format=None):
         print("GetSpotifyProfile endpoint hit!")
+        if not request.session.exists(request.session.session_key):
+            request.session.create()
         session_key = request.session.session_key
         print("Session key: ", session_key)
         token = SpotifyToken.objects.filter(user=session_key).first()
+        print("Token: ", token)
+        # TODO: Check if token has expired, if so need to use refresh token to generate new access token
         if token:
+            now = datetime.now(pytz.utc)
+
+            print("Time now: ", now)
+            print("Expires at: ", token.expires_at)
+            if now >= token.expires_at:  # Token has expired, need to generate a new access token
+                new_access_token, new_expires_at = self.refresh_access_token(
+                    token.refresh_token)
+                token.access_token = new_access_token
+                token.expires_at = new_expires_at
+                token.save()
             headers = {
                 'Authorization': f'Bearer {token.access_token}'
             }
@@ -88,3 +104,37 @@ class GetSpotifyProfile(APIView):
             print("Failed to fetch spotify profile")
             return Response({'error': 'Failed to fetch Spotify profile'}, status=profile_response.status_code)
         return Response({'error': 'No Spotify token found'}, status=400)
+
+    def refresh_access_token(self, refresh_token):
+        token_url = 'https://accounts.spotify.com/api/token'
+
+        # Client credentials
+        client_id = CLIENT_ID
+        client_secret = CLIENT_SECRET
+
+        client_creds = f"{client_id}:{client_secret}"
+        client_creds_b64 = b64encode(client_creds.encode()).decode()
+
+        headers = {
+            'Authorization': f'Basic {client_creds_b64}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        data = {
+            'grant_type': 'refresh_token',
+            'refresh_token': refresh_token
+        }
+
+        response = requests.post(token_url, headers=headers, data=data)
+
+        # Check if the request was successful
+        if response.status_code == 200:
+            response_data = response.json()
+            new_access_token = response_data['access_token']
+
+            expires_in = response_data['expires_in']
+            now = datetime.now(pytz.utc)
+            new_expires_at = now + timedelta(seconds=expires_in)
+
+            return new_access_token, new_expires_at
+        else:
+            raise Exception("Failed to refresh Spotify token")
