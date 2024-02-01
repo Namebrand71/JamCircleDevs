@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Radio from "@mui/material/Radio";
 import Navbar from "./NavBar";
 import TopTenTracks from "./TopTenTracks";
+import TopTenArtists from "./TopTenArtists";
 
 export default class ProfilePage extends Component {
   constructor(props) {
@@ -40,20 +41,25 @@ export default class ProfilePage extends Component {
 
   render() {
     return (
-      <Grid container spacing={1} alignItems={"flex-start"}>
-        <Grid item xs={12} align="right">
-          <Navbar />
+      <div className="profilepage">
+        <Grid container spacing={1} alignItems={"flex-start"}>
+          <Grid item xs={12} align="right">
+            <Navbar />
+          </Grid>
+          <Grid item xs={1} align="center">
+            <img src={this.state.profileImageUrl} width="80px" />
+          </Grid>
+          <Grid item xs={3}>
+            <h1>{this.state.spotifyUsername}</h1>
+          </Grid>
+          <Grid item xs={12}>
+            <TopTenTracks />
+          </Grid>
+          <Grid item xs={6}>
+            <TopTenArtists />
+          </Grid>
         </Grid>
-        <Grid item xs={1} align="center">
-          <img src={this.state.profileImageUrl} width="80px" />
-        </Grid>
-        <Grid item xs={3}>
-          <h1>{this.state.spotifyUsername}</h1>
-        </Grid>
-        <Grid item xs={12}>
-          <TopTenTracks />
-        </Grid>
-      </Grid>
+      </div>
     );
   }
 }

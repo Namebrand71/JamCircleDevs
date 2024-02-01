@@ -79,11 +79,14 @@ def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
     return response.json()
 
 
-def getTop10Artist(session_id):
+def getTop10Artist(request):
+    session_id = request.session.session_key
+    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
-        session_id, '/me/top/artists?time_range=long&limit=10&offset=0', False, False)
-    art_list = response.get('items')
-    return art_list.json
+        session_id, "/me/top/artists?limit=10&offset=0", False, False)
+    print(response)
+    artist_list = response.get('items')
+    return JsonResponse(artist_list, safe=False)
 
 
 def getTop10Tracks(request):
