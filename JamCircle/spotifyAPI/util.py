@@ -32,7 +32,7 @@ def refresh_token(session_id):
 
     refresh_token = response.get('refresh_token')
     token_type = response.get('token_type')
-    user_token_func(session_id, access_token, token_type, refresh_token)
+    user_token_func(session_id, access_token, token_type, None, refresh_token)
 
 
 def get_user_token(session_id):
