@@ -20,6 +20,8 @@ Open psql as postgres with `psql -U postgres`
 
 Create user jamcircle with `CREATE USER jamcircle with PASSWORD 'jamcircle';`
 
+Create database jamcircle with `CREATE DATABASE jamcircle OWNER jamcircle;`
+
 Give perms with `GRANT ALL PRIVILEGES ON DATABASE jamcircle TO jamcircle;`
 
 In settings.py replace database config with:
