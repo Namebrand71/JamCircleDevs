@@ -3,6 +3,7 @@ from django.utils import timezone
 from datetime import timedelta
 from requests import Request, post, put, get
 from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
+from django.http import JsonResponse
 
 
 def is_authenticated(session_id):
@@ -85,11 +86,14 @@ def getTop10Artist(session_id):
     return art_list.json
 
 
-def getTop10Tracks(session_id):
+def getTop10Tracks(request):
+    session_id = request.session.session_key
+    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
-        session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
+        session_id, "/me/top/tracks?limit=10&offset=0", False, False)
+    print(response)
     track_list = response.get('items')
-    return track_list.json
+    return JsonResponse(track_list, safe=False)
 
 # Give a list of strings of Spotify IDs. Give session_id and list of Spotify IDs
 

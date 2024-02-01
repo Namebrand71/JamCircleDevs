@@ -7,6 +7,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Radio from "@mui/material/Radio";
 import Navbar from "./NavBar";
+import TopTenTracks from "./TopTenTracks";
 
 export default class ProfilePage extends Component {
   constructor(props) {
@@ -48,6 +49,9 @@ export default class ProfilePage extends Component {
         </Grid>
         <Grid item xs={3}>
           <h1>{this.state.spotifyUsername}</h1>
+        </Grid>
+        <Grid item xs={12}>
+          <TopTenTracks />
         </Grid>
       </Grid>
     );
