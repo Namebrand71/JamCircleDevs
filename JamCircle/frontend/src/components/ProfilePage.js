@@ -13,6 +13,7 @@ export default class ProfilePage extends Component {
     super(props);
     this.state = {
       spotifyUsername: "Loading...",
+      profileImageUrl: "https://fakeimg.pl/750x750?text=Loading&font=noto",
     };
   }
 
@@ -24,7 +25,12 @@ export default class ProfilePage extends Component {
         }
         return response.json();
       })
-      .then((data) => this.setState({ spotifyUsername: data.display_name }))
+      .then((data) =>
+        this.setState({
+          spotifyUsername: data.display_name,
+          profileImageUrl: data.images[1].url,
+        })
+      )
       .catch((error) => {
         console.error("Fetch error:", error);
         this.setState({ spotifyUsername: "Failed to load" });
@@ -38,10 +44,7 @@ export default class ProfilePage extends Component {
           <Navbar />
         </Grid>
         <Grid item xs={1} align="center">
-          <img
-            src="https://fakeimg.pl/750x750?text=Pic&font=noto"
-            width="80px"
-          />
+          <img src={this.state.profileImageUrl} width="80px" />
         </Grid>
         <Grid item xs={3}>
           <h1>{this.state.spotifyUsername}</h1>

@@ -7,10 +7,11 @@ from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 
 def is_authenticated(session_id):
     token = get_user_token(session_id)
+    print(token)
     print("is_authenticated called")
-    print("Expires at: ", token.expires_at)
     print("Time now: ", timezone.now())
     if token:
+        print("Expires at: ", token.expires_at)
         if token.expires_at < timezone.now():
             print("token has expired, getting a new token now")
             refresh_token(session_id)
@@ -69,6 +70,11 @@ def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
         put(SPOTIFY_URL + endpoint, headers=header)
     response = get(SPOTIFY_URL + endpoint, headers=header)
     # Might not get something back
+    if response.status_code == 401:
+        refresh_token(session_id)
+        token = get_user_token(session_id)
+        response = get(SPOTIFY_URL + endpoint)
+        print("RESPONSE:       ", response)
     return response.json()
 
 
@@ -102,4 +108,5 @@ def checkFollowing(session_id, list):
 
 def getUserJSON(session_id):
     response = spotify_api_request(session_id, "/me", False, False)
+    print(response)
     return response
