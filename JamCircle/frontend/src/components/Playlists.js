@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 
 class Playlists extends Component {
-  state = {
-    playlists: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isExpanded: false,
+      playlists: [],
+    };
+  }
 
   componentDidMount() {
     this.fetchPlaylists();
@@ -16,42 +20,56 @@ class Playlists extends Component {
       .catch((error) => console.error("Error fetching playlists:", error));
   };
 
+  toggleExpand = () => {
+    this.setState((prevState) => ({
+      isExpanded: !prevState.isExpanded,
+    }));
+  };
+
   render() {
-    const { playlists } = this.state;
+    const { playlists, isExpanded } = this.state;
+    const displayedPlaylists = isExpanded ? playlists : playlists.slice(0, 5);
 
     return (
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "20px",
-          padding: "20px",
-        }}
-      >
-        {playlists.map((playlist, index) => (
-          <div
-            key={index}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              padding: "10px",
-              backgroundColor: "#f9f9f9",
-            }}
-          >
-            <img
-              src={playlist.image_url}
-              alt={playlist.name}
+      <div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+            gap: "20px",
+            padding: "20px",
+          }}
+        >
+          {displayedPlaylists.map((playlist, index) => (
+            <div
+              key={index}
               style={{
-                width: "100%",
-                height: "200px",
-                objectFit: "cover",
-                borderRadius: "4px",
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                padding: "10px",
+                backgroundColor: "#f9f9f9",
               }}
-            />
-            <h3 style={{ marginTop: "10px" }}>{playlist.name}</h3>
-            <p>By {playlist.owner}</p>
-          </div>
-        ))}
+            >
+              <img
+                src={playlist.image_url}
+                alt={playlist.name}
+                style={{
+                  width: "100%",
+                  height: "200px",
+                  objectFit: "cover",
+                  borderRadius: "4px",
+                }}
+              />
+              <h3 style={{ marginTop: "10px" }}>{playlist.name}</h3>
+              <p>By {playlist.owner}</p>
+            </div>
+          ))}
+        </div>
+        {playlists.length > 3 && (
+          <button onClick={this.toggleExpand} style={{ marginTop: "20px" }}>
+            {isExpanded ? "Show Less" : "Show More"}
+          </button>
+        )}
       </div>
     );
   }
