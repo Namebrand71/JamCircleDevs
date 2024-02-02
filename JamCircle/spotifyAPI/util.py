@@ -114,6 +114,32 @@ def getTop10Tracks(request):
     track_list = response.get('items')
     return JsonResponse(track_list, safe=False)
 
+
+def getPlaylists(request):
+    session_id = request.session.session_key
+    token = get_user_token(session_id)
+    if not token:
+        return JsonResponse({"error": "No token found"}, status=403)
+
+    response = spotify_api_request(
+        session_id, "/me/playlists", False, False)
+
+    if 'items' not in response:
+        return JsonResponse({"error": "Failed to fetch playlists from Spotify"}, status=response.get('status', 500))
+
+    playlists = response['items']
+    formatted_playlists = []
+    for playlist in playlists:
+        image_url = playlist['images'][0]['url'] if playlist['images'] else None
+        formatted_playlists.append({
+            'name': playlist['name'],
+            'owner': playlist['owner']['display_name'],
+            'image_url': image_url
+        })
+
+    return JsonResponse(formatted_playlists, safe=False)
+
+
 # Give a list of strings of Spotify IDs. Give session_id and list of Spotify IDs
 
 

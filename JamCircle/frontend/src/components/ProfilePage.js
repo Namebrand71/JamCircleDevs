@@ -9,6 +9,7 @@ import Radio from "@mui/material/Radio";
 import Navbar from "./NavBar";
 import TopTenTracks from "./TopTenTracks";
 import TopTenArtists from "./TopTenArtists";
+import Playlists from "./Playlists";
 
 export default class ProfilePage extends Component {
   constructor(props) {
@@ -81,8 +82,11 @@ export default class ProfilePage extends Component {
               <Grid item xs={12}>
                 <TopTenTracks />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TopTenArtists />
+              </Grid>
+              <Grid item xs={12}>
+                <Playlists />
               </Grid>
             </>
           )}
