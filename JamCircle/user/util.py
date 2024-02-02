@@ -17,7 +17,7 @@ def update_or_create_User(session_id):
     user_id = user_profile.get('id')
     
     User.objects.update_or_create(
-        user=user_id,
+        user_id=user_id,
         defaults={
             'top_10_artists': top_10_artists,
             'top_10_tracks': top_10_tracks,

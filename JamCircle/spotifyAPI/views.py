@@ -65,7 +65,7 @@ def spotfy_callback(request, format=None):
 
     update_or_create_User(request.session.session_key)
 
-    return redirect('PLACEHOLDER')
+    return redirect('/profile')
 
 
 class Authenticated(APIView): 
@@ -84,7 +84,7 @@ class GetSpotifyProfile(APIView):
             request.session.create()
         session_key = request.session.session_key
         print("Session key: ", session_key)
-        token = SpotifyToken.objects.filter(user=session_key).first()
+        token = SpotifyToken.objects.filter(session_id=session_key).first()
 
         if is_authenticated(session_key):
             profile_response = getUserFromToken(session_key)

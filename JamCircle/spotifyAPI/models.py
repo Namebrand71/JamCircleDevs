@@ -4,7 +4,7 @@ from django.db import models
 
 
 class SpotifyToken(models.Model):
-    session_id = models.CharField(max_length=100, unique=True, default="foobar")
+    session_id = models.CharField(max_length=100, unique=False, default="foobar")
     user_id = models.CharField(max_length=100, unique=True, default="foobar")
     create_at = models.DateTimeField(auto_now_add=True)
     access_token = models.CharField(max_length=250)
