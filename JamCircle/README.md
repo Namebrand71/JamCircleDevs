@@ -14,11 +14,11 @@ Then `brew install postgresql`
 
 ### Once postgres is installed
 
-1. Create a user called jamcircle
-
 Open psql as postgres with `psql -U postgres`
 
 Create user jamcircle with `CREATE USER jamcircle with PASSWORD 'jamcircle';`
+
+Create database jamcircle with `CREATE DATABASE jamcircle OWNER jamcircle;`
 
 Give perms with `GRANT ALL PRIVILEGES ON DATABASE jamcircle TO jamcircle;`
 
