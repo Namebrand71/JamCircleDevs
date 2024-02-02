@@ -20,18 +20,23 @@ export default class ProfilePage extends Component {
     };
   }
 
-  componentDidMount() {
-    this.checkAuthentication();
-    this.loadProfile();
+  async componentDidMount() {
+    const isAuthenticated = await this.checkAuthentication();
+    if (isAuthenticated) {
+      this.loadProfile();
+    }
   }
 
-  checkAuthentication = () => {
-    fetch("/auth/is-authenticated/")
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ isAuthenticated: data.isAuthenticated });
-      })
-      .catch((error) => console.error("Error:", error));
+  checkAuthentication = async () => {
+    try {
+      const response = await fetch("/auth/is-authenticated/");
+      const data = await response.json();
+      this.setState({ isAuthenticated: data.isAuthenticated });
+      return data.isAuthenticated;
+    } catch (error) {
+      console.error("Error:", error);
+      return false;
+    }
   };
 
   loadProfile = () => {
