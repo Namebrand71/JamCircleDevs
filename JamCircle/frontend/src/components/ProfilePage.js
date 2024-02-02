@@ -72,17 +72,17 @@ export default class ProfilePage extends Component {
           <Grid item xs={1} align="center">
             <img src={this.state.profileImageUrl} width="80px" />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={11}>
             <h1>
               {isAuthenticated ? this.state.spotifyUsername : "Not Logged in"}
             </h1>
           </Grid>
           {isAuthenticated && (
             <>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TopTenTracks />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TopTenArtists />
               </Grid>
               <Grid item xs={12}>

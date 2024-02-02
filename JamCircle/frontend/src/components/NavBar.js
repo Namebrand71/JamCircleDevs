@@ -64,8 +64,15 @@ const Navbar = () => {
           Profile
         </Link>
       </div>
-      <button onClick={handleAuthButtonClick} style={{ marginLeft: "auto" }}>
-        {isAuthenticated ? "Click to Logout" : "Click to Login"}
+      <button
+        onClick={handleAuthButtonClick}
+        style={{
+          marginLeft: "auto",
+          backgroundColor: isAuthenticated ? "RED" : "#4CAF50",
+        }}
+        className="login-btn"
+      >
+        {isAuthenticated ? "Logout" : "Login"}
       </button>
     </nav>
   );

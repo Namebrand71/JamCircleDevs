@@ -44,10 +44,10 @@ class Playlists extends Component {
             <div
               key={index}
               style={{
-                border: "1px solid #ccc",
+                border: "1px solid #000000",
                 borderRadius: "8px",
                 padding: "10px",
-                backgroundColor: "#f9f9f9",
+                backgroundColor: "#181818",
               }}
             >
               <img
@@ -60,8 +60,10 @@ class Playlists extends Component {
                   borderRadius: "4px",
                 }}
               />
-              <h3 style={{ marginTop: "10px" }}>{playlist.name}</h3>
-              <p>By {playlist.owner}</p>
+              <h3 style={{ marginTop: "10px", color: "white" }}>
+                {playlist.name}
+              </h3>
+              <p style={{ color: "white" }}>By {playlist.owner}</p>
             </div>
           ))}
         </div>
