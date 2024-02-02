@@ -14,6 +14,7 @@ import { TextField } from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Radio from "@mui/material/Radio";
+import Sidebar from "./Sidebar";
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -24,7 +25,15 @@ export default class HomePage extends Component {
     return (
       <Router>
         <Routes>
-          <Route exact path="/" element={<p>THIS IS THE HOME PAGE</p>} />
+          <Route
+            exact
+            path="/"
+            element={
+              <p>
+                <Sidebar />
+              </p>
+            }
+          />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </Router>
