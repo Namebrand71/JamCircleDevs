@@ -56,7 +56,7 @@ def user_token_func(session_id, access_token, token_type, expires_at, refresh_to
         tokens.token_type = token_type  # Unsure if this needs to be updated
         tokens.save(update_fields=['access_token', 'expires_at'])
     else:
-        tokens = SpotifyToken(user=session_id, access_token=access_token,
+        tokens = SpotifyToken(session_id=session_id, access_token=access_token,
                               refresh_token=refresh_token, expires_at=expires_at, token_type=token_type)
         tokens.save()
 
