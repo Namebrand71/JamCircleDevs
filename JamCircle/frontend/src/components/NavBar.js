@@ -1,7 +1,42 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("/auth/is-authenticated/")
+      .then((response) => response.json())
+      .then((data) => {
+        setIsAuthenticated(data.isAuthenticated);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
+
+  const handleAuthButtonClick = () => {
+    if (isAuthenticated) {
+      fetch("/auth/logout/")
+        .then((response) => response.json())
+        .then((data) => {
+          setIsAuthenticated(false);
+          window.location.reload();
+        })
+        .catch((error) => console.error("Error:", error));
+    } else {
+      fetch("/auth/authSpotify")
+        .then((response) => response.json())
+        .then((data) => {
+          window.location.href = data.url;
+        })
+        .catch((error) => console.error("Error:", error));
+
+      // navigate("/auth/authSpotify"); // Redirect to Spotify authentication
+    }
+  };
+
   return (
     <nav
       style={{
@@ -31,6 +66,9 @@ const Navbar = () => {
           Profile
         </Link>
       </div>
+      <button onClick={handleAuthButtonClick}>
+        {isAuthenticated ? "Click to Logout" : "Click to Login"}
+      </button>
     </nav>
   );
 };

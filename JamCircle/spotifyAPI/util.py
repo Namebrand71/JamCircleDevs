@@ -4,6 +4,7 @@ from datetime import timedelta
 from requests import Request, post, put, get
 from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from django.http import JsonResponse
+from .models import SpotifyToken
 
 
 def is_authenticated(session_id):
@@ -18,6 +19,21 @@ def is_authenticated(session_id):
             refresh_token(session_id)
         return True
     return False
+
+
+def is_authenticated_api(request):
+    session_id = request.session.session_key
+    is_auth = is_authenticated(session_id)
+    return JsonResponse({'isAuthenticated': is_auth})
+
+
+def logout_api(request):
+    try:
+        session_id = request.session.session_key
+        SpotifyToken.objects.filter(user=session_id).delete()
+        return JsonResponse({'message': 'Logged out successfully'}, status=200)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=400)
 
 
 def refresh_token(session_id):
