@@ -16,10 +16,25 @@ export default class ProfilePage extends Component {
     this.state = {
       spotifyUsername: "Loading...",
       profileImageUrl: "https://fakeimg.pl/750x750?text=Loading&font=noto",
+      isAuthenticated: false,
     };
   }
 
   componentDidMount() {
+    this.checkAuthentication();
+    this.loadProfile();
+  }
+
+  checkAuthentication = () => {
+    fetch("/auth/is-authenticated/")
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({ isAuthenticated: data.isAuthenticated });
+      })
+      .catch((error) => console.error("Error:", error));
+  };
+
+  loadProfile = () => {
     fetch("/auth/profile/")
       .then((response) => {
         if (!response.ok) {
@@ -37,9 +52,11 @@ export default class ProfilePage extends Component {
         console.error("Fetch error:", error);
         this.setState({ spotifyUsername: "Failed to load" });
       });
-  }
+  };
 
   render() {
+    const { isAuthenticated } = this.state;
+
     return (
       <div className="profilepage">
         <Grid container spacing={1} alignItems={"flex-start"}>
@@ -50,14 +67,20 @@ export default class ProfilePage extends Component {
             <img src={this.state.profileImageUrl} width="80px" />
           </Grid>
           <Grid item xs={3}>
-            <h1>{this.state.spotifyUsername}</h1>
+            <h1>
+              {isAuthenticated ? this.state.spotifyUsername : "Not Logged in"}
+            </h1>
           </Grid>
-          <Grid item xs={12}>
-            <TopTenTracks />
-          </Grid>
-          <Grid item xs={6}>
-            <TopTenArtists />
-          </Grid>
+          {isAuthenticated && (
+            <>
+              <Grid item xs={12}>
+                <TopTenTracks />
+              </Grid>
+              <Grid item xs={6}>
+                <TopTenArtists />
+              </Grid>
+            </>
+          )}
         </Grid>
       </div>
     );

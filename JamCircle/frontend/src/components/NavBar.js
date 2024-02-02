@@ -32,8 +32,6 @@ const Navbar = () => {
           window.location.href = data.url;
         })
         .catch((error) => console.error("Error:", error));
-
-      // navigate("/auth/authSpotify"); // Redirect to Spotify authentication
     }
   };
 
@@ -66,7 +64,7 @@ const Navbar = () => {
           Profile
         </Link>
       </div>
-      <button onClick={handleAuthButtonClick}>
+      <button onClick={handleAuthButtonClick} style={{ marginLeft: "auto" }}>
         {isAuthenticated ? "Click to Logout" : "Click to Login"}
       </button>
     </nav>
