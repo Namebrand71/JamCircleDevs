@@ -34,6 +34,32 @@ class Playlists extends Component {
       <div>
         <div
           style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingRight: "20px",
+            paddingLeft: "28px",
+          }}
+        >
+          <h2 style={{ color: "white" }}>Playlists</h2>
+          {playlists.length > 3 && (
+            <button
+              onClick={this.toggleExpand}
+              style={{
+                alignSelf: "flex-end",
+                background: "transparent",
+                border: "none",
+                color: "white", // Adjust for visibility
+                cursor: "pointer",
+              }}
+              className="more-btn"
+            >
+              {isExpanded ? "Show Less" : "Show More"}
+            </button>
+          )}
+        </div>
+        <div
+          style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
             gap: "20px",
@@ -67,11 +93,6 @@ class Playlists extends Component {
             </div>
           ))}
         </div>
-        {playlists.length > 3 && (
-          <button onClick={this.toggleExpand} style={{ marginTop: "20px" }}>
-            {isExpanded ? "Show Less" : "Show More"}
-          </button>
-        )}
       </div>
     );
   }

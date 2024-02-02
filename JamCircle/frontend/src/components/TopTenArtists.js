@@ -8,22 +8,28 @@ class MyComponent extends React.Component {
     };
   }
 
-  handleClick = () => {
+  componentDidMount() {
+    this.fetchTop10Artists();
+  }
+
+  fetchTop10Artists = () => {
     fetch("/auth/get-top-10-artists/")
       .then((response) => response.json())
       .then((data) => {
         this.setState({ topArtists: data });
       })
-      .catch((error) => console.error("Error:", error));
+      .catch((error) => console.error("Error fetching top artists:", error));
   };
 
   render() {
     return (
       <div className="topArtistsContainer">
-        <button onClick={this.handleClick}>Get Top 10 Artists</button>
+        <h2>Top Artists</h2>
         {this.state.topArtists.map((artist, index) => (
           <div key={index}>
-            <p>{artist.name}</p>
+            <p>
+              {index + 1}. {artist.name}
+            </p>
           </div>
         ))}
       </div>

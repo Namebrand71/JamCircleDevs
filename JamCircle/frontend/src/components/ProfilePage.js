@@ -69,20 +69,32 @@ export default class ProfilePage extends Component {
           <Grid item xs={12} align="right">
             <Navbar />
           </Grid>
-          <Grid item xs={1} align="center">
-            <img src={this.state.profileImageUrl} width="80px" />
+          <Grid item xs={1} align="center" style={{ paddingLeft: "28px" }}>
+            <img
+              src={this.state.profileImageUrl}
+              width="80px"
+              className="ProfilePicture"
+            />
           </Grid>
-          <Grid item xs={11}>
+          <Grid item xs={11} style={{ paddingLeft: "28px" }}>
             <h1>
               {isAuthenticated ? this.state.spotifyUsername : "Not Logged in"}
             </h1>
           </Grid>
           {isAuthenticated && (
             <>
-              <Grid item xs={6}>
+              <Grid
+                item
+                xs={6}
+                style={{ paddingLeft: "28px", paddingRight: "28px" }}
+              >
                 <TopTenTracks />
               </Grid>
-              <Grid item xs={6}>
+              <Grid
+                item
+                xs={6}
+                style={{ paddingLeft: "28px", paddingRight: "28px" }}
+              >
                 <TopTenArtists />
               </Grid>
               <Grid item xs={12}>
