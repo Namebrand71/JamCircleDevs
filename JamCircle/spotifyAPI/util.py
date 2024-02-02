@@ -3,17 +3,16 @@ from django.utils import timezone
 from datetime import timedelta
 from requests import Request, post, put, get
 from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.http import JsonResponse
 
 
 def is_authenticated(session_id):
     token = get_user_token(session_id)
+    print(token)
     print("is_authenticated called")
-    print("Expires at: ", token.expires_at)
     print("Time now: ", timezone.now())
     if token:
+        print("Expires at: ", token.expires_at)
         if token.expires_at < timezone.now():
             print("token has expired, getting a new token now")
             refresh_token(session_id)
@@ -34,7 +33,7 @@ def refresh_token(session_id):
 
     refresh_token = response.get('refresh_token')
     token_type = response.get('token_type')
-    user_token_func(session_id, access_token, token_type, refresh_token)
+    user_token_func(session_id, access_token, token_type, None, refresh_token)
 
 
 def get_user_token(session_id):
@@ -72,21 +71,32 @@ def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
         put(SPOTIFY_URL + endpoint, headers=header)
     response = get(SPOTIFY_URL + endpoint, headers=header)
     # Might not get something back
+    if response.status_code == 401:
+        refresh_token(session_id)
+        token = get_user_token(session_id)
+        response = get(SPOTIFY_URL + endpoint)
+        print("RESPONSE:       ", response)
     return response.json()
 
 
-def getTop10Artist(session_id):
+def getTop10Artist(request):
+    session_id = request.session.session_key
+    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
-        session_id, '/me/top/artists?time_range=long&limit=10&offset=0', False, False)
-    art_list = response.get('items')
-    return art_list.json
+        session_id, "/me/top/artists?limit=10&offset=0", False, False)
+    print(response)
+    artist_list = response.get('items')
+    return JsonResponse(artist_list, safe=False)
 
 
-def getTop10Tracks(session_id):
+def getTop10Tracks(request):
+    session_id = request.session.session_key
+    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
-        session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
+        session_id, "/me/top/tracks?limit=10&offset=0", False, False)
+    print(response)
     track_list = response.get('items')
-    return track_list.json
+    return JsonResponse(track_list, safe=False)
 
 # Give a list of strings of Spotify IDs. Give session_id and list of Spotify IDs
 
@@ -105,4 +115,5 @@ def checkFollowing(session_id, list):
 
 def getUserJSON(session_id):
     response = spotify_api_request(session_id, "/me", False, False)
+    print(response)
     return response
