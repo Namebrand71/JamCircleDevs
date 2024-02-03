@@ -30,7 +30,7 @@ def is_authenticated_api(request):
 def logout_api(request):
     try:
         session_id = request.session.session_key
-        SpotifyToken.objects.filter(user=session_id).delete()
+        SpotifyToken.objects.filter(session_id=session_id).delete()
         return JsonResponse({'message': 'Logged out successfully'}, status=200)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=400)
@@ -53,7 +53,7 @@ def refresh_token(session_id):
 
 
 def get_user_token(session_id):
-    user_tokens = SpotifyToken.objects.filter(user=session_id)
+    user_tokens = SpotifyToken.objects.filter(session_id=session_id)
     if user_tokens.exists():
         return user_tokens[0]
     else:
@@ -61,19 +61,20 @@ def get_user_token(session_id):
 
 
 def user_token_func(session_id, access_token, token_type, expires_at, refresh_token):
-    tokens = get_user_token(session_id)
+    token = get_user_token(session_id)
     if not expires_at:
         expires_at = timezone.now() + timedelta(seconds=3600)
 
-    if tokens:
-        tokens.access_token = access_token
-        tokens.expires_at = expires_at
-        tokens.token_type = token_type  # Unsure if this needs to be updated
-        tokens.save(update_fields=['access_token', 'expires_at'])
+    if token:
+        token.access_token = access_token
+        token.expires_at = expires_at
+        token.token_type = token_type  # Unsure if this needs to be updated
+        token.save(update_fields=['access_token', 'expires_at'])
     else:
-        tokens = SpotifyToken(user=session_id, access_token=access_token,
-                              refresh_token=refresh_token, expires_at=expires_at, token_type=token_type)
-        tokens.save()
+        token = SpotifyToken(session_id=session_id, access_token=access_token,
+                             refresh_token=refresh_token, expires_at=expires_at, token_type=token_type)
+        token.save()
+    return token
 
 
 def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):

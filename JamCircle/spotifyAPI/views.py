@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from .util import user_token_func, is_authenticated, refresh_token, get_user_token, getUserJSON
 from .models import SpotifyToken
+from user.models import User
 from django.utils import timezone
 from datetime import timedelta, datetime
 import pytz
@@ -48,19 +49,22 @@ def spotfy_callback(request, format=None):
         request.session.create()
 
     expires_at = timezone.now() + timedelta(hours=1)
-    user_token_func(request.session.session_key, access_token,
-                    token_type, expires_at, refresh_token)
+    token = user_token_func(request.session.session_key, access_token,
+                            token_type, expires_at, refresh_token)
 
-    # Create/Update spotify token in db
-    SpotifyToken.objects.update_or_create(
-        user=request.session.session_key,
-        defaults={
-            'access_token': access_token,
-            'refresh_token': refresh_token,
-            'token_type': token_type,
-            'expires_at': expires_at
-        }
-    )
+    user_data = getUserJSON(request.session.session_key)
+
+    user_defaults = {
+        'display_name': user_data.get('display_name'),
+        'email': user_data.get('email'),
+        'profile_pic_url': user_data['images'][0]['url'] if user_data['images'] else None,
+        'country': user_data.get('country'),
+        'product_type': user_data.get('product'),
+        'token': token,
+    }
+
+    user, created = User.objects.update_or_create(
+        spotify_id=user_data['id'], defaults=user_defaults)
 
     return redirect('frontend:profile')
 
@@ -78,7 +82,7 @@ class GetSpotifyProfile(APIView):
             request.session.create()
         session_key = request.session.session_key
         print("Session key: ", session_key)
-        token = SpotifyToken.objects.filter(user=session_key).first()
+        token = SpotifyToken.objects.filter(session_id=session_key).first()
 
         if is_authenticated(session_key):
             profile_response = getUserJSON(session_key)
