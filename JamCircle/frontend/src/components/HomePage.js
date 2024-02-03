@@ -22,13 +22,6 @@ export default class HomePage extends Component {
   }
 
   render() {
-    return (
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Routes>
-      </Router>
-    );
+    return <Home />;
   }
 }

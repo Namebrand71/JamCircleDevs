@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'frontend.apps.FrontendConfig',
     'spotifyAPI.apps.SpotifyapiConfig',
     'user.apps.UserConfig',
+    'reviews.apps.ReviewsConfig',
     'corsheaders',
 ]
 

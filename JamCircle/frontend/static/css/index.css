@@ -60,6 +60,11 @@ h1 {
     overflow-y: auto;
 }
 
+.songpage {
+    min-height: 100vh;
+    width: 100%;    
+}
+
 .login-btn {
     color: #fff;
     font-size: 12px;

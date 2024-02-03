@@ -1,18 +1,27 @@
+// App.js
+
 import React, { Component } from "react";
 import { createRoot } from "react-dom/client";
-import { render } from "react-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
-
+import ProfilePage from "./ProfilePage";
+import SongPage from "./SongPage";
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    return <HomePage />;
+    return (
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/song/:spotify_content_id" element={<SongPage />} />
+
+          {/* Define more routes as needed */}
+        </Routes>
+      </Router>
+    );
   }
 }
 
 const container = document.getElementById("app");
-const root = createRoot(container); // createRoot(container!) if you use TypeScript
-root.render(<App tab="home" />);
+const root = createRoot(container);
+root.render(<App />);
