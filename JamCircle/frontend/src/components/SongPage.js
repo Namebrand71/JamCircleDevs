@@ -7,8 +7,30 @@ const SongPage = () => {
   const { spotify_content_id } = useParams();
 
   useEffect(() => {
-    // Your componentDidMount logic here
-  }, []); // Empty dependency array to mimic componentDidMount
+    const callDjangoAPI = async () => {
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:8000/reviews/get_track_info/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ spotify_content_id: spotify_content_id }),
+          }
+        );
+
+        const data = await response.json();
+        console.log(data); // Process the response data as needed
+      } catch (error) {
+        console.error("There was an error!", error);
+      }
+    };
+
+    // Call the function
+    callDjangoAPI();
+  }, [spotify_content_id]);
 
   return (
     <div className="songpage">
@@ -17,7 +39,7 @@ const SongPage = () => {
           <Navbar />
         </Grid>
         <Grid item xs={12} align="center">
-          <p>Spotify Content ID: {spotify_content_id}</p>
+          <h1>Spotify Content ID: {spotify_content_id}</h1>
         </Grid>
       </Grid>
     </div>

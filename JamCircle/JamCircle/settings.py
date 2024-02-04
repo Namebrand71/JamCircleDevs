@@ -60,6 +60,9 @@ MIDDLEWARE = [
 # Allow all origins for CORS
 CORS_ALLOW_ALL_ORIGINS = True
 
+# Allow credentials for CORS
+CORS_ALLOW_CREDENTIALS = True
+
 
 ROOT_URLCONF = 'JamCircle.urls'
 

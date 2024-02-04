@@ -65,6 +65,10 @@ h1 {
     width: 100%;    
 }
 
+.songpage h1 {
+    color: white;
+}
+
 .login-btn {
     color: #fff;
     font-size: 12px;
