@@ -124,6 +124,7 @@ h2 {
   
   .author-rating-date {
     margin-bottom: 10px; /* Space between author/rating/date and review text */
+    text-align: left;
   }
   
   /* Optional: Style for the review text to make it slightly smaller than headings */

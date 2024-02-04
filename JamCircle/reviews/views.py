@@ -36,10 +36,23 @@ def get_track_info(request):
 def get_reviews(request):
     spotify_content_id = request.data.get('spotify_content_id')
     print("ACCESSING REVIEWS FOR ", spotify_content_id)
+
+    # Fetch reviews with related user data
     reviews = Review.objects.filter(
-        spotify_content_id=spotify_content_id).values()
-    print(reviews)
-    return JsonResponse(list(reviews), safe=False)
+        spotify_content_id=spotify_content_id).select_related('author')
+
+    reviews_list = []
+    for review in reviews:
+        author_display_name = review.author.display_name if review.author else 'Unknown'
+        review_data = {
+            "author_display_name": author_display_name,
+            "rating": review.rating,
+            "text": review.text,
+            "posted_at": review.posted_at,
+        }
+        reviews_list.append(review_data)
+
+    return JsonResponse(reviews_list, safe=False)
 
 
 @api_view(['POST'])

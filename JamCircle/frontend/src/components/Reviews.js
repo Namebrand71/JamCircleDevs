@@ -98,7 +98,7 @@ const Reviews = ({ spotifyContentId }) => {
           <div key={index} className="review-box">
             <div className="review-details">
               <p className="author-rating-date">
-                <strong>Author ID:</strong> {review.author_id}
+                <strong>Author:</strong> {review.author_display_name}
               </p>
               <p className="author-rating-date">
                 <strong>Rating:</strong> {review.rating}
