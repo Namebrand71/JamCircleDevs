@@ -12,6 +12,10 @@ h1 {
     color: white;
 }
 
+h2 {
+    color: white;
+}
+
 #main {
     position: auto;
     width: 100%;
@@ -86,3 +90,43 @@ h1 {
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* REVIEW SECTION */
+.review-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Space between each review */
+    margin-right: 50px;
+  }
+  
+  .review-box {
+    display: flex;
+    padding: 20px;
+    border: 1px solid #ccc; /* Light grey border */
+    border-radius: 10px; /* Rounded corners */
+    margin: 10px 0; /* Margin for spacing between reviews */
+    background-color: #f9f9f9; /* Light background color */
+  }
+  
+  .review-details {
+    flex-basis: 30%; /* Takes up 30% of the box */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-right: 20px; /* Space between details and text */
+  }
+  
+  .review-text {
+    flex-grow: 1; /* Takes up remaining space */
+    text-align: left;
+  }
+  
+  .author-rating-date {
+    margin-bottom: 10px; /* Space between author/rating/date and review text */
+  }
+  
+  /* Optional: Style for the review text to make it slightly smaller than headings */
+  .review-text p {
+    font-size: 0.9em;
+  }

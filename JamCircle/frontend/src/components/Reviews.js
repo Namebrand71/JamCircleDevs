@@ -1,0 +1,64 @@
+// Reviews.js
+import React, { useEffect, useState } from "react";
+
+const Reviews = ({ spotifyContentId }) => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    fetchReviews();
+  }, [spotifyContentId]);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/reviews/get_reviews/`, // Ensure the URL matches your Django routing pattern
+        {
+          method: "POST", // Assuming the Django view is expecting a GET request
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include", // Include credentials as in the SongPage component
+          body: JSON.stringify({ spotify_content_id: spotifyContentId }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
+      }
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error("There was an error fetching the reviews:", error);
+    }
+  };
+
+  return (
+    <div className="review-container">
+      <h2>Reviews</h2>
+      {reviews.length > 0 ? (
+        reviews.map((review, index) => (
+          <div key={index} className="review-box">
+            <div className="review-details">
+              <p className="author-rating-date">
+                <strong>Author ID:</strong> {review.author_id}
+              </p>
+              <p className="author-rating-date">
+                <strong>Rating:</strong> {review.rating}
+              </p>
+              <p className="author-rating-date">
+                <strong>Posted at:</strong>{" "}
+                {new Date(review.posted_at).toLocaleDateString()}
+              </p>
+            </div>
+            <div className="review-text">
+              <p>{review.text}</p>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p>No reviews yet.</p>
+      )}
+    </div>
+  );
+};
+
+export default Reviews;

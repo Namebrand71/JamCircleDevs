@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Navbar from "./NavBar";
 import Grid from "@mui/material/Grid";
+import Reviews from "./Reviews";
 
 const SongPage = () => {
   const { spotify_content_id } = useParams();
+  const [trackInfo, setTrackInfo] = useState(null);
 
   useEffect(() => {
     const callDjangoAPI = async () => {
@@ -21,8 +23,13 @@ const SongPage = () => {
           }
         );
 
-        const data = await response.json();
-        console.log(data); // Process the response data as needed
+        if (response.ok) {
+          const data = await response.json();
+          setTrackInfo(data); // Assuming data is the object with the track details
+        } else {
+          console.error("Failed to fetch song data");
+          setTrackInfo(null);
+        }
       } catch (error) {
         console.error("There was an error!", error);
       }
@@ -38,9 +45,34 @@ const SongPage = () => {
         <Grid item xs={12} align="right">
           <Navbar />
         </Grid>
-        <Grid item xs={12} align="center">
-          <h1>Spotify Content ID: {spotify_content_id}</h1>
-        </Grid>
+        {trackInfo ? (
+          <>
+            <Grid item xs={6} align="center">
+              {/* Ensure you have a valid path to the image URL here */}
+              <img
+                src={trackInfo.album.images[0].url}
+                width="350px"
+                alt="Track Cover"
+              />
+              <h1>
+                {trackInfo.name} - {trackInfo.artists[0].name}
+              </h1>
+              <h2>
+                {Math.floor(trackInfo.duration_ms / 60000)}:
+                {(
+                  "0" + ((trackInfo.duration_ms % 60000) / 1000).toFixed(0)
+                ).slice(-2)}
+              </h2>
+            </Grid>
+            <Grid item xs={6} align="center">
+              <Reviews spotifyContentId={spotify_content_id} />
+            </Grid>
+          </>
+        ) : (
+          <Grid item xs={12} align="center">
+            <h1>Loading track info...</h1>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

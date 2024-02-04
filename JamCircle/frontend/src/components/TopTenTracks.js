@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 class MyComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -27,10 +27,15 @@ class MyComponent extends React.Component {
         <h2>Top Tracks</h2>
         {this.state.topTracks.map((track, index) => (
           <div key={index}>
-            <p>
-              {index + 1}. {track.name} -{" "}
-              {track.artists.map((artist) => artist.name).join(", ")}{" "}
-            </p>
+            <Link
+              to={`/song/${track.id}`}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <p>
+                {index + 1}. {track.name} -{" "}
+                {track.artists.map((artist) => artist.name).join(", ")}{" "}
+              </p>
+            </Link>
           </div>
         ))}
       </div>
