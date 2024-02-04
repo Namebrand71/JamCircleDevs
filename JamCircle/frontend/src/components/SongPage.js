@@ -53,6 +53,7 @@ const SongPage = () => {
                 src={trackInfo.album.images[0].url}
                 width="350px"
                 alt="Track Cover"
+                style={{ paddingTop: "64px" }}
               />
               <h1>
                 {trackInfo.name} - {trackInfo.artists[0].name}

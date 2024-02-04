@@ -130,3 +130,27 @@ h2 {
   .review-text p {
     font-size: 0.9em;
   }
+
+
+  .review-form-container form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    margin-right: 20px;
+  }
+  
+  .review-form-container textarea, .review-form-container input {
+    margin-bottom: 10px;
+  }
+  
+  .review-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 10px;
+    margin-right: 20px; /* Adjust based on your layout */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }

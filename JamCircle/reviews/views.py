@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from spotifyAPI.util import spotify_api_request
 from .models import Review
+from spotifyAPI.models import SpotifyToken
+from user.models import User
 
 # Create your views here.
 
@@ -38,3 +40,24 @@ def get_reviews(request):
         spotify_content_id=spotify_content_id).values()
     print(reviews)
     return JsonResponse(list(reviews), safe=False)
+
+
+@api_view(['POST'])
+def post_review(request):
+    data = request.data
+    session_id = request.session.session_key
+    try:
+        token = SpotifyToken.objects.get(session_id=session_id)
+        user = User.objects.get(token=token)
+
+        review = Review.objects.create(
+            spotify_content_id=data['spotify_content_id'],
+            author=user,
+            rating=data['rating'],
+            text=data['text']
+        )
+        return JsonResponse({'message': 'Review Posted Successfully', "user_id": user.id})
+    except SpotifyToken.DoesNotExist:
+        return JsonResponse({"error": "Invalid session_id"}, status=400)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User not found"}, status=404)

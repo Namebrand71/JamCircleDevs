@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 
 const Reviews = ({ spotifyContentId }) => {
   const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState("");
+  const [rating, setRating] = useState(5);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     fetchReviews();
@@ -31,9 +34,65 @@ const Reviews = ({ spotifyContentId }) => {
     }
   };
 
+  const postReview = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/reviews/post_review/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            spotify_content_id: spotifyContentId,
+            text: reviewText,
+            rating: rating,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to post review");
+      }
+
+      setReviewText("");
+      setRating(5);
+      fetchReviews();
+    } catch (error) {
+      console.error("There was an error posting the review:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
     <div className="review-container">
       <h2>Reviews</h2>
+
+      <div className="review-form-container">
+        <form onSubmit={postReview}>
+          <textarea
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder="Write your review here..."
+            required
+          />
+          <input
+            type="number"
+            value={rating}
+            onChange={(e) => setRating(e.target.value)}
+            min="0.5"
+            max="5"
+            step="0.5"
+            required
+          />
+          <button type="submit">Submit Review</button>
+        </form>
+      </div>
+
       {reviews.length > 0 ? (
         reviews.map((review, index) => (
           <div key={index} className="review-box">
@@ -45,7 +104,7 @@ const Reviews = ({ spotifyContentId }) => {
                 <strong>Rating:</strong> {review.rating}
               </p>
               <p className="author-rating-date">
-                <strong>Posted at:</strong>{" "}
+                <strong>Posted on:</strong>{" "}
                 {new Date(review.posted_at).toLocaleDateString()}
               </p>
             </div>
@@ -55,7 +114,7 @@ const Reviews = ({ spotifyContentId }) => {
           </div>
         ))
       ) : (
-        <p>No reviews yet.</p>
+        <h1>No reviews yet.</h1>
       )}
     </div>
   );
