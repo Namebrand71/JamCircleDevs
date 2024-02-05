@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -22,7 +23,7 @@ const Navbar = () => {
         .then((response) => response.json())
         .then((data) => {
           setIsAuthenticated(false);
-          window.location.reload();
+          window.location.href = "/";
         })
         .catch((error) => console.error("Error:", error));
     } else {
@@ -33,6 +34,10 @@ const Navbar = () => {
         })
         .catch((error) => console.error("Error:", error));
     }
+  };
+
+  const handleSearch = (query) => {
+    console.log("Searching for:", query);
   };
 
   return (
@@ -64,6 +69,7 @@ const Navbar = () => {
           Profile
         </Link>
       </div>
+      <SearchBar onSearch={handleSearch} />
       <button
         onClick={handleAuthButtonClick}
         style={{
