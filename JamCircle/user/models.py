@@ -19,6 +19,23 @@ class User(models.Model):
     country = models.CharField(max_length=50, blank=True, null=True)
     product_type = models.CharField(max_length=50, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    friends = models.ManyToManyField("User", blank=True)
+    pending_friend_requests = models.ManyToManyField("Friend_Request", blank=True)
 
     def __str__(self):
         return self.display_name
+
+class Friend_Request(models.Model):
+    from_user = models.ForeignKey(
+        "user.User",
+        related_name='from_user',
+        on_delete=models.CASCADE
+        )
+    to_user = models.ForeignKey(
+        "user.User",
+        related_name='to_user',
+        on_delete=models.CASCADE
+        )
+    def __str__(self):
+        return 
+    
