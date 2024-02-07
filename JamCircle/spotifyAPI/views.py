@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from .auth import REDIRECT_URI, CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
 from requests import Request, post
 import requests
 from rest_framework import status
@@ -92,3 +94,21 @@ class GetSpotifyProfile(APIView):
             return Response({'error': 'Failed to fetch Spotify profile'}, status=400)
         else:
             return Response({'error': 'Authentication with Spotify failed or no token found'}, status=403)
+
+
+@api_view(['GET'])
+def search_spotify(request):
+    query = request.GET.get('query')
+    if query:
+        access_token = get_user_token(request.session.session_key).access_token
+        headers = {
+            'Authorization': f'Bearer {access_token}',
+        }
+        params = {
+            'q': query,
+            'type': 'track',
+            'limit': 10,
+        }
+        response = requests.get(
+            'https://api.spotify.com/v1/search', headers=headers, params=params)
+        return JsonResponse(response)
