@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
 const Navbar = () => {
@@ -40,41 +40,84 @@ const Navbar = () => {
     console.log("Searching for:", query);
   };
 
+  const activeStyle = {
+    color: "#ff0095", // Set the color for the active text
+    backgroundColor: "black", // Set the background color for the active box
+    width: "100%",
+  };
+
+  const linkStyle = {
+    display: "block",
+    color: "white", // default link color
+    textDecoration: "none",
+    padding: "20px",
+    textAlign: "center",
+    width: "100%", // Full width
+    marginBottom: "0px", // Space between links
+    // add other styles as needed
+  };
+
   return (
     <nav
       style={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "flex-start",
-        alignItems: "center",
-        height: "30px",
-        backgroundColor: "#333",
+        alignItems: "center", // Changed to center the children horizontally
+        height: "100vh", // Full height of the viewport
+        width: "220px", // Width of the sidebar
+        position: "fixed", // Fixed position
+        left: "0", // Align to the left side of the viewport
+        top: "0", // Align to the top of the viewport
+        backgroundColor: "#111111", // Background color of the sidebar
         color: "white",
-        padding: "0 20px", // Add padding on both sides for spacing
+        padding: "20px", // Padding inside the sidebar
+        boxSizing: "border-box", // Ensures padding doesn't affect the set width
       }}
     >
-      <div style={{ fontSize: "24px" }}>Jam Circle</div>
-      <div>
-        <Link
-          to="/"
-          style={{
-            marginRight: "10px",
-            marginLeft: "10px",
-            color: "white",
-            textDecoration: "none",
-          }}
-        >
-          Home
-        </Link>
-        <Link to="/profile" style={{ color: "white", textDecoration: "none" }}>
-          Profile
-        </Link>
+      <div
+        style={{
+          fontSize: "24px",
+          paddingBottom: "20px",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        Jam Circle
       </div>
-      <SearchBar onSearch={handleSearch} />
+      {/* <SearchBar onSearch={handleSearch} /> */}
+      <NavLink
+        to="/"
+        exact
+        style={({ isActive }) => ({
+          ...linkStyle, // spread the base styles
+          ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
+        })}
+      >
+        Home
+      </NavLink>
+
+      <NavLink
+        to="/profile"
+        style={({ isActive }) => ({
+          ...linkStyle, // spread the base styles
+          ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
+        })}
+      >
+        Profile
+      </NavLink>
+      {/* Add additional navigation links or content here */}
       <button
         onClick={handleAuthButtonClick}
         style={{
-          marginLeft: "auto",
-          backgroundColor: isAuthenticated ? "RED" : "#4CAF50",
+          backgroundColor: isAuthenticated ? "#D7504D" : "#5fa052",
+          color: "white",
+          padding: "10px 10px",
+          border: "none",
+          textTransform: "uppercase",
+          marginTop: "20px",
+          cursor: "pointer",
+          width: "50%", // Use full width of the sidebar
         }}
         className="login-btn"
       >

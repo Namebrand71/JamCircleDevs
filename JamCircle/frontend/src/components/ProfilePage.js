@@ -10,6 +10,8 @@ import Navbar from "./NavBar";
 import TopTenTracks from "./TopTenTracks";
 import TopTenArtists from "./TopTenArtists";
 import Playlists from "./Playlists";
+import SearchBar from "./SearchBar";
+import handleSearch from "./NavBar";
 
 export default class ProfilePage extends Component {
   constructor(props) {
@@ -65,43 +67,69 @@ export default class ProfilePage extends Component {
 
     return (
       <div className="profilepage">
-        <Grid container spacing={1} alignItems={"flex-start"}>
-          <Grid item xs={12} align="right">
+        <Grid container spacing={1} columns={20}>
+          {/* Navbar Grid item */}
+          <Grid item xs={3}>
             <Navbar />
           </Grid>
-          <Grid item xs={1} align="center" style={{ paddingLeft: "28px" }}>
-            <img
-              src={this.state.profileImageUrl}
-              width="80px"
-              className="ProfilePicture"
-            />
-          </Grid>
-          <Grid item xs={11} style={{ paddingLeft: "28px" }}>
-            <h1>
-              {isAuthenticated ? this.state.spotifyUsername : "Not Logged in"}
-            </h1>
-          </Grid>
-          {isAuthenticated && (
-            <>
+
+          {/* Content Grid item */}
+          <Grid item xs={16}>
+            <Grid container spacing={1} alignItems="flex-start">
+              {/* Profile Picture and Username */}
               <Grid
                 item
-                xs={6}
-                style={{ paddingLeft: "28px", paddingRight: "28px" }}
+                xs={12}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "28px",
+                  borderBottom: "2px solid #2a2a2a",
+                }}
               >
-                <TopTenTracks />
+                {/* Profile Picture and Username */}
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <img
+                    src={this.state.profileImageUrl}
+                    width="150px"
+                    height="150px"
+                    className="ProfilePicture"
+                  />
+                  <h1 style={{ marginLeft: "40px", fontSize: "3rem" }}>
+                    {isAuthenticated
+                      ? this.state.spotifyUsername
+                      : "Not Logged in"}
+                  </h1>
+                </div>
+
+                <SearchBar onSearch={handleSearch} />
               </Grid>
-              <Grid
-                item
-                xs={6}
-                style={{ paddingLeft: "28px", paddingRight: "28px" }}
-              >
-                <TopTenArtists />
-              </Grid>
-              <Grid item xs={12}>
-                <Playlists />
-              </Grid>
-            </>
-          )}
+
+              {/* Conditional rendering if authenticated */}
+              {isAuthenticated && (
+                <>
+                  <Grid
+                    item
+                    xs={6}
+                    style={{ paddingLeft: "28px", paddingRight: "28px" }}
+                  >
+                    <TopTenTracks />
+                  </Grid>
+                  <Grid
+                    item
+                    xs={6}
+                    style={{ paddingLeft: "28px", paddingRight: "28px" }}
+                  >
+                    <TopTenArtists />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Playlists />
+                  </Grid>
+                </>
+              )}
+            </Grid>
+          </Grid>
         </Grid>
       </div>
     );
