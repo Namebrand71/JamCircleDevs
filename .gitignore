@@ -2,8 +2,5 @@ JamCircle/db.sqlite3
 .DS_Store
 __pycache__
 migrations
-JamCircle/frontend/node_modules/ajv/lib/dotjs/README.md
-JamCircle/frontend/static/frontend/main.js
-
-main.js.LICENSE.txt
-JamCircle/frontend/static/frontend/main.js.LICENSE.txt
+JamCircle/frontend/static/frontend
+node_modules
