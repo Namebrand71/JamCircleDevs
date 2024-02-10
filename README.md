@@ -63,4 +63,5 @@ urllib3==2.1.0
 1. Run `python manage.py makemigrations`
 2. Run `python manage.py migrate`
 3. Run `python manage.py runserver`
-4. Run `npm run dev` inside Jamcircle/frontend directory
+4. Inside frontend directory: run `npm install`
+5. Inside frontend directory: run `npm run dev`
