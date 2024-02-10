@@ -71,6 +71,12 @@ h2 {
   overflow-y: auto;
 }
 
+.homepage {
+  min-height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+}
+
 .songpage {
   min-height: 100vh;
   width: 100%;
@@ -161,4 +167,16 @@ h2 {
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    position: static; /* or fixed, depending on your design */
+    width: 100%; /* Make the navbar full-width */
+    height: auto; /* Adjust height as necessary */
+  }
+
+  .profilepage {
+    padding-top: 100vh;
+  }
 }
