@@ -8,3 +8,5 @@ JamCircle/frontend/static/frontend/main.js.LICENSE.txt
 JamCircle/frontend/static/frontend/main.js.LICENSE.txt
 JamCircle/frontend/static/frontend/main.js.LICENSE.txt
 JamCircle/frontend/static/frontend/main.js.LICENSE.txt
+.venv/
+node_modules/
