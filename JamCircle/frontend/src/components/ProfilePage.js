@@ -66,7 +66,7 @@ export default class ProfilePage extends Component {
     const { isAuthenticated } = this.state;
 
     return (
-      <div className="profilepage">
+      <div className="profilepage" style={{ marginLeft: '150px', padding: '20px' }}>
         <Grid container spacing={1} columns={20}>
           {/* Navbar Grid item */}
           <Grid item xs={3}>
