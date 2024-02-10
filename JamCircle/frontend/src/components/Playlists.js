@@ -28,7 +28,7 @@ class Playlists extends Component {
 
   render() {
     const { playlists, isExpanded } = this.state;
-    const displayedPlaylists = isExpanded ? playlists : playlists.slice(0, 5);
+    const displayedPlaylists = isExpanded ? playlists : playlists.slice(0, 6);
 
     return (
       <div>
@@ -70,7 +70,7 @@ class Playlists extends Component {
             <div
               key={index}
               style={{
-                border: "1px solid #000000",
+                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
                 borderRadius: "8px",
                 padding: "10px",
                 backgroundColor: "#181818",

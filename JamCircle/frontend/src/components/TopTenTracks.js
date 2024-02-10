@@ -29,7 +29,11 @@ class MyComponent extends React.Component {
           <div key={index}>
             <Link
               to={`/song/${track.id}`}
-              style={{ textDecoration: "none", color: "white" }}
+              style={{
+                textDecoration: "none",
+                color: "white",
+                borderBottom: "2px solid white",
+              }}
             >
               <p>
                 {index + 1}. {track.name} -{" "}
