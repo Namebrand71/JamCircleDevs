@@ -1,35 +1,55 @@
-// SearchResults.js
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Navbar from "./NavBar";
+import Grid from "@mui/material/Grid";
+import { Link } from "react-router-dom";
 
-const SearchResults = ({ location }) => {
+const SearchResults = () => {
+  const { search_query } = useParams();
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Assuming the query parameters are passed via the location prop
-    const searchQuery = new URLSearchParams(location.search).get("query");
-    if (searchQuery) {
-      fetchSearchResults(searchQuery);
+    if (search_query) {
+      fetchSearchResults(search_query);
     }
-  }, [location.search]);
+  }, [search_query]);
 
   const fetchSearchResults = async (query) => {
+    setLoading(true);
     const response = await fetch(
-      `/api/search/?query=${encodeURIComponent(query)}`
+      `/auth/search_spotify_tracks/${encodeURIComponent(query)}/`
     );
     const data = await response.json();
-    setResults(data.tracks.items); // Adjust based on the actual response structure
+    setResults(data.tracks.items);
+    setLoading(false);
   };
 
+  if (loading) return <div>Loading...</div>;
+
   return (
-    <div>
-      <h2>Search Results</h2>
-      <ul>
-        {results.map((item, index) => (
-          <li key={index}>
-            {item.name} - {item.artists[0].name}
-          </li>
-        ))}
-      </ul>
+    <div className="searchpage">
+      <Grid container spacing={1} alignItems={"flex-start"}>
+        <Grid item xs={12} align="right">
+          <Navbar />
+        </Grid>
+        <Grid item xs={6}>
+          <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
+          <ul>
+            {results.map((track, index) => (
+              <li key={index}>
+                <Link
+                  to={`/song/${track.id}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  {track.name} by{" "}
+                  {track.artists.map((artist) => artist.name).join(", ")}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </Grid>
+      </Grid>
     </div>
   );
 };
