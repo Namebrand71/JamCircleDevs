@@ -7,7 +7,7 @@ from requests import Request, post
 import requests
 from rest_framework import status
 from rest_framework.response import Response
-from .util import user_token_func, is_authenticated, refresh_token, get_user_token, getUserJSON
+from .util import user_token_func, is_authenticated, refresh_token, get_user_token, getUserJSON, spotify_api_request
 from .models import SpotifyToken
 from user.models import User
 from django.utils import timezone
@@ -97,18 +97,9 @@ class GetSpotifyProfile(APIView):
 
 
 @api_view(['GET'])
-def search_spotify(request):
-    query = request.GET.get('query')
-    if query:
-        access_token = get_user_token(request.session.session_key).access_token
-        headers = {
-            'Authorization': f'Bearer {access_token}',
-        }
-        params = {
-            'q': query,
-            'type': 'track',
-            'limit': 10,
-        }
-        response = requests.get(
-            'https://api.spotify.com/v1/search', headers=headers, params=params)
-        return JsonResponse(response)
+def search_spotify_tracks(request, search_query):
+    url_suffix = f"/search?q={search_query}&type=track"
+    session_id = request.session.session_key
+    response = spotify_api_request(
+        session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
+    return JsonResponse(response)
