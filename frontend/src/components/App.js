@@ -7,6 +7,7 @@ import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
 import SongPage from "./SongPage";
 import UserPage from "./UserPage";
+import ArtistPage from "./ArtistPage";
 import SearchResults from "./SearchResults";
 export default class App extends Component {
   render() {
@@ -17,6 +18,7 @@ export default class App extends Component {
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/song/:spotify_content_id" element={<SongPage />} />
           <Route path="/user/:spotify__id" element={<UserPage />} />
+          <Route path="/artist/:spotify_content_id" element={<ArtistPage />} />
           <Route
             path="/search/track/:search_query/"
             element={<SearchResults />}
