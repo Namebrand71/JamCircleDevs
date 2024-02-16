@@ -3,6 +3,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Box, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
 const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
@@ -13,6 +14,7 @@ const StyledContainer = styled("div")(({ theme }) => ({
   padding: "20px",
   margin: "10px 0", // Adds some space above and below the container
 }));
+
 
 class MyComponent extends React.Component {
   constructor(props) {
@@ -44,7 +46,11 @@ class MyComponent extends React.Component {
         <Grid container spacing={1}>
           {this.state.topArtists.slice(0, 10).map((artist, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
-              <Box
+            <Link
+              to={`/artist/${artist.id}`}
+              style={{ textDecoration: "none", color: "white"}}
+            >
+                <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -64,10 +70,11 @@ class MyComponent extends React.Component {
                   src={artist.images[2].url}
                 />
                 <Typography>
-                  {index + 1}. {artist.name}
-                </Typography>
+                   {index + 1}. {artist.name}
+                  </Typography>
               </Box>
-            </Grid>
+              </Link>
+          </Grid>
           ))}
         </Grid>
       </StyledContainer>
