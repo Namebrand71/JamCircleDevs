@@ -1,6 +1,6 @@
 JamCircle/db.sqlite3
 .DS_Store
-__pycache__
-migrations
-JamCircle/frontend/static/frontend
-node_modules
+__pycache__/
+migrations/
+frontend/static/frontend/
+node_modules/
