@@ -29,25 +29,31 @@ const SearchResults = () => {
 
   return (
     <div className="searchpage">
-      <Grid container spacing={1} alignItems={"flex-start"}>
-        <Grid item xs={12} align="right">
+      <Grid container spacing={1}>
+        <Grid item xs={5}>
           <Navbar />
         </Grid>
-        <Grid item xs={6}>
-          <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
-          <ul>
-            {results.map((track, index) => (
-              <li key={index}>
-                <Link
-                  to={`/song/${track.id}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {track.name} by{" "}
-                  {track.artists.map((artist) => artist.name).join(", ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
+
+        <Grid item xs={7}>
+          <div align="left">
+            <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
+            <ul>
+              {results.map((track, index) => (
+                <li key={index} style={{ paddingBottom: "10px" }}>
+                  <Link
+                    to={`/song/${track.id}`}
+                    style={{
+                      textDecoration: "none",
+                      color: "inherit",
+                    }}
+                  >
+                    {track.name} by{" "}
+                    {track.artists.map((artist) => artist.name).join(", ")}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </Grid>
       </Grid>
     </div>
