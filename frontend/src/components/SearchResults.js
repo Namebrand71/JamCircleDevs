@@ -22,32 +22,42 @@ const SearchResults = () => {
     );
     const data = await response.json();
     setResults(data.tracks.items);
+    console.log(data.tracks.items);
     setLoading(false);
   };
 
-  if (loading) return <div>Loading...</div>;
+  // if (loading) return <div>Loading...</div>;
 
   return (
     <div className="searchpage">
-      <Grid container spacing={1} alignItems={"flex-start"}>
+      <Grid
+        container
+        spacing={1}
+        alignItems={"flex-start"}
+        style={{ marginLeft: "220px" }}
+      >
         <Grid item xs={12} align="right">
           <Navbar />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item align="left" xs={12}>
           <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
-          <ul>
-            {results.map((track, index) => (
-              <li key={index}>
-                <Link
-                  to={`/song/${track.id}`}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  {track.name} by{" "}
-                  {track.artists.map((artist) => artist.name).join(", ")}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {loading ? (
+            <h3>Loading...</h3>
+          ) : (
+            <ul>
+              {results.map((track, index) => (
+                <li key={index}>
+                  <Link
+                    to={`/song/${track.id}`}
+                    style={{ textDecoration: "none", color: "white" }}
+                  >
+                    {track.name} by{" "}
+                    {track.artists.map((artist) => artist.name).join(", ")}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </Grid>
       </Grid>
     </div>
