@@ -1,19 +1,18 @@
 import React from "react";
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { Box, Container } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { Box, Container } from "@mui/material";
+import { styled } from "@mui/material/styles";
 
-const StyledContainer = styled('div')(({ theme }) => ({
-  maxHeight: '90vh',
-  overflowY: 'auto',
-  borderRadius: '10px',
-  backgroundColor: '#151515', // Dark grey color
-  color: 'white', // Sets text color to white
-  padding: '20px',
-  margin: '10px 0', // Adds some space above and below the container
+const StyledContainer = styled("div")(({ theme }) => ({
+  maxHeight: "90vh",
+  overflowY: "auto",
+  borderRadius: "10px",
+  backgroundColor: "#151515", // Dark grey color
+  color: "white", // Sets text color to white
+  padding: "20px",
+  margin: "10px 0", // Adds some space above and below the container
 }));
-
 
 class MyComponent extends React.Component {
   constructor(props) {
@@ -43,30 +42,30 @@ class MyComponent extends React.Component {
           Top Artists
         </Typography>
         <Grid container spacing={1}>
-          {this.state.topArtists.slice(0, 8).map((artist, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginBottom: 2, // Adds some space between the image and the artist name
-              }}
-            >
+          {this.state.topArtists.slice(0, 10).map((artist, index) => (
+            <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
               <Box
-                component="img"
                 sx={{
-                  height: 100, 
-                  width: 100, 
-                  borderRadius: '50%', 
-                  marginBottom: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginBottom: 2, // Adds some space between the image and the artist name
                 }}
-                alt={artist.name}
-                src={artist.images[2].url}
-              />
-              <Typography>
-                {index + 1}. {artist.name}
-              </Typography>
+              >
+                <Box
+                  component="img"
+                  sx={{
+                    height: 100,
+                    width: 100,
+                    borderRadius: "50%",
+                    marginBottom: 2,
+                  }}
+                  alt={artist.name}
+                  src={artist.images[2].url}
+                />
+                <Typography>
+                  {index + 1}. {artist.name}
+                </Typography>
               </Box>
             </Grid>
           ))}

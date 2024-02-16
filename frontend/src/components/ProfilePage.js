@@ -115,16 +115,16 @@ export default class ProfilePage extends Component {
                 <>
                   <Grid
                     item
-                    xs={6}
-                    style={{ paddingLeft: "28px", paddingRight: "28px" }}
+                    xs={12}
+                    style={{
+                      paddingLeft: "28px",
+                      paddingRight: "28px",
+                      display: "grid",
+                      gridTemplateColumns: "2fr 2fr",
+                      columnGap: "16px",
+                    }}
                   >
                     <TopTenTracks />
-                  </Grid>
-                  <Grid
-                    item
-                    xs={6}
-                    style={{ paddingLeft: "28px", paddingRight: "28px" }}
-                  >
                     <TopTenArtists />
                   </Grid>
                   <Grid item xs={12}>
