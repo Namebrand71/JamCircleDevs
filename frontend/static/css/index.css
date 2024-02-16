@@ -96,6 +96,16 @@ h2 {
   background: #141414;
 }
 
+.artistcard {
+  margin-top: 50px;
+  width: 380px; /* or you can specify a width like 50% or 200px */
+  padding: 16px; /* adjust the padding to control the space inside the box */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 15px;
+  padding: 10px;
+  background: #141414;
+}
+
 .searchpage li {
   color: white;
 }

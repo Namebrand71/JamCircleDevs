@@ -40,34 +40,34 @@ const ArtistPage = () => {
   }, [spotify_content_id]);
 
   return (
-    <div className="artistpage">
-      <Grid container spacing={1} alignItems={"flex-start"}>
-        <Grid item xs={12} align="right">
+    <div className="songpage">
+      <Grid container spacing={1}>
+        {/* Navbar grid item */}
+        <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
           <Navbar />
         </Grid>
-        {artistInfo ? (
-          <>
-            <Grid item xs={6} align="center">
-              {/* Ensure you have a valid path to the image URL here */}
+
+        {/* Artistcard grid item */}
+        <Grid item xs={6} sm={6} md={5} lg={5} xl={5}>
+          {artistInfo ? (
+            <div align="center" className="songcard">
               <img
                 src={artistInfo.images[0].url}
                 width="350px"
-                alt="Track Cover"
-                style={{ paddingTop: "64px" }}
+                alt="Artist Cover"
+                style={{ paddingTop: "20px" }}
               />
-              <h1>
-                {artistInfo.name}
-              </h1>
-            </Grid>
-            <Grid item xs={6} align="center">
-              <Reviews spotifyContentId={spotify_content_id} />
-            </Grid>
-          </>
-        ) : (
-          <Grid item xs={12} align="center">
+              <h1>{artistInfo.name}</h1>
+            </div>
+          ) : (
             <h1>Loading artist info...</h1>
-          </Grid>
-        )}
+          )}
+        </Grid>
+
+        {/* Reviews grid item */}
+        <Grid item xs={3} sm={3} md={5} lg={5} xl={5} align="center">
+          <Reviews spotifyContentId={spotify_content_id} />
+        </Grid>
       </Grid>
     </div>
   );
