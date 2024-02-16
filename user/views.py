@@ -11,9 +11,6 @@ from user.models import User
 
 
 def user_page(request, spotify_id):
-    # You can add any necessary logic here, e.g., fetching data from the database
-
-    # Render the template that contains your React app
     return render(request, 'frontend/index.html', {'spotify_id': spotify_id})
 
 @api_view(['POST'])

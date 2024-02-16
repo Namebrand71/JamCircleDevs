@@ -15,9 +15,9 @@ const UserPage = () => {
     const callDjangoAPI = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/user/get_user_info/`,
+          `http://127.0.0.1:8000/users/get_user_info/`,
           {
-            method: "POST",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
             },
