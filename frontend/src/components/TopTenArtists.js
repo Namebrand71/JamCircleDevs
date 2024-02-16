@@ -27,9 +27,14 @@ class MyComponent extends React.Component {
         <h2>Top Artists</h2>
         {this.state.topArtists.map((artist, index) => (
           <div key={index}>
-            <p>
-              {index + 1}. {artist.name}
-            </p>
+            <Link
+              to={`artist/${artist.id}`}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <p>
+               {index + 1}. {artist.name}
+              </p>
+            </Link>
           </div>
         ))}
       </div>
