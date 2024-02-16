@@ -10,8 +10,6 @@ from user.models import User
 
 
 def artist_page(request, spotify_content_id):
-    print(request)
-    print(spotify_content_id)
     return render(request, 'frontend/index.html', {'spotify_content_id': spotify_content_id})
 
 def song_page(request, spotify_content_id):
@@ -23,7 +21,12 @@ def song_page(request, spotify_content_id):
 
 @api_view(['POST'])
 def get_artist_info(request):
-    endpoint = '/artist/' + request.data.get('spotify_content_id')
+    print("get_artist_info called with arg: ",
+          request.data.get('spotify_content_id'))
+    
+    print("SESSIONID: ", request.session.session_key)
+
+    endpoint = '/artists/' + request.data.get('spotify_content_id')
 
     response = spotify_api_request(
         request.session.session_key, endpoint, False, False)

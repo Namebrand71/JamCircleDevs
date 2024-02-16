@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class MyComponent extends React.Component {
   constructor(props) {
@@ -28,8 +29,8 @@ class MyComponent extends React.Component {
         {this.state.topArtists.map((artist, index) => (
           <div key={index}>
             <Link
-              to={`artist/${artist.id}`}
-              style={{ textDecoration: "none", color: "white" }}
+              to={`/artist/${artist.id}`}
+              style={{ textDecoration: "none", color: "white"}}
             >
               <p>
                {index + 1}. {artist.name}
