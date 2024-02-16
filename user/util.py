@@ -1,7 +1,7 @@
 from .models import User, Friend_Request
 from django.utils import timezone
 from datetime import timedelta
-from requests import Request, post, put, get
+from requests import Request
 from django.http import HttpResponse
 #Give request and char id of the request receiver
 def send_friend_request(request, to_user_id):
