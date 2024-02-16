@@ -103,3 +103,24 @@ def search_spotify_tracks(request, search_query):
     response = spotify_api_request(
         session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
     return JsonResponse(response)
+
+
+@api_view(['GET'])
+def search_spotify_albums(request, search_query):
+    print("GET ALBUMS CALLED")
+    url_suffix = f"/search?q={search_query}&type=album"
+    session_id = request.session.session_key
+    response = spotify_api_request(
+        session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
+    return JsonResponse(response)
+
+
+@api_view(['GET'])
+def search_spotify_artists(request, search_query):
+    print("GET ARTISTS CALLED")
+    url_suffix = f"/search?q={search_query}&type=artist"
+    session_id = request.session.session_key
+    response = spotify_api_request(
+        session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
+    print(response)
+    return JsonResponse(response)

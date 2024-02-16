@@ -41,7 +41,12 @@ const ArtistPage = () => {
 
   return (
     <div className="artistpage">
-      <Grid container spacing={1} alignItems={"flex-start"}>
+      <Grid
+        container
+        spacing={1}
+        alignItems={"flex-start"}
+        style={{ marginLeft: "220px" }}
+      >
         <Grid item xs={12} align="right">
           <Navbar />
         </Grid>
@@ -55,9 +60,7 @@ const ArtistPage = () => {
                 alt="Track Cover"
                 style={{ paddingTop: "64px" }}
               />
-              <h1>
-                {artistInfo.name}
-              </h1>
+              <h1>{artistInfo.name}</h1>
             </Grid>
             <Grid item xs={6} align="center">
               <Reviews spotifyContentId={spotify_content_id} />

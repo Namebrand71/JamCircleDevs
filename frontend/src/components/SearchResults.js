@@ -5,28 +5,64 @@ import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 
 const SearchResults = () => {
-  const { search_query } = useParams();
+  const { search_type, search_query } = useParams();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (search_query) {
-      fetchSearchResults(search_query);
+    if (search_query && search_type) {
+      fetchSearchResults(search_query, search_type);
     }
-  }, [search_query]);
+  }, [search_query, search_type]);
 
-  const fetchSearchResults = async (query) => {
+  const fetchSearchResults = async (query, type) => {
     setLoading(true);
-    const response = await fetch(
-      `/auth/search_spotify_tracks/${encodeURIComponent(query)}/`
-    );
+    let endpoint;
+
+    switch (type) {
+      case "track":
+        endpoint = `/auth/search_spotify_tracks/${encodeURIComponent(query)}/`;
+        break;
+      case "album":
+        endpoint = `/auth/search_spotify_albums/${encodeURIComponent(query)}/`;
+        break;
+      case "artist":
+        endpoint = `/auth/search_spotify_artists/${encodeURIComponent(query)}/`;
+        break;
+      default:
+        throw new Error(`Search type "${type}" is not supported`);
+    }
+
+    const response = await fetch(endpoint);
     const data = await response.json();
-    setResults(data.tracks.items);
-    console.log(data.tracks.items);
+
+    if (type === "track") {
+      setResults(data.tracks.items);
+    } else if (type === "album") {
+      setResults(data.albums.items);
+    } else if (type === "artist") {
+      setResults(data.artists.items);
+    }
+
     setLoading(false);
   };
 
-  // if (loading) return <div>Loading...</div>;
+  const renderContent = (type, item) => {
+    switch (type) {
+      case "track":
+        return `${item.name} by ${item.artists
+          .map((artist) => artist.name)
+          .join(", ")}`;
+      case "album":
+        return `${item.name} by ${item.artists
+          .map((artist) => artist.name)
+          .join(", ")}`;
+      case "artist":
+        return item.name; // Assuming the artist object has a name property
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="searchpage">
@@ -45,14 +81,19 @@ const SearchResults = () => {
             <h3>Loading...</h3>
           ) : (
             <ul>
-              {results.map((track, index) => (
+              {results.map((item, index) => (
                 <li key={index}>
+                  {/* TODO: The track ternary is a bandaid fix, should switch the
+                  url to /track/id */}
                   <Link
-                    to={`/song/${track.id}`}
+                    to={
+                      search_type === "track"
+                        ? `/song/${item.id}`
+                        : `/${search_type}/${item.id}`
+                    }
                     style={{ textDecoration: "none", color: "white" }}
                   >
-                    {track.name} by{" "}
-                    {track.artists.map((artist) => artist.name).join(", ")}
+                    {renderContent(search_type, item)}
                   </Link>
                 </li>
               ))}
