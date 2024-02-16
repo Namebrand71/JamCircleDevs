@@ -1,76 +1,99 @@
-html, body {
-    height: auto;
-    overflow-y: auto;
-    margin: 0;
-    padding: 0;
-    /* background-color: rgb(164, 160, 137); */
-    background-color: #1b1c1b;
-    font-family: 'Roboto', sans-serif;
+html,
+body {
+  height: auto;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  /* background-color: rgb(164, 160, 137); */
+  background-color: #1b1c1b;
+  font-family: "Roboto", sans-serif;
 }
 
 h1 {
-    color: white;
+  color: white;
 }
 
 h2 {
-    color: white;
+  color: white;
 }
 
 #main {
-    position: auto;
-    width: 100%;
-    height: auto;
-    left: 0;
-    top: 0;
+  position: auto;
+  width: 100%;
+  height: auto;
+  left: 0;
+  top: 0;
 }
 
 #app {
-    width: 100%;
-    height: auto;
-    display: flex;
+  width: 100%;
+  height: auto;
+  display: flex;
 }
 
 .ProfilePicture {
-    border-radius: 50%;
+  border-radius: 50%;
 }
 
-.topTracksContainer, .topArtistsContainer {
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 10px;
-    border-radius: 10px;
-    background-color: #151515; /* Dark grey color */
-    color: white; /* Sets text color to white */
-    padding: 20px;
-    margin: 10px 0; /* Adds some space above and below the container */;
+.topTracksContainer,
+.topArtistsContainer {
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 10px;
+  background-color: #151515; /* Dark grey color */
+  color: white; /* Sets text color to white */
+  padding: 20px;
+  margin: 10px 0; /* Adds some space above and below the container */
 }
 
 .more-btn {
-    background: 'transparent';
-    border: 'none';
-    color: 'white';
-    cursor: 'pointer';
+  background: "transparent";
+  border: "none";
+  color: "white";
+  cursor: "pointer";
 }
 
+.topTracksContainer p,
+.topArtistsContainer p {
+  margin: 0;
+  padding: 2px;
+}
 
-.topTracksContainer p, .topArtistsContainer p {
-    margin: 0;
-    padding: 0;
+.topTracksContainer h2,
+.topArtistsContainer h2 {
+  margin: 0;
+  padding-bottom: 20px;
 }
 
 .profilepage {
-    min-height: 100vh;
-    width: 100%;
-    overflow-y: auto;
+  min-height: 100vh;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.homepage {
+  min-height: 100vh;
+  width: 100%;
+  overflow-y: auto;
 }
 
 .songpage {
-    min-height: 100vh;
-    width: 100%;    
+  min-height: 100vh;
+  width: 100%;
 }
 
 .songpage h1 {
-    color: white;
+  color: white;
+}
+
+.songcard {
+  margin-top: 50px;
+  width: 380px; /* or you can specify a width like 50% or 200px */
+  padding: 16px; /* adjust the padding to control the space inside the box */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 15px;
+  padding: 10px;
+  background: #141414;
 }
 
 .searchpage li {
@@ -78,84 +101,108 @@ h2 {
 }
 
 .login-btn {
-    color: #fff;
-    font-size: 12px;
-    line-height: 1;
-    border-radius: 50px;
-    padding: 4px 12px 4px;
-    transition-property: background-color;
-    transition-duration: .3s;
-    border-width: 0;
-    letter-spacing: 2px;
-    min-width: 80px;
-    text-transform: uppercase;
-    white-space: normal;
-    cursor: pointer;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 50px;
+  padding: 4px 12px 4px;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  border-width: 0;
+  letter-spacing: 2px;
+  min-width: 80px;
+  text-transform: uppercase;
+  white-space: normal;
+  cursor: pointer;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 /* REVIEW SECTION */
 .review-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px; /* Space between each review */
-    margin-right: 50px;
-  }
-  
-  .review-box {
-    display: flex;
-    padding: 20px;
-    border: 1px solid #ccc; /* Light grey border */
-    border-radius: 10px; /* Rounded corners */
-    margin: 10px 0; /* Margin for spacing between reviews */
-    background-color: #f9f9f9; /* Light background color */
-  }
-  
-  .review-details {
-    flex-basis: 30%; /* Takes up 30% of the box */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-right: 20px; /* Space between details and text */
-  }
-  
-  .review-text {
-    flex-grow: 1; /* Takes up remaining space */
-    text-align: left;
-  }
-  
-  .author-rating-date {
-    margin-bottom: 10px; /* Space between author/rating/date and review text */
-    text-align: left;
-  }
-  
-  /* Optional: Style for the review text to make it slightly smaller than headings */
-  .review-text p {
-    font-size: 0.9em;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px; /* Space between each review */
+  margin-right: 50px;
+}
+
+.review-box {
+  display: flex;
+  padding: 20px;
+  border: 1px solid #ccc; /* Light grey border */
+  border-radius: 10px; /* Rounded corners */
+  margin: 10px 0; /* Margin for spacing between reviews */
+  background-color: #f9f9f9; /* Light background color */
+}
+
+.review-form-container textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+
+.review-details {
+  flex-basis: 30%; /* Takes up 30% of the box */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-right: 20px; /* Space between details and text */
+}
+
+.review-text {
+  flex-grow: 1; /* Takes up remaining space */
+  text-align: left;
+}
+
+.author-rating-date {
+  margin-bottom: 10px; /* Space between author/rating/date and review text */
+  text-align: left;
+}
+
+/* Optional: Style for the review text to make it slightly smaller than headings */
+.review-text p {
+  font-size: 0.9em;
+}
+
+.review-form-container form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 80px;
+  margin-right: 20px;
+}
+
+.review-form-container textarea,
+.review-form-container input {
+  margin-bottom: 20px;
+}
+
+.review-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 10px;
+  margin-right: 20px; /* Adjust based on your layout */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    position: static; /* or fixed, depending on your design */
+    width: 100%; /* Make the navbar full-width */
+    height: auto; /* Adjust height as necessary */
   }
 
-
-  .review-form-container form {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 20px;
-    margin-right: 20px;
+  .profilepage {
+    padding-top: 100vh;
   }
-  
-  .review-form-container textarea, .review-form-container input {
-    margin-bottom: 10px;
-  }
-  
-  .review-box {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 20px;
-    margin-bottom: 10px;
-    margin-right: 20px; /* Adjust based on your layout */
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
+}
