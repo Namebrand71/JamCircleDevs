@@ -75,6 +75,15 @@ const Reviews = ({ spotifyContentId }) => {
       <div className="review-form-container">
         <form onSubmit={postReview}>
           <textarea
+            style={{
+              padding: "12px 20px",
+              boxSizing: "border-box",
+              border: "2px solid #ccc",
+              borderRadius: "4px",
+              backgroundColor: "#f8f8f8",
+              fontSize: "16px",
+              resize: "none",
+            }}
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             placeholder="Write your review here..."
