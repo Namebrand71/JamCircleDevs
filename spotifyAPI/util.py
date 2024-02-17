@@ -5,6 +5,7 @@ from requests import Request, post, put, get
 from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from django.http import JsonResponse
 from .models import SpotifyToken
+from user.models import User
 
 
 def is_authenticated(session_id):
@@ -105,6 +106,13 @@ def getTop10Artist(request):
     artist_list = response.get('items')
     return JsonResponse(artist_list, safe=False)
 
+def getUserTop10Artist(request):
+    session_id = request.session.session_key
+    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
+    token = get_user_token(session_id)
+    user = User.objects.filter(token=token).first()
+    return JsonResponse(user.top_10_artists, safe=False)
+
 
 def getTop10Tracks(request):
     session_id = request.session.session_key
@@ -114,6 +122,14 @@ def getTop10Tracks(request):
     #print(response)
     track_list = response.get('items')
     return JsonResponse(track_list, safe=False)
+
+def getUserTop10Tracks(request):
+    session_id = request.session.session_key
+    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
+    token = get_user_token(session_id)
+    user = User.objects.filter(token=token).first()
+    return JsonResponse(user.top_10_tracks, safe=False)
+
 
 
 def getPlaylists(request):
@@ -139,6 +155,13 @@ def getPlaylists(request):
         })
 
     return JsonResponse(formatted_playlists, safe=False)
+
+def getUserPlaylists(request):
+    session_id = request.session.session_key
+    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
+    token = get_user_token(session_id)
+    user = User.objects.filter(token=token).first()
+    return JsonResponse(user.playlists, safe=False)
 
 
 # Give a list of strings of Spotify IDs. Give session_id and list of Spotify IDs
