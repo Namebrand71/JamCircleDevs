@@ -20,53 +20,62 @@ class MyComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      topTracks: [],
+      topArtists: [],
     };
   }
-
 
   componentDidMount() {
     const { spotify_id } = this.props;
     this.fetchTopTracks(`/auth/get-top-10-tracks/${spotify_id}`);
   }
 
-  fetchTop10Tracks = (url) => {
+  fetchTop10Artists = (url) => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        this.setState({ topTracks: data });
+        this.setState({ topArtists: data });
       })
-      .catch((error) => console.error("Error fetching top tracks:", error));
+      .catch((error) => console.error("Error fetching top artists:", error));
   };
 
   render() {
     return (
       <StyledContainer>
         <Typography variant="h4" gutterBottom>
-          Top Tracks
+          Top Artists
         </Typography>
         <Grid container spacing={1}>
-          {this.state.topTracks.map((track, index) => (
-            <Grid item xs={12} sm={10} md={9} lg={7} key={index}>
-              <Box
+          {this.state.topArtists.slice(0, 10).map((artist, index) => (
+            <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
+            <Link
+              to={`/artist/${artist.id}`}
+              style={{ textDecoration: "none", color: "white"}}
+            >
+                <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  alignItems: "left",
-                  marginBottom: 0.1, // Adds some space between the image and the artist name
+                  alignItems: "center",
+                  marginBottom: 2, // Adds some space between the image and the artist name
                 }}
               >
-                <Link
-                  to={`/song/${track.id}`}
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  <Typography>
-                    {index + 1}. {track.name} -{" "}
-                    {track.artists.map((artist) => artist.name).join(", ")}{" "}
+                <Box
+                  component="img"
+                  sx={{
+                    height: 100,
+                    width: 100,
+                    borderRadius: "50%",
+                    marginBottom: 2,
+                  }}
+                  alt={artist.name}
+                  src={artist.images[2].url}
+                />
+                <Typography>
+                   {index + 1}. {artist.name}
                   </Typography>
-                </Link>
               </Box>
-            </Grid>
+              </Link>
+          </Grid>
           ))}
         </Grid>
       </StyledContainer>

@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Navbar from "./NavBar";
-import TopTenTracks from "./TopTenTracks";
-import TopTenArtists from "./TopTenArtists";
-import Playlists from "./Playlists";
+import TopTenTracks from "./TopUserTenTracks";
+import TopTenArtists from "./TopUserTenArtists";
+import Playlists from "./UserPlaylists";
 
 const UserPage = () => {
   const { spotify_id } = useParams();
@@ -63,17 +63,17 @@ const UserPage = () => {
                   xs={6}
                   style={{ paddingLeft: "28px", paddingRight: "28px" }}
                 >
-                  <TopTenTracks />
+                  <TopUserTenTracks spotify_id={spotify_id} />
                 </Grid>
                 <Grid
                   item
                   xs={6}
                   style={{ paddingLeft: "28px", paddingRight: "28px" }}
                 >
-                  <TopTenArtists />
+                  <TopUserTenArtists spotify_id={spotify_id} />
                 </Grid>
                 <Grid item xs={12}>
-                  <Playlists />
+                  <UserPlaylists spotify_id={spotify_id} />
                 </Grid>
               </>
             )}
