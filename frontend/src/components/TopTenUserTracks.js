@@ -27,7 +27,7 @@ class MyComponent extends React.Component {
 
   componentDidMount() {
     const { spotify_id } = this.props;
-    this.fetchTopTracks(`/auth/get-top-10-tracks/${spotify_id}`);
+    this.fetchTopTracks(`/users/get-user-top-10-tracks/${encodeURIComponent(spotify_id)}`);
   }
 
   fetchTop10Tracks = (url) => {
