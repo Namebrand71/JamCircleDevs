@@ -20,7 +20,7 @@ class User(models.Model):
     product_type = models.CharField(max_length=50, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     playlists = models.JSONField(encoder=None, decoder=None)
-    top_10_track = models.JSONField(encoder=None, decoder=None)
+    top_10_tracks = models.JSONField(encoder=None, decoder=None)
     top_10_artists = models.JSONField(encoder=None, decoder=None)
     friends = models.ManyToManyField("User", blank=True)
     pending_friend_requests = models.ManyToManyField("Friend_Request", blank=True)

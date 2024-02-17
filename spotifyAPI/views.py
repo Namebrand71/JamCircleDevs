@@ -7,7 +7,7 @@ from requests import Request, post
 import requests
 from rest_framework import status
 from rest_framework.response import Response
-from .util import user_token_func, is_authenticated, refresh_token, get_user_token, getUserJSON, spotify_api_request
+from .util import *
 from .models import SpotifyToken
 from user.models import User
 from django.utils import timezone
@@ -56,6 +56,12 @@ def spotfy_callback(request, format=None):
 
     user_data = getUserJSON(request.session.session_key)
 
+    top_10_artists = getTop10Artist(request.session.session_key)
+
+    top_10_tracks = getTop10Tracks(request.session.session_key)
+
+    playlists = getPlaylists(request.session.session_key)
+
     user_defaults = {
         'display_name': user_data.get('display_name'),
         'email': user_data.get('email'),
@@ -63,6 +69,9 @@ def spotfy_callback(request, format=None):
         'country': user_data.get('country'),
         'product_type': user_data.get('product'),
         'token': token,
+        'top_10_artists': top_10_artists,
+        'top_10_tracks': top_10_tracks,
+        'playlists': playlists,
     }
 
     user, created = User.objects.update_or_create(
