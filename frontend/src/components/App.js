@@ -17,7 +17,7 @@ export default class App extends Component {
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/song/:spotify_content_id" element={<SongPage />} />
-          <Route path="/user/:spotify__id" element={<UserPage />} />
+          <Route path="/user/:spotify_id" element={<UserPage />} />
           <Route path="/artist/:spotify_content_id" element={<ArtistPage />} />
           <Route
             path="/search/track/:search_query/"

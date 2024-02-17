@@ -1,149 +1,87 @@
-import React, { Component } from "react";
-import Button from "@mui/material/Button";
+
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material/Typography";
-import { TextField } from "@mui/material/TextField";
-import FormHelperText from "@mui/material/FormHelperText";
-import FormControl from "@mui/material/FormControl";
-import Radio from "@mui/material/Radio";
 import Navbar from "./NavBar";
 import TopTenTracks from "./TopTenTracks";
 import TopTenArtists from "./TopTenArtists";
 import Playlists from "./Playlists";
-import SearchBar from "./SearchBar";
-import handleSearch from "./NavBar";
 
-export default class ProfilePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      spotifyUsername: "Loading...",
-      profileImageUrl: "https://fakeimg.pl/750x750?text=Loading&font=noto",
-      isAuthenticated: false,
-    };
-  }
+const UserPage = () => {
+  const { spotify_id } = useParams();
+  const [UserInfo, setUserInfo] = useState(null);
+  const isAuthenticated = true; //TODO: implement an actual check
 
-  async componentDidMount() {
-    const isAuthenticated = await this.checkAuthentication();
-    if (isAuthenticated) {
-      this.loadProfile();
-    }
-  }
+  useEffect(() => {
+    const callDjangoAPI = async (spotify_id) => {
+      try {
+        console.log(spotify_id);
+        const response = await fetch(`/users/get_user_info/${encodeURIComponent(spotify_id)}/`);
 
-  checkAuthentication = async () => {
-    try {
-      const response = await fetch("/auth/is-authenticated/");
-      const data = await response.json();
-      this.setState({ isAuthenticated: data.isAuthenticated });
-      return data.isAuthenticated;
-    } catch (error) {
-      console.error("Error:", error);
-      return false;
-    }
-  };
-
-  loadProfile = () => {
-    fetch(
-      "http://127.0.0.1:8000/users/get_track_info",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ spotify_id: spotify_id }),
-      }
-    ).then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+        if (response.ok) {
+          const data = await response.json();
+          setUserInfo(data); // Assuming data is the object with the user details
+          console.log(data);
+        } else {
+          console.error("Failed to fetch user data");
+          setUserInfo(null);
         }
-        return response.json();
-      })
-      .then((data) =>
-        this.setState({
-          spotifyUsername: data.display_name,
-          profileImageUrl: data.images[1].url,
-        })
-      )
-      .catch((error) => {
-        console.error("Fetch error:", error);
-        this.setState({ spotifyUsername: "Failed to load" });
-      });
-  };
+      } catch (error) {
+        console.error("There was an error!", error);
+      }
+    };
 
-  render() {
+    // Call the function
+    callDjangoAPI(spotify_id);
+  }, [spotify_id]);
 
-    return (
-      <div className="profilepage">
-        <Grid
-          container
-          spacing={1}
-          columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
-        >
-          {/* Navbar Grid item */}
-          <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
-            <Navbar />
-          </Grid>
-
-          {/* Content Grid item */}
-          <Grid item xs={4} sm={4} md={8} lg={16} xl={16}>
-            <Grid container spacing={1} alignItems="flex-start">
-              {/* Profile Picture and Username */}
-              <Grid
-                item
-                xs={12}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "28px",
-                  borderBottom: "2px solid #2a2a2a",
-                }}
-              >
-                {/* Profile Picture and Username */}
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <img
-                    src={this.state.profileImageUrl}
-                    width="150px"
-                    height="150px"
-                    className="ProfilePicture"
-                  />
-                  <h1 style={{ marginLeft: "40px", fontSize: "3rem" }}>
-                    {isAuthenticated
-                      ? this.state.spotifyUsername
-                      : "Not Logged in"}
-                  </h1>
-                </div>
-
-                <SearchBar onSearch={handleSearch} />
-              </Grid>
-
-              {/* Conditional rendering if authenticated */}
-              {isAuthenticated && (
-                <>
-                  <Grid
-                    item
-                    xs={12}
-                    style={{
-                      paddingLeft: "28px",
-                      paddingRight: "28px",
-                      display: "grid",
-                      gridTemplateColumns: "2fr 2fr",
-                      columnGap: "16px",
-                    }}
-                  >
-                    <TopTenTracks />
-                    <TopTenArtists />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Playlists />
-                  </Grid>
-                </>
-              )}
-            </Grid>
-          </Grid>
+  return (
+    <div className="userpage">
+      <Grid container spacing={1} alignItems={"flex-start"} style={{ marginLeft: "220px" }}>
+        <Grid item xs={12} align="right">
+          <Navbar />
         </Grid>
-      </div>
-    );
-  }
-}
+        {UserInfo && ( // Add check for UserInfo before rendering
+          <>
+            <Grid item xs={1} align="center" style={{ paddingLeft: "28px" }}>
+              <img
+                src={UserInfo.images[1].url}
+                width="80px"
+                className="ProfilePicture"
+                alt="Profile"
+              />
+            </Grid>
+            <Grid item xs={11} style={{ paddingLeft: "28px" }}>
+              <h1>
+                {isAuthenticated ? UserInfo.display_name : "Not Logged in"}
+              </h1>
+            </Grid>
+            {isAuthenticated && (
+              <>
+                <Grid
+                  item
+                  xs={6}
+                  style={{ paddingLeft: "28px", paddingRight: "28px" }}
+                >
+                  <TopTenTracks />
+                </Grid>
+                <Grid
+                  item
+                  xs={6}
+                  style={{ paddingLeft: "28px", paddingRight: "28px" }}
+                >
+                  <TopTenArtists />
+                </Grid>
+                <Grid item xs={12}>
+                  <Playlists />
+                </Grid>
+              </>
+            )}
+          </>
+        )}
+      </Grid>
+    </div>
+  );
+};
+
+export default UserPage;
