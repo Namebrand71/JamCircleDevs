@@ -88,7 +88,6 @@ const Navbar = () => {
       {/* <SearchBar onSearch={handleSearch} /> */}
       <NavLink
         to="/"
-        exact
         style={({ isActive }) => ({
           ...linkStyle, // spread the base styles
           ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
