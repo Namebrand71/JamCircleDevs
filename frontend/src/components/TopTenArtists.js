@@ -15,7 +15,6 @@ const StyledContainer = styled("div")(({ theme }) => ({
   margin: "10px 0", // Adds some space above and below the container
 }));
 
-
 class MyComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -32,12 +31,17 @@ class MyComponent extends React.Component {
     fetch("/auth/get-top-10-artists/")
       .then((response) => response.json())
       .then((data) => {
+        console.log("Calling setState with values:", data);
         this.setState({ topArtists: data });
       })
       .catch((error) => console.error("Error fetching top artists:", error));
   };
 
   render() {
+    console.log(
+      "About to render toptenartists with state",
+      this.state.topArtists
+    );
     return (
       <StyledContainer>
         <Typography variant="h4" gutterBottom>
@@ -46,35 +50,35 @@ class MyComponent extends React.Component {
         <Grid container spacing={1}>
           {this.state.topArtists.slice(0, 10).map((artist, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
-            <Link
-              to={`/artist/${artist.id}`}
-              style={{ textDecoration: "none", color: "white"}}
-            >
-                <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginBottom: 2, // Adds some space between the image and the artist name
-                }}
+              <Link
+                to={`/artist/${artist.id}`}
+                style={{ textDecoration: "none", color: "white" }}
               >
                 <Box
-                  component="img"
                   sx={{
-                    height: 100,
-                    width: 100,
-                    borderRadius: "50%",
-                    marginBottom: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginBottom: 2, // Adds some space between the image and the artist name
                   }}
-                  alt={artist.name}
-                  src={artist.images[2].url}
-                />
-                <Typography>
-                   {index + 1}. {artist.name}
+                >
+                  <Box
+                    component="img"
+                    sx={{
+                      height: 100,
+                      width: 100,
+                      borderRadius: "50%",
+                      marginBottom: 2,
+                    }}
+                    alt={artist.name}
+                    src={artist.images[2].url}
+                  />
+                  <Typography>
+                    {index + 1}. {artist.name}
                   </Typography>
-              </Box>
+                </Box>
               </Link>
-          </Grid>
+            </Grid>
           ))}
         </Grid>
       </StyledContainer>
