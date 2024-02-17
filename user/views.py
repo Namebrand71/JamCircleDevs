@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
-from spotifyAPI.util import user_token_func, is_authenticated, refresh_token, get_user_token, getOtherUserJSON, spotify_api_request
+from spotifyAPI.util import *
 
 # Create your views here.
 
@@ -30,3 +30,15 @@ def get_user_info(request, spotify_id):
         request.session.session_key, endpoint, False, False)
 
     return JsonResponse(response)
+
+def getUserTop10Artist(request, user_id):
+    user = User.objects.filter(spotify_id=user_id).first()
+    return JsonResponse(user.top_10_artists, safe=False)
+
+def getUserTop10Tracks(request, user_id):
+    user = User.objects.filter(spotify_id=user_id).first()
+    return JsonResponse(user.top_10_tracks, safe=False)\
+    
+def getUserPlaylists(request, user_id):
+    user = User.objects.filter(spotify_id=user_id).first()
+    return JsonResponse(user.playlists, safe=False)

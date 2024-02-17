@@ -13,7 +13,4 @@ urlpatterns = [
     path('get-playlists/', getPlaylists, name='get_playlists'),
     path('search_spotify_tracks/<str:search_query>/',
          search_spotify_tracks, name='search_spotify_tracks'),
-    path('get-user-top-10-tracks/', getUserTop10Tracks, name='get_user_top_10_tracks'),
-    path('get-user-top-10-artists/', getUserTop10Artist, name='get_user_top_10_artists'),
-    path('get-user-playlists/', getUserPlaylists, name='get_user_playlists'),
 ]
