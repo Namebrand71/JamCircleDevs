@@ -31,14 +31,22 @@ def get_user_info(request, spotify_id):
 
     return JsonResponse(response)
 
-def getUserTop10Artist(request, user_id):
-    user = User.objects.filter(spotify_id=user_id).first()
+def getUserTop10Artist(request, spotify_id):
+    user = User.objects.filter(spotify_id=spotify_id).first()
     return JsonResponse(user.top_10_artists, safe=False)
 
-def getUserTop10Tracks(request, user_id):
-    user = User.objects.filter(spotify_id=user_id).first()
-    return JsonResponse(user.top_10_tracks, safe=False)\
+def getUserTop10Tracks(request, spotify_id):
+    user = User.objects.filter(spotify_id=spotify_id).first()
+    return JsonResponse(user.top_10_tracks, safe=False)
     
-def getUserPlaylists(request, user_id):
-    user = User.objects.filter(spotify_id=user_id).first()
+def getUserPlaylists(request, spotify_id):
+    user = User.objects.filter(spotify_id=spotify_id).first()
     return JsonResponse(user.playlists, safe=False)
+
+def isSessionUser(request, spotify_id):
+    token = get_user_token(request.session.session_key)
+    current_user = User.objects.filter(token=token).first()
+    if current_user.spotify_id == spotify_id:
+        return True
+    else:
+        return False

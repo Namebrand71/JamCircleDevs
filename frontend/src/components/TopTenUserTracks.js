@@ -15,7 +15,6 @@ const StyledContainer = styled("div")(({ theme }) => ({
   margin: "10px 0", // Adds some space above and below the container
 }));
 
-
 class MyComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -24,13 +23,12 @@ class MyComponent extends React.Component {
     };
   }
 
-
   componentDidMount() {
     const { spotify_id } = this.props;
-    this.fetchTopTracks(`/users/get-user-top-10-tracks/${encodeURIComponent(spotify_id)}`);
+    this.fetchUserTop10Tracks(`/users/get-user-top-10-tracks/${encodeURIComponent(spotify_id)}`);
   }
 
-  fetchTop10Tracks = (url) => {
+  fetchUserTop10Tracks = (url) => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -62,7 +60,12 @@ class MyComponent extends React.Component {
                 >
                   <Typography>
                     {index + 1}. {track.name} -{" "}
-                    {track.artists.map((artist) => artist.name).join(", ")}{" "}
+                    {track.artist_names.map((artist, index) => (
+                      <span key={index}>
+                        {artist}
+                        {index < track.artist_names.length - 1 && ', '}
+                      </span>
+                    ))}
                   </Typography>
                 </Link>
               </Box>

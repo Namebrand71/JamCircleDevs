@@ -11,10 +11,10 @@ class Playlists extends Component {
 
   componentDidMount() {
     const { spotify_id } = this.props;
-    this.fetchTopTracks(`/users/get-user-playlists/${encodeURIComponent(spotify_id)}`);
+    this.fetchUserPlaylists(`/users/get-user-playlists/${encodeURIComponent(spotify_id)}`);
   }
 
-  fetchPlaylists = (url) => {
+  fetchUserPlaylists = (url) => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => this.setState({ playlists: data }))

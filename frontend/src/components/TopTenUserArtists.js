@@ -26,10 +26,10 @@ class MyComponent extends React.Component {
 
   componentDidMount() {
     const { spotify_id } = this.props;
-    this.fetchTop10Artists(`/users/get-user-top-10-artists/${encodeURIComponent(spotify_id)}`);
+    this.fetchUserTop10Artists(`/users/get-user-top-10-artists/${encodeURIComponent(spotify_id)}`);
   }
 
-  fetchTop10Artists = (url) => {
+  fetchUserTop10Artists = (url) => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -68,7 +68,7 @@ class MyComponent extends React.Component {
                     marginBottom: 2,
                   }}
                   alt={artist.name}
-                  src={artist.images[2].url}
+                  src={artist.image_url}
                 />
                 <Typography>
                    {index + 1}. {artist.name}

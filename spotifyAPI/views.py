@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from requests import Request, post
 import requests
+import json
 from rest_framework import status
 from rest_framework.response import Response
 from .util import *
@@ -56,11 +57,22 @@ def spotfy_callback(request, format=None):
 
     user_data = getUserJSON(request.session.session_key)
 
-    top_10_artists = getTop10Artist(request)
+    
 
-    top_10_tracks = getTop10Tracks(request)
+    pre_top_10_tracks = json.loads(getTop10Tracks(request).content.decode())
+    top_10_tracks = [
+    {
+        'id': track['id'],
+        'name': track['name'],
+        'artist_names': [artist['name'] for artist in track['album']['artists']]
+    }
+    for track in pre_top_10_tracks
+]
 
-    playlists = getPlaylists(request)
+    playlists = json.loads(getPlaylists(request).content.decode())
+
+    pre_top_10_artists = json.loads(getTop10Artist(request).content.decode())
+    top_10_artists = [{'id': item['id'], 'name': item['name'], 'image_url': item['images'][0]['url']} for item in pre_top_10_artists]
 
     user_defaults = {
         'display_name': user_data.get('display_name'),
