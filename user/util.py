@@ -17,9 +17,9 @@ def send_friend_request(request, to_user_id):
         from_user.pending_friend_requests.add(friend_request)
         return HttpResponse('Friend Request Made!')
 
-def accept_friend_request(request, from_user_id):
+def accept_friend_request(request, spotify_id):
     to_user = User.objects.get(request.user)
-    from_user = User.objects.get(from_user_id)
+    from_user = User.objects.filter(spotify_id=spotify_id).first()
     friend_request, exists = to_user.pending_friend_requests.get(from_user=from_user)
     if exists:
         to_user.friends.add(from_user)

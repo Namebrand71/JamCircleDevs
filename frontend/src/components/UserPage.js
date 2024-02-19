@@ -5,27 +5,29 @@ import Navbar from "./NavBar";
 import TopTenUserTracks from "./TopTenUserTracks";
 import TopTenUserArtists from "./TopTenUserArtists";
 import UserPlaylists from "./UserPlaylists";
-
-const SendFriendRequestButton = ({ spotify_id }) => {
-  const handleSendFriendRequest = () => {
-    // Implement logic to send friend request
-    console.log(`Friend request sent to ${spotify_id}`);
-    // You can use an API call or any other method to send a friend request
-  };
-
-  return (
-    <button onClick={handleSendFriendRequest}>
-      Send Friend Request
-    </button>
-  );
-};
-
+import FriendRequestButton from "./FriendRequestButton";
 const UserPage = () => {
   const { spotify_id } = useParams();
   const [UserInfo, setUserInfo] = useState(null);
+  const [isSessionUser, setIsSessionUser] = useState(false);
   const isAuthenticated = true; // TODO: implement an actual check
 
   useEffect(() => {
+    const checkSessionUser = async () => {
+      try {
+        const response = await fetch(`/users/is-session-user/${encodeURIComponent(spotify_id)}/`);
+        if (response.ok) {
+          const isSessionUser = await response.json();
+          console.log(isSessionUser)
+          setIsSessionUser(isSessionUser);
+        } else {
+          console.error("Failed to check session user");
+        }
+      } catch (error) {
+        console.error("There was an error checking session user!", error);
+      }
+    };
+
     const callDjangoAPI = async (spotify_id) => {
       try {
         const response = await fetch(`/users/get_user_info/${encodeURIComponent(spotify_id)}/`);
@@ -42,7 +44,8 @@ const UserPage = () => {
       }
     };
 
-    // Call the function
+    // Call the functions
+    checkSessionUser();
     callDjangoAPI(spotify_id);
   }, [spotify_id]);
 
@@ -65,8 +68,8 @@ const UserPage = () => {
             <Grid item xs={11} style={{ paddingLeft: "28px" }}>
               <h1>
                 {isAuthenticated ? UserInfo.display_name : "Not Logged in"}
-                {isAuthenticated && (
-                  <SendFriendRequestButton spotify_id={spotify_id} />
+                {isAuthenticated && !isSessionUser && (
+                  <FriendRequestButton spotify_id={spotify_id} />
                 )}
               </h1>
             </Grid>

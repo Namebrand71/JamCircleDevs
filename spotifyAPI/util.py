@@ -162,8 +162,3 @@ def getUserJSON(session_id):
     response = spotify_api_request(session_id, "/me", False, False)
     print(response)
     return response
-
-def getOtherUserJSON(session_id):
-    response = spotify_api_request(session_id, "/me", False, False)
-    print(response)
-    return response
