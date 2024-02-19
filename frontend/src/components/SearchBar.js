@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../../static/css/searchbar.css"; // Adjust the import path as necessary
+import "../../static/css/searchbar.css";
 
 const SearchBar = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchType, setSearchType] = useState("track");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate(`/search/track/${searchQuery}`);
-  };
-
-  const handleInputChange = (event) => {
-    setQuery(event.target.value);
+    navigate(`/search/${searchType}/${searchQuery}`);
   };
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
+      <select
+        value={searchType}
+        onChange={(e) => setSearchType(e.target.value)}
+        className="search-type-dropdown"
+      >
+        <option value="track">Track</option>
+        <option value="artist">Artist</option>
+        <option value="album">Album</option>
+      </select>
       <input
         type="text"
         name="search"

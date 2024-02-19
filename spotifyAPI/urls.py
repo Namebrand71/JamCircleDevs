@@ -13,4 +13,8 @@ urlpatterns = [
     path('get-playlists/', getPlaylists, name='get_playlists'),
     path('search_spotify_tracks/<str:search_query>/',
          search_spotify_tracks, name='search_spotify_tracks'),
+    path('search_spotify_albums/<str:search_query>/',
+         search_spotify_albums, name='search_spotify_albums'),
+    path('search_spotify_artists/<str:search_query>/',
+         search_spotify_artists, name='search_spotify_artists'),
 ]
