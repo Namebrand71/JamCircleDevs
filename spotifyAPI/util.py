@@ -5,6 +5,7 @@ from requests import Request, post, put, get
 from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from django.http import JsonResponse
 from .models import SpotifyToken
+from user.models import User
 
 
 def is_authenticated(session_id):
@@ -115,6 +116,7 @@ def getTop10Tracks(request):
     # print(response)
     track_list = response.get('items')
     return JsonResponse(track_list, safe=False)
+
 
 
 def getPlaylists(request):
