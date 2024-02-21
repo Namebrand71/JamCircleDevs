@@ -117,10 +117,13 @@ def rejectFriendRequest(request, spotify_id):
 def cancelFriendRequest(request, spotify_id):
     to_user = User.objects.filter(spotify_id=spotify_id).first()
     from_user = getUserFromSession(request.session.session_key)
-    friend_request, exists = from_user.pending_friend_requests.get(to_user=to_user)
-    if exists:
-        to_user.pending_friend_requests.delete(from_user=from_user)
-        from_user.pending_friend_requests.delete(to_user=to_user)
-        HttpResponse('Friend Request Canceled!')
+    
+    # Assuming there is a related_name specified in the Friend_Request model for the pending_friend_requests field
+    friend_request = from_user.pending_friend_requests.filter(to_user=to_user).first()
+
+    if friend_request:
+        to_user.pending_friend_requests.remove(friend_request)
+        from_user.pending_friend_requests.remove(friend_request)
+        return HttpResponse('Friend Request Canceled!')
     else:
-        HttpResponse('error canceling friend request')
+        return HttpResponse('Error canceling friend request')
