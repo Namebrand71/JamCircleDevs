@@ -21,7 +21,7 @@ const FriendsPage = () => {
     console.log(spotify_id);
 
     // Assuming the endpoint is correct and id is used appropriately
-    let endpoint = `/users/get-users-friends/${spotify_id}/`;
+    let endpoint = `/users/get-user-friends/${spotify_id}/`;
 
     const response = await fetch(endpoint);
     const data = await response.json();

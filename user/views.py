@@ -72,9 +72,10 @@ def getUsersFriends(request, spotify_id):
     print(friends_list)
     return JsonResponse(friends_list, safe = False)
 
-def getUsersPendingFriends(request, spotify_id):
-    user = get_object_or_404(User, spotify_id=spotify_id)
-    pending_friends_list = list(user.pending_friend_requests.all().values())
+def getUsersPendingFriends(request):
+    user = getUserFromSession(request.session.session_key)
+    pending_friends_list = list(user.pending_friend_requests.all().values('from_user__spotify_id', 'to_user__spotify_id'))
+    print(pending_friends_list)
     return JsonResponse(pending_friends_list, safe = False)
 
 def sendFriendRequest(request, spotify_id):
@@ -84,32 +85,31 @@ def sendFriendRequest(request, spotify_id):
 
 
     if exist:
+        print("wagga")
         return HttpResponse('Friend Request Already Sent')
     else:
+        print("bagga")
         to_user.pending_friend_requests.add(friend_request)
-        from_user.pending_friend_requests.add(friend_request)
         return HttpResponse('Friend Request Made!')
 
 def acceptFriendRequest(request, spotify_id):
     to_user = getUserFromSession(request.session.session_key)
     from_user = User.objects.filter(spotify_id=spotify_id).first()
-    friend_request, exists = to_user.pending_friend_requests.get(from_user=from_user)
-    if exists:
-        to_user.friends.add(from_user)
-        from_user.friends.add(to_user)
-        to_user.pending_friend_requests.delete(from_user=from_user)
-        from_user.pending_friend_requests.delete(to_user=to_user)
-        HttpResponse('Friend Request Accepted!')
-    else:
-        HttpResponse('error accepting friend request')
+    print(to_user.spotify_id, from_user.spotify_id)
+    friend_request = get_object_or_404(Friend_Request, from_user=from_user, to_user=to_user)
+    to_user.friends.add(from_user)
+    from_user.friends.add(to_user)
+    to_user.pending_friend_requests.remove(from_user=from_user)
+    from_user.pending_friend_requests.remove(to_user=to_user)
+    HttpResponse('Friend Request Accepted!')
 
 def rejectFriendRequest(request, spotify_id):
     to_user = getUserFromSession(request.session.session_key)
     from_user = User.objects.filter(spotify_id=spotify_id).first()
     friend_request, exists = to_user.pending_friend_requests.get(from_user=from_user)
     if exists:
-        to_user.pending_friend_requests.delete(from_user=from_user)
-        from_user.pending_friend_requests.delete(to_user=to_user)
+        to_user.pending_friend_requests.remove(from_user=from_user)
+        from_user.pending_friend_requests.remove(to_user=to_user)
         HttpResponse('Friend Request Rejected!')
     else:
         HttpResponse('error rejectinging friend request')
