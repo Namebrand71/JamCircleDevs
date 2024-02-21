@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import index
-from user.views import user_page
+from user.views import user_page, friends_page
 from reviews.views import song_page, artist_page, album_page
 
 app_name = 'frontend'
@@ -14,4 +14,5 @@ urlpatterns = [
     path('search/artist/<str:search_query>', index, name='artist_search'),
     path('artist/<str:spotify_content_id>', artist_page, name='artist'),
     path('album/<str:spotify_content_id>', album_page, name='artist'),
+    path('friends/<str:spotify_id>/', friends_page, name='friends_page'),
 ]

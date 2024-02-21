@@ -44,7 +44,7 @@ const UserPage = () => {
       }
     };
 
-    // Call the functions
+    // Call the functions 
     checkSessionUser();
     callDjangoAPI(spotify_id);
   }, [spotify_id]);
