@@ -19,6 +19,7 @@ export default class ProfilePage extends Component {
     super(props);
     this.state = {
       spotifyUsername: "Loading...",
+      currentSpotifyId: "undefinded",
       profileImageUrl: "https://fakeimg.pl/750x750?text=Loading&font=noto",
       isAuthenticated: false,
       friendRequests: [],
@@ -58,6 +59,7 @@ export default class ProfilePage extends Component {
         this.setState({
           spotifyUsername: data.display_name,
           profileImageUrl: data.images[1].url,
+          currentSpotifyId: data.id,
         })
       )
       .catch((error) => {
@@ -104,7 +106,7 @@ export default class ProfilePage extends Component {
   
 
   handleRejectRequest = async (friendRequest) => {
-    const { from_user: { spotify_id } } = friendRequest;
+    const spotify_id = friendRequest?.from_user__display_name;
     try {
       await fetch(`/users/reject-friend-request/${spotify_id}`);
       // After rejecting the request, fetch updated friend requests
@@ -161,6 +163,12 @@ export default class ProfilePage extends Component {
                 </div>
 
                 <SearchBar onSearch={handleSearch} />
+                {/* Add the "Friends" button */}
+                <Link to={`/friends/${this.state.currentSpotifyId}`}>
+                  <Button variant="contained">
+                    Friends
+                  </Button>
+                </Link>
               </Grid>
 
               {/* Button to toggle the dropdown */}
@@ -173,7 +181,7 @@ export default class ProfilePage extends Component {
                     {/* Display friend requests in the dropdown */}
                     {friendRequests.map((request) => (
                       <div
-                        key={request.from_user}
+                        key={request.from_user__display_name}
                         style={{
                           border: "1px solid #ccc",
                           borderRadius: "8px",
@@ -185,8 +193,8 @@ export default class ProfilePage extends Component {
                         }}
                       >
                         <Typography>
-                          <Link to={`/user/${request}`}>
-                            {request.from_user}
+                          <Link to={`/user/${request.from_user__spotify_id}`}>
+                            {request.from_user__display_name}
                           </Link>
                         </Typography>
                         <Button

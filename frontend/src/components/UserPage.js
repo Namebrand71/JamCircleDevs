@@ -6,6 +6,8 @@ import TopTenUserTracks from "./TopTenUserTracks";
 import TopTenUserArtists from "./TopTenUserArtists";
 import UserPlaylists from "./UserPlaylists";
 import FriendRequestButton from "./FriendRequestButton";
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
+import Button from "@mui/material/Button";
 const UserPage = () => {
   const { spotify_id } = useParams();
   const [UserInfo, setUserInfo] = useState(null);
@@ -64,6 +66,11 @@ const UserPage = () => {
                 className="ProfilePicture"
                 alt="Profile"
               />
+                  <Link to={`/friends/${spotify_id}`}>
+                  <Button variant="contained">
+                    Friends
+                  </Button>
+                </Link>
             </Grid>
             <Grid item xs={11} style={{ paddingLeft: "28px" }}>
               <h1>

@@ -5,6 +5,7 @@ urlpatterns = [
     path('get-user-top-10-tracks/<str:spotify_id>/', getUserTop10Tracks, name='get_user_top_10_tracks'),
     path('get-user-top-10-artists/<str:spotify_id>/', getUserTop10Artist, name='get_user_top_10_artists'),
     path('get-user-playlists/<str:spotify_id>/', getUserPlaylists, name='get_user_playlists'),
+    path('get-display-name/<str:spotify_id>/', getDisplayName, name='get_display_name'),
     path('is-session-user/<str:spotify_id>/', isSessionUser, name='is_session_user'),
     path('get-user-friends/<str:spotify_id>/', getUsersFriends, name='get_users_friends'),
     path('get-user-pending-friends/', getUsersPendingFriends, name='get_users_pending_friends'),
