@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material/Typography";
+import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';  // Import Link from react-router-dom
 import { TextField } from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
@@ -18,8 +19,11 @@ export default class ProfilePage extends Component {
     super(props);
     this.state = {
       spotifyUsername: "Loading...",
+      currentSpotifyId: "undefinded",
       profileImageUrl: "https://fakeimg.pl/750x750?text=Loading&font=noto",
       isAuthenticated: false,
+      friendRequests: [],
+      isDropdownVisible: false,
     };
   }
 
@@ -27,6 +31,7 @@ export default class ProfilePage extends Component {
     const isAuthenticated = await this.checkAuthentication();
     if (isAuthenticated) {
       this.loadProfile();
+      this.fetchFriendRequests(); // Fetch friend requests on component mount
     }
   }
 
@@ -54,6 +59,7 @@ export default class ProfilePage extends Component {
         this.setState({
           spotifyUsername: data.display_name,
           profileImageUrl: data.images[1].url,
+          currentSpotifyId: data.id,
         })
       )
       .catch((error) => {
@@ -62,8 +68,57 @@ export default class ProfilePage extends Component {
       });
   };
 
+  // Add a method to toggle the dropdown visibility
+  toggleDropdown = () => {
+    this.setState((prevState) => ({
+      isDropdownVisible: !prevState.isDropdownVisible,
+    }));
+  };
+
+  // Add a method to fetch friend requests
+  fetchFriendRequests = async () => {
+    try {
+      const response = await fetch("/users/get-user-pending-friends/");
+      const data = await response.json();
+      console.log(data)
+      this.setState({ friendRequests: data });
+    } catch (error) {
+      console.error("Error fetching friend requests:", error);
+    }
+  };
+
+  handleAcceptRequest = async (friendRequest) => {
+    const spotify_id = friendRequest?.from_user__spotify_id;
+  
+    // Ensure spotify_id is not undefined before making the fetch
+    if (spotify_id) {
+      try {
+        await fetch(`/users/accept-friend-request/${spotify_id}`);
+        // After accepting the request, fetch updated friend requests
+        this.fetchFriendRequests();
+      } catch (error) {
+        console.error('Error accepting friend request:', error);
+      }
+    } else {
+      console.error('Invalid friend request data:', friendRequest);
+    }
+  };
+  
+
+  handleRejectRequest = async (friendRequest) => {
+    const spotify_id = friendRequest?.from_user__display_name;
+    try {
+      await fetch(`/users/reject-friend-request/${spotify_id}`);
+      // After rejecting the request, fetch updated friend requests
+      this.fetchFriendRequests();
+      
+    } catch (error) {
+      console.error('Error rejecting friend request:', error);
+    }
+  };
+
   render() {
-    const { isAuthenticated } = this.state;
+    const { isAuthenticated, friendRequests, isDropdownVisible } = this.state;
 
     return (
       <div className="profilepage">
@@ -108,6 +163,58 @@ export default class ProfilePage extends Component {
                 </div>
 
                 <SearchBar onSearch={handleSearch} />
+                {/* Add the "Friends" button */}
+                <Link to={`/friends/${this.state.currentSpotifyId}`}>
+                  <Button variant="contained">
+                    Friends
+                  </Button>
+                </Link>
+              </Grid>
+
+              {/* Button to toggle the dropdown */}
+              <Grid item xs={12} style={{ paddingLeft: "28px" }}>
+                <Button variant="contained" onClick={this.toggleDropdown}>
+                  Show Friend Requests
+                </Button>
+                {isDropdownVisible && (
+                  <div style={{ marginTop: "16px" }}>
+                    {/* Display friend requests in the dropdown */}
+                    {friendRequests.map((request) => (
+                      <div
+                        key={request.from_user__display_name}
+                        style={{
+                          border: "1px solid #ccc",
+                          borderRadius: "8px",
+                          padding: "8px",
+                          marginBottom: "8px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography>
+                          <Link to={`/user/${request.from_user__spotify_id}`}>
+                            {request.from_user__display_name}
+                          </Link>
+                        </Typography>
+                        <Button
+                          onClick={() =>
+                            this.handleAcceptRequest(request)
+                          }
+                        >
+                          Accept
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            this.handleRejectRequest(request)
+                          }
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </Grid>
 
               {/* Conditional rendering if authenticated */}
