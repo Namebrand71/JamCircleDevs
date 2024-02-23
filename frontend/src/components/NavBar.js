@@ -56,7 +56,6 @@ const Navbar = () => {
             albumCoverImageUrl: data.albumCoverImageUrl,
             trackID: data.track_id,
           });
-          // console.log("trackid: ", trackID);
         } else {
           // Handle no song playing
           setCurrentSong({
@@ -69,7 +68,6 @@ const Navbar = () => {
       })
       .catch((error) => {
         console.error("Error fetching currently playing song:", error);
-        // Handle error state, possibly resetting currentSong or setting a message
       });
   };
 

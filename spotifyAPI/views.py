@@ -240,17 +240,6 @@ def get_currently_playing(request):
     album_cover_image_url = data['item']['album']['images'][0]['url'] if data['item']['album']['images'] else None
     track_id = data['item']['id']
 
-    # return JsonResponse({
-    #     'songName': "song_name",
-    #     'artistNames': "artist_names",
-    #     'albumCoverImageUrl': "album_cover_image_url"
-    # })
-
-    print("track name: ", song_name)
-    print("artist names: ", artist_names)
-    print("album_url: ", album_cover_image_url)
-    print("track id: ", track_id)
-
     return JsonResponse({
         'songName': song_name,
         'artistNames': artist_names,
@@ -258,22 +247,3 @@ def get_currently_playing(request):
         'track_id': track_id,
         'isPlaying': True,
     })
-
-
-# def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
-#     token = get_user_token(session_id)
-#     header = {'Content-Type': 'application/json',
-#               'Authorization': "Bearer " + token.access_token}
-
-#     if ifPost:
-#         post(SPOTIFY_URL + endpoint, headers=header)
-#     if ifPut:
-#         put(SPOTIFY_URL + endpoint, headers=header)
-#     response = get(SPOTIFY_URL + endpoint, headers=header)
-#     # Might not get something back
-#     if response.status_code == 401:
-#         refresh_token(session_id)
-#         token = get_user_token(session_id)
-#         response = get(SPOTIFY_URL + endpoint)
-#         print("RESPONSE:       ", response)
-#     return response.json()
