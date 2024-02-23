@@ -117,19 +117,10 @@ h2 {
 }
 
 .list-item {
-  height: auto;
-  width: auto;
-}
-
-.list-item img {
-  margin-left: 5px;
-  margin-bottom: 3px;
-  width: 50px;
-}
-
-.list-item span {
-  /* margin-top: 10px; */
-  align-content: first baseline;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 .login-btn {
