@@ -73,7 +73,7 @@ class MyComponent extends React.Component {
                     alt={artist.name}
                     src={artist.images[2].url}
                   />
-                  <Typography>
+                  <Typography align="center">
                     {index + 1}. {artist.name}
                   </Typography>
                 </Box>

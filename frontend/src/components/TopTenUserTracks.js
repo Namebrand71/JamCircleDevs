@@ -63,16 +63,17 @@ class MyComponent extends React.Component {
                   <Box
                     component="img"
                     sx={{
-                      height: 100,
-                      width: 100,
-                      borderRadius: "50%",
+                      height: 80,
+                      width: 80,
+                      // borderRadius: "50%",
                       marginBottom: 2,
                     }}
                     alt={track.name}
                     src={track.album.images[0].url}
                   />
-                  <Typography>
-                    {index + 1}. {track.name}
+                  <Typography align="center">
+                    {index + 1}. {track.name} -{" "}
+                    {track.artists.map((artist) => artist.name).join(", ")}{" "}
                   </Typography>
                 </Box>
               </Link>
