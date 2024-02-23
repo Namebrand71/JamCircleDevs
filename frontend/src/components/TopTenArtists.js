@@ -59,7 +59,7 @@ class MyComponent extends React.Component {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    marginBottom: 2, // Adds some space between the image and the artist name
+                    marginBottom: 5, // Adds some space between the image and the artist name
                   }}
                 >
                   <Box

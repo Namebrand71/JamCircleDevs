@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import handleSearch from "./NavBar";
 import { Box, Container } from "@mui/material";
+import Button from "@mui/material/Button";
 
 const SearchResults = () => {
   const { search_type, search_query } = useParams();
@@ -61,6 +62,12 @@ const SearchResults = () => {
     }
   };
 
+  function check({ item }) {
+    if (!("images" in item)) {
+      return false;
+    }
+  }
+
   return (
     <Grid
       container
@@ -86,12 +93,23 @@ const SearchResults = () => {
               borderBottom: "2px solid #2a2a2a",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <Link
+                to="/profile"
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                }}
+              >
+                <Button variant="contained">Go Back</Button>
+              </Link>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
+              </div>
             </div>
-            <div style={{ paddingTop: "10px" }}>
+            {/* <div style={{ paddingTop: "10px" }}> Searching for album from rsearch result page broken
               <SearchBar onSearch={handleSearch} />
-            </div>
+            </div> */}
           </Grid>
           {loading ? (
             <h1>Loading...</h1>
@@ -118,20 +136,24 @@ const SearchResults = () => {
                       <img
                         src={
                           search_type === "artist"
-                            ? "" //Temporary while artist picture is figured out
+                            ? item.images && item.images.length > 0
+                              ? item.images[0].url
+                              : ""
                             : search_type === "album"
                             ? item.images[0].url
                             : item.album.images[0].url
                         }
                         width="100px"
-                        alt="Artist Cover"
+                        alt="NO PICTURE"
                         style={{
                           paddingRight: "20px",
                           paddingTop: "5px",
                           paddingBottom: "2px",
                           width: "80px",
+                          maxHeight: "80px",
                         }}
                       />
+
                       <div style={{ display: "flex", flexDirection: "column" }}>
                         <span
                           style={{
