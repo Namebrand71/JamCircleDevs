@@ -4,3 +4,6 @@ __pycache__/
 migrations/
 frontend/static/frontend/
 node_modules/
+.venv/
+requirements.txt
+package-lock.json
