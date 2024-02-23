@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Radio from "@mui/material/Radio";
 import Navbar from "./NavBar";
 import SearchBar from "./SearchBar";
+import handleSearch from "./NavBar";
 
 export default class ProfilePage extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ export default class ProfilePage extends Component {
           <div style={{ display: "flex", alignItems: "center" }}>
             <h1>Home</h1>
           </div>
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} />
         </Grid>
       </Grid>
     );

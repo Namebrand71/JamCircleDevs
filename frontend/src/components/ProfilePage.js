@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';  // Import Link from react-router-dom
+import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { TextField } from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
@@ -80,7 +80,7 @@ export default class ProfilePage extends Component {
     try {
       const response = await fetch("/users/get-user-pending-friends/");
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       this.setState({ friendRequests: data });
     } catch (error) {
       console.error("Error fetching friend requests:", error);
@@ -89,7 +89,7 @@ export default class ProfilePage extends Component {
 
   handleAcceptRequest = async (friendRequest) => {
     const spotify_id = friendRequest?.from_user__spotify_id;
-  
+
     // Ensure spotify_id is not undefined before making the fetch
     if (spotify_id) {
       try {
@@ -97,13 +97,12 @@ export default class ProfilePage extends Component {
         // After accepting the request, fetch updated friend requests
         this.fetchFriendRequests();
       } catch (error) {
-        console.error('Error accepting friend request:', error);
+        console.error("Error accepting friend request:", error);
       }
     } else {
-      console.error('Invalid friend request data:', friendRequest);
+      console.error("Invalid friend request data:", friendRequest);
     }
   };
-  
 
   handleRejectRequest = async (friendRequest) => {
     const spotify_id = friendRequest?.from_user__display_name;
@@ -111,9 +110,8 @@ export default class ProfilePage extends Component {
       await fetch(`/users/reject-friend-request/${spotify_id}`);
       // After rejecting the request, fetch updated friend requests
       this.fetchFriendRequests();
-      
     } catch (error) {
-      console.error('Error rejecting friend request:', error);
+      console.error("Error rejecting friend request:", error);
     }
   };
 
@@ -163,16 +161,17 @@ export default class ProfilePage extends Component {
                 </div>
 
                 <SearchBar onSearch={handleSearch} />
-                {/* Add the "Friends" button */}
-                <Link to={`/friends/${this.state.currentSpotifyId}`}>
-                  <Button variant="contained">
-                    Friends
-                  </Button>
-                </Link>
               </Grid>
 
               {/* Button to toggle the dropdown */}
               <Grid item xs={12} style={{ paddingLeft: "28px" }}>
+                {/* Add the "Friends" button */}
+                <Link
+                  to={`/friends/${this.state.currentSpotifyId}`}
+                  style={{ paddingRight: "10px" }}
+                >
+                  <Button variant="contained">Friends</Button>
+                </Link>
                 <Button variant="contained" onClick={this.toggleDropdown}>
                   Show Friend Requests
                 </Button>
@@ -198,16 +197,12 @@ export default class ProfilePage extends Component {
                           </Link>
                         </Typography>
                         <Button
-                          onClick={() =>
-                            this.handleAcceptRequest(request)
-                          }
+                          onClick={() => this.handleAcceptRequest(request)}
                         >
                           Accept
                         </Button>
                         <Button
-                          onClick={() =>
-                            this.handleRejectRequest(request)
-                          }
+                          onClick={() => this.handleRejectRequest(request)}
                         >
                           Reject
                         </Button>
