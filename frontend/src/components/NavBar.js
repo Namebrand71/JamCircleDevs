@@ -4,6 +4,12 @@ import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentSong, setCurrentSong] = useState({
+    songName: "",
+    artistName: "",
+    albumCoverImageUrl: "",
+    trackID: "",
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,6 +17,9 @@ const Navbar = () => {
       .then((response) => response.json())
       .then((data) => {
         setIsAuthenticated(data.isAuthenticated);
+        if (data.isAuthenticated) {
+          fetchCurrentlyPlayingSong();
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -34,6 +43,32 @@ const Navbar = () => {
         })
         .catch((error) => console.error("Error:", error));
     }
+  };
+
+  const fetchCurrentlyPlayingSong = () => {
+    fetch("/auth/currently-playing/")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.isPlaying) {
+          setCurrentSong({
+            songName: data.songName,
+            artistName: data.artistNames,
+            albumCoverImageUrl: data.albumCoverImageUrl,
+            trackID: data.track_id,
+          });
+        } else {
+          // Handle no song playing
+          setCurrentSong({
+            songName: "",
+            artistName: "",
+            albumCoverImageUrl: "",
+            trackID: "",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching currently playing song:", error);
+      });
   };
 
   const handleSearch = (query) => {
@@ -122,6 +157,55 @@ const Navbar = () => {
       >
         {isAuthenticated ? "Logout" : "Login"}
       </button>
+
+      {isAuthenticated ? (
+        currentSong.songName && currentSong.artistName ? (
+          <div
+            style={{
+              marginTop: "auto",
+              textAlign: "center",
+              borderTop: "1px solid #fff",
+            }}
+          >
+            <div style={{ marginTop: "20px" }}>Now Playing:</div>
+            <Link
+              to={`/song/${currentSong.trackID}`}
+              style={{ textDecoration: "none" }}
+            >
+              <img
+                src={currentSong.albumCoverImageUrl}
+                alt="Album cover"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  marginTop: "20px",
+                }}
+              />
+            </Link>
+            <Link
+              to={`/song/${currentSong.trackID}`}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <div>
+                {currentSong.songName} - {currentSong.artistName}
+              </div>
+            </Link>
+          </div>
+        ) : (
+          // This block renders when no song is currently playing
+          <div
+            style={{ marginTop: "auto", textAlign: "center", color: "white" }}
+          >
+            No song is currently playing.
+          </div>
+        )
+      ) : (
+        // This block can render when the user is not authenticated or as a fallback
+        <div style={{ marginTop: "auto", textAlign: "center", color: "white" }}>
+          Please log in to view the currently playing song.
+        </div>
+      )}
     </nav>
   );
 };

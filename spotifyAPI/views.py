@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from .util import *
 from .models import SpotifyToken, ListeningData
 from user.models import User
-from user.views import get_total_listening_time
+from user.views import get_total_listening_time, getUserFromSession
 from django.utils import timezone
 from datetime import timedelta, datetime
 from django.utils.dateparse import parse_datetime
@@ -22,7 +22,7 @@ from base64 import b64encode
 
 class SpotifyLogin(APIView):
     def get(self, request, format=None):
-        scopes = "user-read-private user-read-email user-top-read user-read-recently-played"
+        scopes = "user-read-private user-read-email user-top-read user-read-recently-played user-read-currently-playing"
 
         url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,
@@ -210,3 +210,40 @@ def save_spotify_listening_history(user, response_data):
                 duration_ms=track['duration_ms'],
                 explicit=track['explicit'],
             )
+
+
+def get_currently_playing(request):
+    print("get_currently_playing called")
+    session_id = request.session.session_key
+    token = get_user_token(session_id=session_id)
+    endpoint = "/me/player/currently-playing"
+
+    header = {'Content-Type': 'application/json',
+              'Authorization': "Bearer " + token.access_token}
+
+    response = get(SPOTIFY_URL + endpoint, headers=header)
+
+    print("CURRENTLY PLAYING TRACK RESPONSE: ", response)
+    if response.status_code == 204:
+        return JsonResponse({
+            'songName': "song_name",
+            'artistNames': 'artist_names',
+            'albumCoverImageUrl': 'album_cover_image_url',
+            'track_id': 'track_id',
+        })
+
+    data = response.json()
+
+    song_name = data['item']['name']
+    artist_names = ', '.join([artist['name']
+                             for artist in data['item']['artists']])
+    album_cover_image_url = data['item']['album']['images'][0]['url'] if data['item']['album']['images'] else None
+    track_id = data['item']['id']
+
+    return JsonResponse({
+        'songName': song_name,
+        'artistNames': artist_names,
+        'albumCoverImageUrl': album_cover_image_url,
+        'track_id': track_id,
+        'isPlaying': True,
+    })
