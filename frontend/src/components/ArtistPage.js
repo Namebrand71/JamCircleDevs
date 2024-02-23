@@ -52,9 +52,13 @@ const ArtistPage = () => {
           {artistInfo ? (
             <div align="center" className="songcard">
               <img
-                src={artistInfo.images[0].url}
+                src={
+                  artistInfo.images && artistInfo.images.length > 0
+                    ? artistInfo.images[0].url
+                    : ""
+                }
                 width="350px"
-                alt="Artist Cover"
+                alt="Missing Artist Picture"
                 style={{ paddingTop: "20px" }}
               />
               <h1>{artistInfo.name}</h1>
