@@ -22,9 +22,9 @@ const FriendsPage = () => {
     console.log(spotify_id);
 
     // Assuming the endpoint is correct and id is used appropriately
-    let endpoint = `/users/get-user-friends/${spotify_id}/`;
+    let endpoint = `/users/get-user-friends/${spotify_id}`;
 
-    const response = await fetch(endpoint);
+    const response = await fetch(endpoint) 
     console.log(response)
     const data = await response.json();
     console.log(data)
@@ -62,7 +62,7 @@ const FriendsPage = () => {
           <Navbar />
         </Grid>
         <Grid item align="left" xs={12}>
-          <h2>{userDisplayName} Friends</h2>
+          <h2>{userDisplayName}'s Friends</h2>
           {loading ? (
             <h3>Loading...</h3>
           ) : (

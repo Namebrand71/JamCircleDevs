@@ -56,11 +56,11 @@ export default class ProfilePage extends Component {
         return response.json();
       })
       .then((data) =>
-        this.setState({
+        this.setState(({
           spotifyUsername: data.display_name,
-          profileImageUrl: data.images[1].url,
+          profileImageUrl: data.images && data.images.length > 1 ? data.images[1].url : `https://ui-avatars.com/api/?name=${data.display_name[0]}&background=2A2A2A&color=FFFFFF&size=200`,
           currentSpotifyId: data.id,
-        })
+        }))
       )
       .catch((error) => {
         console.error("Fetch error:", error);
@@ -73,6 +73,7 @@ export default class ProfilePage extends Component {
     this.setState((prevState) => ({
       isDropdownVisible: !prevState.isDropdownVisible,
     }));
+    console.log("CURRENT ID:", currentSpotifyId)
   };
 
   // Add a method to fetch friend requests
