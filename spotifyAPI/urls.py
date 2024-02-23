@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import SpotifyLogin, spotfy_callback, Authenticated, GetSpotifyProfile, search_spotify_tracks
-from .util import getTop10Tracks, getTop10Artist, is_authenticated_api, logout_api, getPlaylists
+from .views import *
+from .util import *
 urlpatterns = [
     path('authSpotify', SpotifyLogin.as_view()),
     path('redirect', spotfy_callback),
@@ -13,5 +13,8 @@ urlpatterns = [
     path('get-playlists/', getPlaylists, name='get_playlists'),
     path('search_spotify_tracks/<str:search_query>/',
          search_spotify_tracks, name='search_spotify_tracks'),
-
+    path('search_spotify_albums/<str:search_query>/',
+         search_spotify_albums, name='search_spotify_albums'),
+    path('search_spotify_artists/<str:search_query>/',
+         search_spotify_artists, name='search_spotify_artists'),
 ]

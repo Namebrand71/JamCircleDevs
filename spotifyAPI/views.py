@@ -5,9 +5,10 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from requests import Request, post
 import requests
+import json
 from rest_framework import status
 from rest_framework.response import Response
-from .util import user_token_func, is_authenticated, refresh_token, get_user_token, getUserJSON, spotify_api_request
+from .util import *
 from .models import SpotifyToken
 from user.models import User
 from django.utils import timezone
@@ -56,6 +57,23 @@ def spotfy_callback(request, format=None):
 
     user_data = getUserJSON(request.session.session_key)
 
+    
+
+    pre_top_10_tracks = json.loads(getTop10Tracks(request).content.decode())
+    top_10_tracks = [
+    {
+        'id': track['id'],
+        'name': track['name'],
+        'artist_names': [artist['name'] for artist in track['album']['artists']]
+    }
+    for track in pre_top_10_tracks
+]
+
+    playlists = json.loads(getPlaylists(request).content.decode())
+
+    pre_top_10_artists = json.loads(getTop10Artist(request).content.decode())
+    top_10_artists = [{'id': item['id'], 'name': item['name'], 'image_url': item['images'][0]['url']} for item in pre_top_10_artists]
+
     user_defaults = {
         'display_name': user_data.get('display_name'),
         'email': user_data.get('email'),
@@ -63,6 +81,9 @@ def spotfy_callback(request, format=None):
         'country': user_data.get('country'),
         'product_type': user_data.get('product'),
         'token': token,
+        'top_10_artists': top_10_artists,
+        'top_10_tracks': top_10_tracks,
+        'playlists': playlists,
     }
 
     user, created = User.objects.update_or_create(
@@ -102,4 +123,25 @@ def search_spotify_tracks(request, search_query):
     session_id = request.session.session_key
     response = spotify_api_request(
         session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
+    return JsonResponse(response)
+
+
+@api_view(['GET'])
+def search_spotify_albums(request, search_query):
+    print("GET ALBUMS CALLED")
+    url_suffix = f"/search?q={search_query}&type=album"
+    session_id = request.session.session_key
+    response = spotify_api_request(
+        session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
+    return JsonResponse(response)
+
+
+@api_view(['GET'])
+def search_spotify_artists(request, search_query):
+    print("GET ARTISTS CALLED")
+    url_suffix = f"/search?q={search_query}&type=artist"
+    session_id = request.session.session_key
+    response = spotify_api_request(
+        session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
+    print(response)
     return JsonResponse(response)

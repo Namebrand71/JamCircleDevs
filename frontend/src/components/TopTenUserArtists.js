@@ -15,6 +15,7 @@ const StyledContainer = styled("div")(({ theme }) => ({
   margin: "10px 0", // Adds some space above and below the container
 }));
 
+
 class MyComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -24,24 +25,20 @@ class MyComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchTop10Artists();
+    const { spotify_id } = this.props;
+    this.fetchUserTop10Artists(`/users/get-user-top-10-artists/${encodeURIComponent(spotify_id)}`);
   }
 
-  fetchTop10Artists = () => {
-    fetch("/auth/get-top-10-artists/")
+  fetchUserTop10Artists = (url) => {
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Calling setState with values:", data);
         this.setState({ topArtists: data });
       })
       .catch((error) => console.error("Error fetching top artists:", error));
   };
 
   render() {
-    console.log(
-      "About to render toptenartists with state",
-      this.state.topArtists
-    );
     return (
       <StyledContainer>
         <Typography variant="h4" gutterBottom>
@@ -50,35 +47,35 @@ class MyComponent extends React.Component {
         <Grid container spacing={1}>
           {this.state.topArtists.slice(0, 10).map((artist, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
-              <Link
-                to={`/artist/${artist.id}`}
-                style={{ textDecoration: "none", color: "white" }}
+            <Link
+              to={`/artist/${artist.id}`}
+              style={{ textDecoration: "none", color: "white"}}
+            >
+                <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginBottom: 2, // Adds some space between the image and the artist name
+                }}
               >
                 <Box
+                  component="img"
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    marginBottom: 2, // Adds some space between the image and the artist name
+                    height: 100,
+                    width: 100,
+                    borderRadius: "50%",
+                    marginBottom: 2,
                   }}
-                >
-                  <Box
-                    component="img"
-                    sx={{
-                      height: 100,
-                      width: 100,
-                      borderRadius: "50%",
-                      marginBottom: 2,
-                    }}
-                    alt={artist.name}
-                    src={artist.images[2].url}
-                  />
-                  <Typography>
-                    {index + 1}. {artist.name}
+                  alt={artist.name}
+                  src={artist.image_url}
+                />
+                <Typography>
+                   {index + 1}. {artist.name}
                   </Typography>
-                </Box>
+              </Box>
               </Link>
-            </Grid>
+          </Grid>
           ))}
         </Grid>
       </StyledContainer>

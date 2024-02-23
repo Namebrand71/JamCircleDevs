@@ -32,5 +32,8 @@ module.exports = {
         NODE_ENV: JSON.stringify("development"), //NOTE: HARDCODED development here to get `npm run dev` to work
       },
     }),
+    new webpack.DefinePlugin({
+      __REACT_DEVTOOLS_GLOBAL_HOOK__: "({ isDisabled: true })",
+    }),
   ],
 };

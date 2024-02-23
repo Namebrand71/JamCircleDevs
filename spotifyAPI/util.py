@@ -5,6 +5,7 @@ from requests import Request, post, put, get
 from .auth import CLIENT_ID, CLIENT_SECRET, SPOTIFY_URL
 from django.http import JsonResponse
 from .models import SpotifyToken
+from user.models import User
 
 
 def is_authenticated(session_id):
@@ -101,8 +102,9 @@ def getTop10Artist(request):
     #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
         session_id, "/me/top/artists?limit=10&offset=0", False, False)
-    #print(response)
+    print("TOPTEN response: ", response)
     artist_list = response.get('items')
+    # TODO: Check for 502 status code, if so return an error
     return JsonResponse(artist_list, safe=False)
 
 
@@ -111,9 +113,10 @@ def getTop10Tracks(request):
     #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
         session_id, "/me/top/tracks?limit=10&offset=0", False, False)
-    #print(response)
+    # print(response)
     track_list = response.get('items')
     return JsonResponse(track_list, safe=False)
+
 
 
 def getPlaylists(request):
