@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Reviews from "./Reviews";
 
-const SongPage = () => {
+const SongPage = ({ onPlay }) => {
   const { spotify_content_id } = useParams();
   const [trackInfo, setTrackInfo] = useState(null);
 
@@ -41,7 +41,17 @@ const SongPage = () => {
 
   return (
     <div className="songpage">
-      <h1>Under construction</h1>
+      <Grid container spacing={1}>
+        {/* Navbar grid item */}
+        <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+          {/* <Navbar /> */}
+        </Grid>
+        <Grid item xs={6} sm={6} md={5} lg={5} xl={5}>
+          <button onClick={() => onPlay(spotify_content_id, "album")}>
+            Play
+          </button>
+        </Grid>
+      </Grid>
     </div>
   );
 };

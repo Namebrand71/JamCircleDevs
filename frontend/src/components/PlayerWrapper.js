@@ -6,11 +6,15 @@ import React, { Component } from "react";
   uris={["spotify:artist:6HQYnRM4OzToCYPpVBInuU"]}
 />;
 
-const PlayerWrapper = () => {
+const PlayerWrapper = ({ spotifyContentId, spotifyContentType }) => {
+  if (!spotifyContentId) {
+    return null;
+  }
   return (
     <SpotifyPlayer
-      token="BQAOYq8nHMxX2mqDjWCGZ3NA5KQXYQSIdejyS9xT6DIS4dOPgAJEVwfa2pCstlXmMYbEs1MoAyX6bgrha7CMbW7viAWYZ6GbBarVMC6tWSO-DJoYSu1q5dh7qjKqi1KDhCG9ZvOrxWTJFM-T-JWh-aD_O2FdiK8nRfwdOYkLMJ2SL7k7aD2c-F4DTRDVdex5nv3s16AMyzYqBaU1e-Cvt7kjZugtq95FxRZDMw"
-      uris={["spotify:artist:6HQYnRM4OzToCYPpVBInuU"]}
+      token="BQAkfdsdaSQvBksGcmDvlkj2DRPKHn-G1PvnM67Tw4ILAeZvtKSNrs4iTO0_dXC7nAmOZlW-wU6FTmAlxr688g1ss9B3cXniiUcS_B36dyCJiQEMbNiuLQ_BlV12oislGTBwIZXYhR1gP1aF5pYmU3FfEeUulRwYGX635mOd0Qr7P_aA31kQzLbZDU1qZuaDYkUNdQBZyXNfztnZdPyLmBME8QzjpCcbcJ4gdA"
+      uris={[`spotify:${spotifyContentType}:${spotifyContentId}`]}
+      play={true}
     />
   );
 };

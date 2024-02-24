@@ -1,6 +1,6 @@
 // App.js
 
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
@@ -14,17 +14,37 @@ import SearchResults from "./SearchResults";
 import Navbar from "./NavBar";
 
 const App = () => {
+  const [spotifyContentId, setSpotifyContentId] = useState(null);
+  const [spotifyContentType, setSpotifyContentType] = useState(null);
+
+  const handlePlay = (spotifyContentId, spotifyContentType) => {
+    setSpotifyContentId(spotifyContentId);
+    setSpotifyContentType(spotifyContentType);
+  };
+
   return (
     <Router>
-      <Navbar />
+      <Navbar
+        spotifyContentId={spotifyContentId}
+        spotifyContentType={spotifyContentType}
+      />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/song/:spotify_content_id" element={<SongPage />} />
+        <Route
+          path="/song/:spotify_content_id"
+          element={<SongPage onPlay={handlePlay} />}
+        />
         <Route path="/user/:spotify_id" element={<UserPage />} />
         <Route path="/friends/:spotify_id" element={<FriendsPage />} />
-        <Route path="/album/:spotify_content_id" element={<AlbumPage />} />
-        <Route path="/artist/:spotify_content_id" element={<ArtistPage />} />
+        <Route
+          path="/album/:spotify_content_id"
+          element={<AlbumPage onPlay={handlePlay} />}
+        />
+        <Route
+          path="/artist/:spotify_content_id"
+          element={<ArtistPage onPlay={handlePlay} />}
+        />
         <Route
           path="/search/:search_type/:search_query/"
           element={<SearchResults />}

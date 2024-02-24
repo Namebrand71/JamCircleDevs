@@ -3,7 +3,7 @@ import { Link, useNavigate, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import PlayerWrapper from "./PlayerWrapper";
 
-const Navbar = () => {
+const Navbar = ({ spotifyContentId, spotifyContentType }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentSong, setCurrentSong] = useState({
     songName: "",
@@ -159,7 +159,10 @@ const Navbar = () => {
         {isAuthenticated ? "Logout" : "Login"}
       </button>
 
-      <PlayerWrapper />
+      <PlayerWrapper
+        spotifyContentId={spotifyContentId}
+        spotifyContentType={spotifyContentType}
+      />
 
       {isAuthenticated ? (
         currentSong.songName && currentSong.artistName ? (

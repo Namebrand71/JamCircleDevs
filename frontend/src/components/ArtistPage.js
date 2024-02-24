@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Reviews from "./Reviews";
 
-const ArtistPage = () => {
+const ArtistPage = ({ onPlay }) => {
   const { spotify_content_id } = useParams();
   const [artistInfo, setArtistInfo] = useState(null);
 
@@ -62,6 +62,9 @@ const ArtistPage = () => {
                 style={{ paddingTop: "20px" }}
               />
               <h1>{artistInfo.name}</h1>
+              <button onClick={() => onPlay(spotify_content_id, "artist")}>
+                Play
+              </button>
             </div>
           ) : (
             <h1>Loading artist info...</h1>
