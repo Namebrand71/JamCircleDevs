@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "./NavBar";
+
 import Grid from "@mui/material/Grid";
 import Reviews from "./Reviews";
 

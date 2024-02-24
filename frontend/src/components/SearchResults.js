@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "./NavBar";
+
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
@@ -76,7 +76,7 @@ const SearchResults = () => {
     >
       {/* Navbar Grid item */}
       <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
-        <Navbar />
+        {/* <Navbar /> */}
       </Grid>
 
       {/* Content Grid item */}

@@ -22,7 +22,7 @@ from base64 import b64encode
 
 class SpotifyLogin(APIView):
     def get(self, request, format=None):
-        scopes = "user-read-private user-read-email user-top-read user-read-recently-played user-read-currently-playing"
+        scopes = "user-read-private user-read-email user-top-read user-read-recently-played user-read-currently-playing user-read-playback-state streaming user-modify-playback-state user-library-read user-library-modify"
 
         url = Request('GET', 'https://accounts.spotify.com/authorize', params={
             'scope': scopes,

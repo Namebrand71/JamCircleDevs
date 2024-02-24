@@ -11,10 +11,13 @@ import FriendsPage from "./FriendsPage";
 import AlbumPage from "./AlbumPage";
 import ArtistPage from "./ArtistPage";
 import SearchResults from "./SearchResults";
+import Navbar from "./NavBar";
+
 export default class App extends Component {
   render() {
     return (
       <Router>
+        <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/profile" element={<ProfilePage />} />

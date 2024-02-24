@@ -7,7 +7,6 @@ import { TextField } from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Radio from "@mui/material/Radio";
-import Navbar from "./NavBar";
 import TopTenTracks from "./TopTenTracks";
 import TopTenArtists from "./TopTenArtists";
 import Playlists from "./Playlists";
@@ -56,11 +55,14 @@ export default class ProfilePage extends Component {
         return response.json();
       })
       .then((data) =>
-        this.setState(({
+        this.setState({
           spotifyUsername: data.display_name,
-          profileImageUrl: data.images && data.images.length > 1 ? data.images[1].url : `https://ui-avatars.com/api/?name=${data.display_name[0]}&background=2A2A2A&color=FFFFFF&size=200`,
+          profileImageUrl:
+            data.images && data.images.length > 1
+              ? data.images[1].url
+              : `https://ui-avatars.com/api/?name=${data.display_name[0]}&background=2A2A2A&color=FFFFFF&size=200`,
           currentSpotifyId: data.id,
-        }))
+        })
       )
       .catch((error) => {
         console.error("Fetch error:", error);
@@ -73,7 +75,7 @@ export default class ProfilePage extends Component {
     this.setState((prevState) => ({
       isDropdownVisible: !prevState.isDropdownVisible,
     }));
-    console.log("CURRENT ID:", currentSpotifyId)
+    console.log("CURRENT ID:", currentSpotifyId);
   };
 
   // Add a method to fetch friend requests
@@ -128,7 +130,7 @@ export default class ProfilePage extends Component {
         >
           {/* Navbar Grid item */}
           <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
-            <Navbar />
+            {/* <Navbar /> */}
           </Grid>
 
           {/* Content Grid item */}

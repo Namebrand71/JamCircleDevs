@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "./NavBar";
+
 import Grid from "@mui/material/Grid";
 import Reviews from "./Reviews";
 
@@ -44,7 +44,7 @@ const ArtistPage = () => {
       <Grid container spacing={1}>
         {/* Navbar grid item */}
         <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-          <Navbar />
+          {/* <Navbar /> */}
         </Grid>
 
         {/* Artistcard grid item */}

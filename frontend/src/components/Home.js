@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import Navbar from "./NavBar";
 import SearchBar from "./SearchBar";
 
 const HomePage = () => {
@@ -25,7 +24,7 @@ const HomePage = () => {
       columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
     >
       <Grid item xs={4} sm={3} md={3} lg={3} xl={3} align="right">
-        <Navbar />
+        {/* <Navbar /> */}
       </Grid>
 
       <Grid

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import PlayerWrapper from "./PlayerWrapper";
 
 const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -157,6 +158,8 @@ const Navbar = () => {
       >
         {isAuthenticated ? "Logout" : "Login"}
       </button>
+
+      <PlayerWrapper />
 
       {isAuthenticated ? (
         currentSong.songName && currentSong.artistName ? (
