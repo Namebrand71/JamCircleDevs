@@ -158,6 +158,11 @@ def fetch_spotify_activity(request):
     for user in User.objects.all():
         user_list += user.display_name
         user_token = user.token
+
+        if user_token.expires_at < timezone.now():
+            print("token has expired, getting a new token now")
+            refresh_token(user_token.session_id)
+
         header = {'Content-Type': 'application/json',
                   'Authorization': "Bearer " + user_token.access_token}
         response = get(SPOTIFY_URL + endpoint, headers=header)
