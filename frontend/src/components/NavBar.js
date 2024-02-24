@@ -11,6 +11,7 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
     albumCoverImageUrl: "",
     trackID: "",
   });
+  const [accessToken, setAccessToken] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,9 +19,10 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
       .then((response) => response.json())
       .then((data) => {
         setIsAuthenticated(data.isAuthenticated);
-        if (data.isAuthenticated) {
-          fetchCurrentlyPlayingSong();
-        }
+        setAccessToken(data.isAuthenticated.accessToken);
+        // if (data.isAuthenticated) {
+        //   fetchCurrentlyPlayingSong();
+        // }
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -162,6 +164,7 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
       <PlayerWrapper
         spotifyContentId={spotifyContentId}
         spotifyContentType={spotifyContentType}
+        accessToken={accessToken}
       />
 
       {isAuthenticated ? (
