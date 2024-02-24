@@ -13,28 +13,28 @@ import ArtistPage from "./ArtistPage";
 import SearchResults from "./SearchResults";
 import Navbar from "./NavBar";
 
-export default class App extends Component {
-  render() {
-    return (
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/song/:spotify_content_id" element={<SongPage />} />
-          <Route path="/user/:spotify_id" element={<UserPage />} />
-          <Route path="/friends/:spotify_id" element={<FriendsPage />} />
-          <Route path="/album/:spotify_content_id" element={<AlbumPage />} />
-          <Route path="/artist/:spotify_content_id" element={<ArtistPage />} />
-          <Route
-            path="/search/:search_type/:search_query/"
-            element={<SearchResults />}
-          />
-        </Routes>
-      </Router>
-    );
-  }
-}
+const App = () => {
+  return (
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/song/:spotify_content_id" element={<SongPage />} />
+        <Route path="/user/:spotify_id" element={<UserPage />} />
+        <Route path="/friends/:spotify_id" element={<FriendsPage />} />
+        <Route path="/album/:spotify_content_id" element={<AlbumPage />} />
+        <Route path="/artist/:spotify_content_id" element={<ArtistPage />} />
+        <Route
+          path="/search/:search_type/:search_query/"
+          element={<SearchResults />}
+        />
+      </Routes>
+    </Router>
+  );
+};
+
+export default App;
 
 const container = document.getElementById("app");
 const root = createRoot(container);
