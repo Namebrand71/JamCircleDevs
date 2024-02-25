@@ -15,6 +15,7 @@ import Navbar from "./NavBar";
 import DummyPlayer from "./DummyPlayer";
 import PlayerWrapper from "./PlayerWrapper";
 import Auth from "./Auth";
+import { AuthProvider } from "../contexts/AuthContext";
 
 const App = () => {
   const [spotifyContentId, setSpotifyContentId] = useState(null);
@@ -27,40 +28,44 @@ const App = () => {
   };
 
   return (
-    <Router>
-      <Auth onAuthStateChange={(accessToken) => setAccessToken(accessToken)} />
-      <Navbar
-        spotifyContentId={spotifyContentId}
-        spotifyContentType={spotifyContentType}
-      />
-      <PlayerWrapper
-        spotifyContentId={spotifyContentId}
-        spotifyContentType={spotifyContentType}
-        accessToken={accessToken}
-      />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route
-          path="/song/:spotify_content_id"
-          element={<SongPage onPlay={handlePlay} />}
+    <AuthProvider>
+      <Router>
+        <Auth
+          onAuthStateChange={(accessToken) => setAccessToken(accessToken)}
         />
-        <Route path="/user/:spotify_id" element={<UserPage />} />
-        <Route path="/friends/:spotify_id" element={<FriendsPage />} />
-        <Route
-          path="/album/:spotify_content_id"
-          element={<AlbumPage onPlay={handlePlay} />}
+        <Navbar
+          spotifyContentId={spotifyContentId}
+          spotifyContentType={spotifyContentType}
         />
-        <Route
-          path="/artist/:spotify_content_id"
-          element={<ArtistPage onPlay={handlePlay} />}
+        <PlayerWrapper
+          spotifyContentId={spotifyContentId}
+          spotifyContentType={spotifyContentType}
+          accessToken={accessToken}
         />
-        <Route
-          path="/search/:search_type/:search_query/"
-          element={<SearchResults />}
-        />
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/song/:spotify_content_id"
+            element={<SongPage onPlay={handlePlay} />}
+          />
+          <Route path="/user/:spotify_id" element={<UserPage />} />
+          <Route path="/friends/:spotify_id" element={<FriendsPage />} />
+          <Route
+            path="/album/:spotify_content_id"
+            element={<AlbumPage onPlay={handlePlay} />}
+          />
+          <Route
+            path="/artist/:spotify_content_id"
+            element={<ArtistPage onPlay={handlePlay} />}
+          />
+          <Route
+            path="/search/:search_type/:search_query/"
+            element={<SearchResults />}
+          />
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 };
 

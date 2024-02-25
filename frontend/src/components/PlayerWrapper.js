@@ -1,5 +1,6 @@
 import SpotifyPlayer from "react-spotify-web-playback";
 import React, { Component } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 {
   /* <SpotifyPlayer
@@ -8,12 +9,10 @@ import React, { Component } from "react";
 />; */
 }
 
-const PlayerWrapper = ({
-  spotifyContentId,
-  spotifyContentType,
-  accessToken,
-}) => {
+const PlayerWrapper = ({ spotifyContentId, spotifyContentType }) => {
   // console.log("rendering player wrapper with access token: ", accessToken);
+  const { accessToken } = useAuth();
+
   if (!spotifyContentId) {
     return null;
   }

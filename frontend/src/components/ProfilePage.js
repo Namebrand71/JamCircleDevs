@@ -12,6 +12,7 @@ import TopTenArtists from "./TopTenArtists";
 import Playlists from "./Playlists";
 import SearchBar from "./SearchBar";
 import handleSearch from "./NavBar";
+import { useAuth } from "../contexts/AuthContext";
 
 export default class ProfilePage extends Component {
   constructor(props) {
