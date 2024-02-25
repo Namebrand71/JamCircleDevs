@@ -12,6 +12,7 @@ import { useAuth } from "../contexts/AuthContext";
 const PlayerWrapper = ({ spotifyContentId, spotifyContentType }) => {
   // console.log("rendering player wrapper with access token: ", accessToken);
   const { accessToken } = useAuth();
+  console.log("PLAYER: The access token: ", accessToken);
 
   if (!spotifyContentId) {
     return null;

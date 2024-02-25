@@ -1,40 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import SearchBar from "./SearchBar";
-// import PlayerWrapper from "./PlayerWrapper";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = ({ spotifyContentId, spotifyContentType }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { accessToken, setAccessToken } = useAuth();
   const [currentSong, setCurrentSong] = useState({
     songName: "",
     artistName: "",
     albumCoverImageUrl: "",
     trackID: "",
   });
-  const [accessToken, setAccessToken] = useState(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch("/auth/is-authenticated/")
-      .then((response) => response.json())
-      .then((data) => {
-        setIsAuthenticated(data.isAuthenticated);
-        setAccessToken(data.isAuthenticated.accessToken);
-        // if (data.isAuthenticated) {
-        //   fetchCurrentlyPlayingSong();
-        // }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+  const isAuthenticated = !!accessToken;
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
       fetch("/auth/logout/")
         .then((response) => response.json())
         .then((data) => {
-          setIsAuthenticated(false);
+          setAccessToken(null);
           window.location.href = "/";
         })
         .catch((error) => console.error("Error:", error));
