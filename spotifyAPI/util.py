@@ -18,8 +18,9 @@ def is_authenticated(session_id):
         if token.expires_at < timezone.now():
             print("token has expired, getting a new token now")
             refresh_token(session_id)
-        return True
-    return False
+            token = get_user_token(session_id)
+        return {'isAuthenticated': True, 'accessToken': token.access_token, 'expiresAt': token.expires_at}
+    return {'isAuthenticated': False}
 
 
 def is_authenticated_api(request):

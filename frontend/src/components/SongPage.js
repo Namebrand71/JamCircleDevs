@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "./NavBar";
 import Grid from "@mui/material/Grid";
 import Reviews from "./Reviews";
 
-const SongPage = () => {
+const SongPage = ({ onPlay }) => {
   const { spotify_content_id } = useParams();
   const [trackInfo, setTrackInfo] = useState(null);
 
@@ -44,7 +43,7 @@ const SongPage = () => {
       <Grid container spacing={1}>
         {/* Navbar grid item */}
         <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-          <Navbar />
+          {/* <Navbar /> */}
         </Grid>
 
         {/* Songcard grid item */}
@@ -66,6 +65,9 @@ const SongPage = () => {
                   "0" + ((trackInfo.duration_ms % 60000) / 1000).toFixed(0)
                 ).slice(-2)}
               </h2>
+              <button onClick={() => onPlay(spotify_content_id, "track")}>
+                Play Song
+              </button>
             </div>
           ) : (
             <h1>Loading track info...</h1>
