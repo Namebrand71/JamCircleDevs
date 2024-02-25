@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import useInterval from "./hooks/UseInterval";
+import useInterval from "../hooks/UseInterval";
+
+const ACCESS_TOKEN_REFRESH_INTERVAL = 60 * 30 * 1000;
 
 const fetchAuth = () => {
   fetch("/auth/is-authenticated/")
@@ -25,7 +27,7 @@ const Auth = ({ onAuthStateChange }) => {
   };
 
   useEffect(fetchAuth, []);
-  useInterval(fetchAuth, 10000);
+  useInterval(fetchAuth, ACCESS_TOKEN_REFRESH_INTERVAL);
 
   return null;
 };
