@@ -30,9 +30,7 @@ const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <Auth
-          onAuthStateChange={(accessToken) => setAccessToken(accessToken)}
-        />
+        <Auth />
         <Navbar
           spotifyContentId={spotifyContentId}
           spotifyContentType={spotifyContentType}

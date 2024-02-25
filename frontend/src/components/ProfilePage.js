@@ -35,17 +35,10 @@ const ProfilePage = () => {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const { accessToken } = useAuth();
-  console.log("The access token: ", accessToken);
   const isAuthenticated = !!accessToken;
 
-  console.log(
-    "about to useEffect profilepage, isAuthenticated: ",
-    isAuthenticated
-  );
   useEffect(() => {
-    console.log("USEEFFECT CALLED");
     if (isAuthenticated) {
-      console.log("about to load profile");
       loadProfile();
       fetchFriendRequests();
     }
@@ -66,7 +59,6 @@ const ProfilePage = () => {
             ? data.images[1].url
             : `https://ui-avatars.com/api/?name=${data.display_name[0]}&background=2A2A2A&color=FFFFFF&size=200`
         );
-        console.log("CURRENT ID: ", data.id);
         setCurrentSpotifyId(data.id);
       })
       .catch((error) => {
@@ -87,7 +79,6 @@ const ProfilePage = () => {
     try {
       const response = await fetch("/users/get-user-pending-friends/");
       const data = await response.json();
-      console.log(data);
       setFriendRequests(data);
     } catch (error) {
       console.error("Error fetching friend requests:", error);
