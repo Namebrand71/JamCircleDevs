@@ -12,7 +12,7 @@ const HomePage = () => {
       .then((response) => response.json())
       .then((data) => {
         setListeningHistory(data); // Assuming the data is an array of listening history objects
-        console.log(data);
+        // console.log(data);
       })
       .catch((error) => console.error("Error:", error));
   }, []);

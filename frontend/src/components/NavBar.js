@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import PlayerWrapper from "./PlayerWrapper";
+// import PlayerWrapper from "./PlayerWrapper";
 
 const Navbar = ({ spotifyContentId, spotifyContentType }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -46,32 +46,6 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
         })
         .catch((error) => console.error("Error:", error));
     }
-  };
-
-  const fetchCurrentlyPlayingSong = () => {
-    fetch("/auth/currently-playing/")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.isPlaying) {
-          setCurrentSong({
-            songName: data.songName,
-            artistName: data.artistNames,
-            albumCoverImageUrl: data.albumCoverImageUrl,
-            trackID: data.track_id,
-          });
-        } else {
-          // Handle no song playing
-          setCurrentSong({
-            songName: "",
-            artistName: "",
-            albumCoverImageUrl: "",
-            trackID: "",
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching currently playing song:", error);
-      });
   };
 
   const handleSearch = (query) => {
@@ -161,11 +135,11 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
         {isAuthenticated ? "Logout" : "Login"}
       </button>
 
-      <PlayerWrapper
+      {/* <PlayerWrapper
         spotifyContentId={spotifyContentId}
         spotifyContentType={spotifyContentType}
         accessToken={accessToken}
-      />
+      /> */}
 
       {isAuthenticated ? (
         currentSong.songName && currentSong.artistName ? (
