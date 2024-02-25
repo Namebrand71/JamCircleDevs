@@ -2,17 +2,8 @@ import SpotifyPlayer from "react-spotify-web-playback";
 import React, { Component } from "react";
 import { useAuth } from "../contexts/AuthContext";
 
-{
-  /* <SpotifyPlayer
-  token="BQAI_7RWPJuqdZxS-I8XzhkUi9RKr8Q8UUNaJAHwWlpIq6..."
-  uris={["spotify:artist:6HQYnRM4OzToCYPpVBInuU"]}
-/>; */
-}
-
 const PlayerWrapper = ({ spotifyContentId, spotifyContentType }) => {
-  // console.log("rendering player wrapper with access token: ", accessToken);
   const { accessToken } = useAuth();
-  console.log("PLAYER: The access token: ", accessToken);
 
   if (!spotifyContentId) {
     return null;
@@ -40,7 +31,6 @@ const PlayerWrapper = ({ spotifyContentId, spotifyContentType }) => {
       >
         <SpotifyPlayer
           token={accessToken}
-          // token="BQCjdTUa3PD0wbBYsoWXrgvPNESYP86C8Dgw1PhXFcjSgqqcZQlKh12kBmj9XvhxCp7cFJQVwsFowdAERVPuenUMLQIrMhovD-4TUJXN5tDPfqegnNM5RFeNytE_BdbLC8g7l37gQ75ap4kJ0AErKUc0hf7Tupey_vBWYDuHxueYv62aGt36o_XvG5Fib69vX796wYpHnGEqAcptDzV9FMb2dcabZHzP0Pr9EQ"
           uris={[`spotify:${spotifyContentType}:${spotifyContentId}`]}
           play={true}
           layout="responsive"
