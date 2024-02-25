@@ -14,37 +14,25 @@ import SearchResults from "./SearchResults";
 import Navbar from "./NavBar";
 import DummyPlayer from "./DummyPlayer";
 import PlayerWrapper from "./PlayerWrapper";
+import Auth from "./Auth";
 
 const App = () => {
   const [spotifyContentId, setSpotifyContentId] = useState(null);
   const [spotifyContentType, setSpotifyContentType] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handlePlay = (spotifyContentId, spotifyContentType) => {
     setSpotifyContentId(spotifyContentId);
     setSpotifyContentType(spotifyContentType);
   };
 
-  useEffect(() => {
-    fetch("/auth/is-authenticated/")
-      .then((response) => response.json())
-      .then((data) => {
-        setIsAuthenticated(data.isAuthenticated);
-        setAccessToken(data.isAuthenticated.accessToken);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
-
   return (
     <Router>
+      <Auth onAuthStateChange={(accessToken) => setAccessToken(accessToken)} />
       <Navbar
         spotifyContentId={spotifyContentId}
         spotifyContentType={spotifyContentType}
       />
-      {/* <DummyPlayer /> */}
       <PlayerWrapper
         spotifyContentId={spotifyContentId}
         spotifyContentType={spotifyContentType}
