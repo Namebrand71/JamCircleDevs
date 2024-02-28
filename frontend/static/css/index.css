@@ -7,6 +7,7 @@ body {
   /* background-color: rgb(164, 160, 137); */
   background-color: #1b1c1b;
   font-family: "Roboto", sans-serif;
+  color: white;
 }
 
 h1 {
@@ -108,6 +109,20 @@ h2 {
 
 .searchpage li {
   color: white;
+  margin-bottom: 10px;
+  list-style-type: none;
+  min-width: 500px;
+}
+
+.searchpage li:hover {
+  background-color: #151515;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 .login-btn {

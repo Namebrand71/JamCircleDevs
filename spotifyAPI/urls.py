@@ -17,4 +17,7 @@ urlpatterns = [
          search_spotify_albums, name='search_spotify_albums'),
     path('search_spotify_artists/<str:search_query>/',
          search_spotify_artists, name='search_spotify_artists'),
+    path('fetch-spotify-activity/', fetch_spotify_activity,
+         name='fetch_spotify_activity'),
+    path('currently-playing/', get_currently_playing, name='currently_playing'),
 ]

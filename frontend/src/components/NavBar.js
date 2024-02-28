@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import { useAuth } from "../contexts/AuthContext";
 
-const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const Navbar = ({ spotifyContentId, spotifyContentType }) => {
+  const { accessToken, setAccessToken } = useAuth();
+  const [currentSong, setCurrentSong] = useState({
+    songName: "",
+    artistName: "",
+    albumCoverImageUrl: "",
+    trackID: "",
+  });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch("/auth/is-authenticated/")
-      .then((response) => response.json())
-      .then((data) => {
-        setIsAuthenticated(data.isAuthenticated);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+  const isAuthenticated = !!accessToken;
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
       fetch("/auth/logout/")
         .then((response) => response.json())
         .then((data) => {
-          setIsAuthenticated(false);
+          setAccessToken(null);
           window.location.href = "/";
         })
         .catch((error) => console.error("Error:", error));
@@ -122,6 +119,61 @@ const Navbar = () => {
       >
         {isAuthenticated ? "Logout" : "Login"}
       </button>
+
+      {/* <PlayerWrapper
+        spotifyContentId={spotifyContentId}
+        spotifyContentType={spotifyContentType}
+        accessToken={accessToken}
+      /> */}
+
+      {isAuthenticated ? (
+        currentSong.songName && currentSong.artistName ? (
+          <div
+            style={{
+              marginTop: "auto",
+              textAlign: "center",
+              borderTop: "1px solid #fff",
+            }}
+          >
+            <div style={{ marginTop: "20px" }}>Now Playing:</div>
+            <Link
+              to={`/song/${currentSong.trackID}`}
+              style={{ textDecoration: "none" }}
+            >
+              <img
+                src={currentSong.albumCoverImageUrl}
+                alt="Album cover"
+                style={{
+                  maxWidth: "100%",
+                  height: "auto",
+                  borderRadius: "8px",
+                  marginTop: "20px",
+                }}
+              />
+            </Link>
+            <Link
+              to={`/song/${currentSong.trackID}`}
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <div>
+                {currentSong.songName} - {currentSong.artistName}
+              </div>
+            </Link>
+          </div>
+        ) : (
+          // This block renders when no song is currently playing
+          <div
+            style={{ marginTop: "auto", textAlign: "center", color: "white" }}
+          >
+            No song is currently playing.
+          </div>
+        )
+      ) : (
+        // This block can render when the user is not authenticated or as a fallback
+        <div style={{ marginTop: "auto", textAlign: "center", color: "white" }}>
+          Please log in to view the currently playing song.
+        </div>
+      )}
     </nav>
   );
 };

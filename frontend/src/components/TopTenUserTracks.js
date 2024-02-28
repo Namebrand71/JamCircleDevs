@@ -25,7 +25,9 @@ class MyComponent extends React.Component {
 
   componentDidMount() {
     const { spotify_id } = this.props;
-    this.fetchUserTop10Tracks(`/users/get-user-top-10-tracks/${encodeURIComponent(spotify_id)}`);
+    this.fetchUserTop10Tracks(
+      `/users/get-user-top-10-tracks/${encodeURIComponent(spotify_id)}`
+    );
   }
 
   fetchUserTop10Tracks = (url) => {
@@ -44,31 +46,37 @@ class MyComponent extends React.Component {
           Top Tracks
         </Typography>
         <Grid container spacing={1}>
-          {this.state.topTracks.map((track, index) => (
-            <Grid item xs={12} sm={10} md={9} lg={7} key={index}>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "left",
-                  marginBottom: 0.1, // Adds some space between the image and the artist name
-                }}
+          {this.state.topTracks.slice(0, 10).map((track, index) => (
+            <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
+              <Link
+                to={`/song/${track.id}`}
+                style={{ textDecoration: "none", color: "white" }}
               >
-                <Link
-                  to={`/song/${track.id}`}
-                  style={{ textDecoration: "none", color: "white" }}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    marginBottom: 2, // Adds some space between the image and the artist name
+                  }}
                 >
-                  <Typography>
+                  <Box
+                    component="img"
+                    sx={{
+                      height: 100,
+                      width: 100,
+                      // borderRadius: "50%",
+                      marginBottom: 1,
+                    }}
+                    alt={track.name}
+                    src={track.album.images[0].url}
+                  />
+                  <Typography align="center">
                     {index + 1}. {track.name} -{" "}
-                    {track.artist_names.map((artist, index) => (
-                      <span key={index}>
-                        {artist}
-                        {index < track.artist_names.length - 1 && ', '}
-                      </span>
-                    ))}
+                    {track.artists.map((artist) => artist.name).join(", ")}{" "}
                   </Typography>
-                </Link>
-              </Box>
+                </Box>
+              </Link>
             </Grid>
           ))}
         </Grid>

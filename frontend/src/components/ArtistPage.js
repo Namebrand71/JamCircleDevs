@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "./NavBar";
+
 import Grid from "@mui/material/Grid";
 import Reviews from "./Reviews";
 
-const ArtistPage = () => {
+const ArtistPage = ({ onPlay }) => {
   const { spotify_content_id } = useParams();
   const [artistInfo, setArtistInfo] = useState(null);
 
@@ -44,7 +44,7 @@ const ArtistPage = () => {
       <Grid container spacing={1}>
         {/* Navbar grid item */}
         <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
-          <Navbar />
+          {/* <Navbar /> */}
         </Grid>
 
         {/* Artistcard grid item */}
@@ -52,12 +52,19 @@ const ArtistPage = () => {
           {artistInfo ? (
             <div align="center" className="songcard">
               <img
-                src={artistInfo.images[0].url}
+                src={
+                  artistInfo.images && artistInfo.images.length > 0
+                    ? artistInfo.images[0].url
+                    : ""
+                }
                 width="350px"
-                alt="Artist Cover"
+                alt="Missing Artist Picture"
                 style={{ paddingTop: "20px" }}
               />
               <h1>{artistInfo.name}</h1>
+              <button onClick={() => onPlay(spotify_content_id, "artist")}>
+                Play
+              </button>
             </div>
           ) : (
             <h1>Loading artist info...</h1>

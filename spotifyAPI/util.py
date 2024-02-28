@@ -18,8 +18,9 @@ def is_authenticated(session_id):
         if token.expires_at < timezone.now():
             print("token has expired, getting a new token now")
             refresh_token(session_id)
-        return True
-    return False
+            token = get_user_token(session_id)
+        return {'isAuthenticated': True, 'accessToken': token.access_token, 'expiresAt': token.expires_at}
+    return {'isAuthenticated': False}
 
 
 def is_authenticated_api(request):
@@ -102,7 +103,7 @@ def getTop10Artist(request):
     #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
         session_id, "/me/top/artists?limit=10&offset=0", False, False)
-    print("TOPTEN response: ", response)
+    # print("TOPTEN response: ", response)
     artist_list = response.get('items')
     # TODO: Check for 502 status code, if so return an error
     return JsonResponse(artist_list, safe=False)
@@ -116,7 +117,6 @@ def getTop10Tracks(request):
     # print(response)
     track_list = response.get('items')
     return JsonResponse(track_list, safe=False)
-
 
 
 def getPlaylists(request):
