@@ -61,10 +61,12 @@ def spotfy_callback(request, format=None):
     user_data = getUserJSON(request.session.session_key)
 
     pre_top_10_tracks = json.loads(getTop10Tracks(request).content.decode())
+    print(pre_top_10_tracks)
     top_10_tracks = [
         {
             'id': track['id'],
             'name': track['name'],
+            'image_url': track['url'],
             'artist_names': [artist['name'] for artist in track['album']['artists']]
         }
         for track in pre_top_10_tracks

@@ -59,9 +59,13 @@ def getUserPlaylists(request, spotify_id):
 
 def isSessionUser(request, spotify_id):
     current_user = getUserFromSession(request.session.session_key)
-    if current_user.spotify_id == spotify_id:
-        print('found!')
-        return JsonResponse(True, safe=False)
+    if current_user is None:
+        if current_user.spotify_id == spotify_id:
+            print('found!')
+            return JsonResponse(True, safe=False)
+        else:
+            print('Not Found!')
+            return JsonResponse(False, safe=False)
     else:
         print('Not Found!')
         return JsonResponse(False, safe=False)

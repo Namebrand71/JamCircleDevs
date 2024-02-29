@@ -69,7 +69,7 @@ class MyComponent extends React.Component {
                       marginBottom: 1,
                     }}
                     alt={track.name}
-                    src={track.album.images[0].url}
+                    src={track.image_url}
                   />
                   <Typography align="center">
                     {index + 1}. {track.name} -{" "}
