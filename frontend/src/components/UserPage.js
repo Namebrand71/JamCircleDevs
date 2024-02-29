@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import Navbar from "./NavBar";
 import TopTenUserTracks from "./TopTenUserTracks";
 import TopTenUserArtists from "./TopTenUserArtists";
 import UserPlaylists from "./UserPlaylists";
 import FriendRequestButton from "./FriendRequestButton";
-import { Link } from 'react-router-dom';  // Import Link from react-router-dom
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import Button from "@mui/material/Button";
 const UserPage = () => {
   const { spotify_id } = useParams();
@@ -17,10 +16,12 @@ const UserPage = () => {
   useEffect(() => {
     const checkSessionUser = async () => {
       try {
-        const response = await fetch(`/users/is-session-user/${encodeURIComponent(spotify_id)}/`);
+        const response = await fetch(
+          `/users/is-session-user/${encodeURIComponent(spotify_id)}/`
+        );
         if (response.ok) {
           const isSessionUser = await response.json();
-          console.log(isSessionUser)
+          console.log(isSessionUser);
           setIsSessionUser(isSessionUser);
         } else {
           console.error("Failed to check session user");
@@ -32,7 +33,9 @@ const UserPage = () => {
 
     const callDjangoAPI = async (spotify_id) => {
       try {
-        const response = await fetch(`/users/get_user_info/${encodeURIComponent(spotify_id)}/`);
+        const response = await fetch(
+          `/users/get_user_info/${encodeURIComponent(spotify_id)}/`
+        );
 
         if (response.ok) {
           const data = await response.json();
@@ -46,16 +49,21 @@ const UserPage = () => {
       }
     };
 
-    // Call the functions 
+    // Call the functions
     checkSessionUser();
     callDjangoAPI(spotify_id);
   }, [spotify_id]);
 
   return (
     <div className="userpage">
-      <Grid container spacing={1} alignItems={"flex-start"} style={{ marginLeft: "220px" }}>
+      <Grid
+        container
+        spacing={1}
+        alignItems={"flex-start"}
+        style={{ marginLeft: "220px" }}
+      >
         <Grid item xs={12} align="right">
-          <Navbar />
+          {/* <Navbar /> */}
         </Grid>
         {UserInfo && (
           <>
@@ -66,11 +74,9 @@ const UserPage = () => {
                 className="ProfilePicture"
                 alt="Profile"
               />
-                  <Link to={`/friends/${spotify_id}`}>
-                  <Button variant="contained">
-                    Friends
-                  </Button>
-                </Link>
+              <Link to={`/friends/${spotify_id}`}>
+                <Button variant="contained">Friends</Button>
+              </Link>
             </Grid>
             <Grid item xs={11} style={{ paddingLeft: "28px" }}>
               <h1>

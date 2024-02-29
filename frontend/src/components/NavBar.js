@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import { useAuth } from "../contexts/AuthContext";
 
-const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const Navbar = ({ spotifyContentId, spotifyContentType }) => {
+  const { accessToken, setAccessToken } = useAuth();
   const [currentSong, setCurrentSong] = useState({
     songName: "",
     artistName: "",
@@ -12,26 +12,14 @@ const Navbar = () => {
   });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetch("/auth/is-authenticated/")
-      .then((response) => response.json())
-      .then((data) => {
-        setIsAuthenticated(data.isAuthenticated);
-        if (data.isAuthenticated) {
-          fetchCurrentlyPlayingSong();
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+  const isAuthenticated = !!accessToken;
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
       fetch("/auth/logout/")
         .then((response) => response.json())
         .then((data) => {
-          setIsAuthenticated(false);
+          setAccessToken(null);
           window.location.href = "/";
         })
         .catch((error) => console.error("Error:", error));
@@ -43,32 +31,6 @@ const Navbar = () => {
         })
         .catch((error) => console.error("Error:", error));
     }
-  };
-
-  const fetchCurrentlyPlayingSong = () => {
-    fetch("/auth/currently-playing/")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.isPlaying) {
-          setCurrentSong({
-            songName: data.songName,
-            artistName: data.artistNames,
-            albumCoverImageUrl: data.albumCoverImageUrl,
-            trackID: data.track_id,
-          });
-        } else {
-          // Handle no song playing
-          setCurrentSong({
-            songName: "",
-            artistName: "",
-            albumCoverImageUrl: "",
-            trackID: "",
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching currently playing song:", error);
-      });
   };
 
   const handleSearch = (query) => {
@@ -157,6 +119,12 @@ const Navbar = () => {
       >
         {isAuthenticated ? "Logout" : "Login"}
       </button>
+
+      {/* <PlayerWrapper
+        spotifyContentId={spotifyContentId}
+        spotifyContentType={spotifyContentType}
+        accessToken={accessToken}
+      /> */}
 
       {isAuthenticated ? (
         currentSong.songName && currentSong.artistName ? (
