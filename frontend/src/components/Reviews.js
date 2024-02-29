@@ -1,5 +1,21 @@
 // Reviews.js
 import React, { useEffect, useState } from "react";
+import { Container, Typography,
+  TextField, Rating, Button, Box, Paper, Stack } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: '#1b1c1b',
+      paper: '#252525',
+    },
+    primary: {
+      main: '#cccccc',
+    },
+  },
+});
 
 const Reviews = ({ spotifyContentId }) => {
   const [reviews, setReviews] = useState([]);
@@ -69,54 +85,56 @@ const Reviews = ({ spotifyContentId }) => {
   };
 
   return (
-    <div className="review-container">
-      <h2>Reviews</h2>
-
-      <div className="review-form-container">
-        <form onSubmit={postReview}>
-          <textarea
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="md" sx={{ mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Reviews
+        </Typography>
+        <Box component="form" onSubmit={postReview} noValidate sx={{ mb: 2 }}>
+          <TextField
+            fullWidth
+            multiline
+            minRows={3}
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             placeholder="Write your review here..."
+            margin="normal"
             required
           />
-          <input
-            type="number"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-            min="0.5"
-            max="5"
-            step="0.5"
-            required
-          />
-          <button type="submit">Submit Review</button>
-        </form>
-      </div>
-
-      {reviews.length > 0 ? (
-        reviews.map((review, index) => (
-          <div key={index} className="review-box">
-            <div className="review-details">
-              <p className="author-rating-date">
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Rating
+              name="rating"
+              value={rating}
+              onChange={(event, newValue) => {
+                setRating(newValue);
+              }}
+              precision={0.5}
+            />
+            <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1 }} size="small">
+              Submit Review
+            </Button>
+          </Stack>
+        </Box>
+        {reviews.length > 0 ? (
+          reviews.map((review, index) => (
+            <Paper key={index} sx={{ p: 2, mb: 2 }}>
+              <Typography variant="subtitle1" gutterBottom>
                 <strong>Author:</strong> {review.author_display_name}
-              </p>
-              <p className="author-rating-date">
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
                 <strong>Rating:</strong> {review.rating}
-              </p>
-              <p className="author-rating-date">
-                <strong>Posted on:</strong>{" "}
-                {new Date(review.posted_at).toLocaleDateString()}
-              </p>
-            </div>
-            <div className="review-text">
-              <p>{review.text}</p>
-            </div>
-          </div>
-        ))
-      ) : (
-        <h1>No reviews yet.</h1>
-      )}
-    </div>
+              </Typography>
+              <Typography variant="subtitle1" gutterBottom>
+                <strong>Posted on:</strong> {new Date(review.posted_at).toLocaleDateString()}
+              </Typography>
+              <Typography variant="body1">{review.text}</Typography>
+            </Paper>
+          ))
+        ) : (
+          <Typography variant="h6">No reviews yet.</Typography>
+        )}
+      </Container>
+    </ThemeProvider>
   );
 };
 
