@@ -91,18 +91,10 @@ def all_review_history(request, spotify_id):
     # Creating a list of dictionaries for each listening data entry
     listening_data_list = [
         {
-            'user_display_name': item.user.display_name,
-            'track_id': item.track_spotify_id,
-            'track_name': item.track_name,
-            'artist_names': item.artist_names,
-            'album_name': item.album_name,
-            'played_at': item.played_at.isoformat(),
-            'album_image_url': item.album_image_url,
-            'track_preview_url': item.track_preview_url,
-            'external_urls': item.external_urls,
-            'duration_ms': item.duration_ms,
-            'explicit': item.explicit,
-            'user_profile_image': item.user.profile_pic_url,
+            "author_display_name": item.author_display_name,
+            "rating": review.rating,
+            "text": review.text,
+            "posted_at": review.posted_at,
         }
         for item in history_items
     ]

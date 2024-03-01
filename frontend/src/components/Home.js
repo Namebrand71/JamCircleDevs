@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import SearchBar from "./SearchBar";
 import { useAuth } from "../contexts/AuthContext";
+import Leaderboard from "./LeaderBoard";
 
 const HomePage = () => {
   const [listeningHistory, setListeningHistory] = useState([]);
