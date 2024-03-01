@@ -55,29 +55,45 @@ const FriendsPage = () => {
   };
 
   return (
-    <div className="friendspage">
-      <Grid
-        container
-        spacing={1}
-        alignItems={"flex-start"}
-        style={{ marginLeft: "250px" }}
-      >
-        <Grid item xs={12} align="right">
-          {/* <Navbar /> */}
-        </Grid>
-        <Grid item align="left" xs={12}>
-          <h2>{userDisplayName}'s Friends</h2>
+    <Grid
+      container
+      spacing={1}
+      columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
+    >
+      {/* Navbar Grid item */}
+      <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
+        {/* <Navbar /> */}
+      </Grid>
+
+      {/* Content Grid item */}
+      <Grid item xs={4} sm={4} md={8} lg={16} xl={16}>
+        <Grid container spacing={1} alignItems="flex-start">
+          <Grid
+            item
+            xs={12}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "28px",
+              borderBottom: "2px solid #2a2a2a",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <h2>{userDisplayName}'s Friends</h2>
+            </div>
+          </Grid>
           {loading ? (
             <h3>Loading...</h3>
           ) : (
             <div>
               {results && results.length > 0 ? (
-                <ul>
+                <ul className="searchpage">
                   {results.map((item, index) => (
-                    <li key={index}>
+                    <li key={index} className="list-item">
                       <Link
                         to={`/user/${item.spotify_id}`}
-                        style={{ textDecoration: "none", color: "black" }}
+                        style={{ textDecoration: "none", color: "white" }}
                       >
                         {renderContent(item)}
                       </Link>
@@ -91,7 +107,7 @@ const FriendsPage = () => {
           )}
         </Grid>
       </Grid>
-    </div>
+    </Grid>
   );
 };
 
