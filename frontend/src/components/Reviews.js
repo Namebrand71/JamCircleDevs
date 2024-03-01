@@ -1,18 +1,26 @@
 // Reviews.js
 import React, { useEffect, useState } from "react";
-import { Container, Typography,
-  TextField, Rating, Button, Box, Paper, Stack } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+  Container,
+  Typography,
+  TextField,
+  Rating,
+  Button,
+  Box,
+  Paper,
+  Stack,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
+    mode: "dark",
     background: {
-      default: '#1b1c1b',
-      paper: '#252525',
+      default: "#1b1c1b",
+      paper: "#252525",
     },
     primary: {
-      main: '#cccccc',
+      main: "#cccccc",
     },
   },
 });
@@ -101,20 +109,30 @@ const Reviews = ({ spotifyContentId }) => {
             margin="normal"
             required
           />
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Rating
-              name="rating"
-              value={rating}
-              onChange={(event, newValue) => {
-                setRating(newValue);
-              }}
-              precision={0.5}
-            />
-            <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1 }} size="small">
-              Submit Review
-            </Button>
-          </Stack>
         </Box>
+        <Stack
+          direction="column"
+          spacing={2}
+          alignItems="center"
+          style={{ paddingBottom: "30px" }}
+        >
+          <Rating
+            name="rating"
+            value={rating}
+            onChange={(event, newValue) => {
+              setRating(newValue);
+            }}
+            precision={0.5}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ mt: 2, mb: 1 }}
+            size="small"
+          >
+            Submit Review
+          </Button>
+        </Stack>
         {reviews.length > 0 ? (
           reviews.map((review, index) => (
             <Paper key={index} sx={{ p: 2, mb: 2 }}>
@@ -125,7 +143,8 @@ const Reviews = ({ spotifyContentId }) => {
                 <strong>Rating:</strong> {review.rating}
               </Typography>
               <Typography variant="subtitle1" gutterBottom>
-                <strong>Posted on:</strong> {new Date(review.posted_at).toLocaleDateString()}
+                <strong>Posted on:</strong>{" "}
+                {new Date(review.posted_at).toLocaleDateString()}
               </Typography>
               <Typography variant="body1">{review.text}</Typography>
             </Paper>

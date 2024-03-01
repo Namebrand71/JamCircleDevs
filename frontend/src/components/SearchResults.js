@@ -62,12 +62,6 @@ const SearchResults = () => {
     }
   };
 
-  function check({ item }) {
-    if (!("images" in item)) {
-      return false;
-    }
-  }
-
   return (
     <Grid
       container

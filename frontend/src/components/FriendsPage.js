@@ -60,7 +60,7 @@ const FriendsPage = () => {
         container
         spacing={1}
         alignItems={"flex-start"}
-        style={{ marginLeft: "220px" }}
+        style={{ marginLeft: "250px" }}
       >
         <Grid item xs={12} align="right">
           {/* <Navbar /> */}
