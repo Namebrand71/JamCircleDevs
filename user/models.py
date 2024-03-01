@@ -25,9 +25,10 @@ class User(models.Model):
     pending_friend_requests = models.ManyToManyField("Friend_Request", blank=True)
 
     #Stats to Track
-    unique_artists = models.JSONField(default=dict)
-    unique_genres = models.JSONField(default=dict)
-    num_popularity = models.JSONField(default=dict)
+    unique_songs = models.IntegerField(default=0)
+    unique_artists = models.IntegerField(default=0)
+    high_popularity_tracks = models.IntegerField(default=0)
+    low_popularity_tracks = models.IntegerField(default=0)
 
 
     def __str__(self):
