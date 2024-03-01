@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import SearchBar from "./SearchBar";
+import { useAuth } from "../contexts/AuthContext";
+import Leaderboard from "./LeaderBoard";
 
 const HomePage = () => {
   const [listeningHistory, setListeningHistory] = useState([]);
+  const [spotifyUsername, setSpotifyUsername] = useState("Loading...");
+  const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
+  const { accessToken } = useAuth();
+  const isAuthenticated = !!accessToken;
 
   useEffect(() => {
     // Fetch listening history when the component mounts
@@ -14,7 +20,22 @@ const HomePage = () => {
         setListeningHistory(data); // Assuming the data is an array of listening history objects
       })
       .catch((error) => console.error("Error:", error));
-  }, []);
+    fetch("/auth/profile/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSpotifyUsername(data.display_name);
+        setCurrentSpotifyId(data.id);
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        setSpotifyUsername("Loading...");
+      });
+  }, [isAuthenticated]);
 
   return (
     <Grid
@@ -41,7 +62,9 @@ const HomePage = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <h1>Home</h1>
+          <h1 style={{ fontSize: "3rem" }}>
+            {isAuthenticated ? "Welcome " + spotifyUsername : "Not Logged in"}
+          </h1>
         </div>
         <SearchBar onSearch={() => {}} />
       </Grid>
@@ -78,6 +101,21 @@ const HomePage = () => {
             </div>
           </Link>
         ))}
+      </Grid>
+      <Grid
+        item
+        xs={4}
+        sm={4}
+        md={8}
+        lg={16}
+        xl={16}
+        style={{ marginLeft: "280px" }}
+      >
+        {/* Render listening history */}
+
+        <br />
+        <h2>LeaderBoard</h2>
+          <Leaderboard/>
       </Grid>
     </Grid>
   );

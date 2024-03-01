@@ -55,6 +55,21 @@ def get_track_info(request):
 
     return JsonResponse(response)
 
+@api_view(['POST'])
+def get_album_info(request):
+    print("get_album_info called with arg: ",
+          request.data.get('spotify_content_id'))
+
+    print("SESSIONID: ", request.session.session_key)
+
+    endpoint = '/albums/' + request.data.get('spotify_content_id')
+
+    response = spotify_api_request(
+        request.session.session_key, endpoint, False, False)
+    print(response)
+
+    return JsonResponse(response)
+
 
 @api_view(['POST'])
 def get_reviews(request):

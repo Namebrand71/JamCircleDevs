@@ -46,52 +46,88 @@ const FriendsPage = () => {
       <div>
         <img
           src={item.profile_pic_url}
+          width="100px"
           alt="Profile"
-          style={{ width: "50px", height: "50px" }}
+          style={{
+            paddingRight: "20px",
+            paddingTop: "5px",
+            paddingBottom: "2px",
+            width: "80px",
+            maxHeight: "80px",
+          }}
         />
-        <span>{item.display_name}</span>
+        <span
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "18px",
+            fontWeight: "bold",
+            paddingBottom: "5px",
+          }}
+        >
+          {item.display_name}
+        </span>
       </div>
     );
   };
 
   return (
-    <div className="friendspage">
-      <Grid
-        container
-        spacing={1}
-        alignItems={"flex-start"}
-        style={{ marginLeft: "220px" }}
-      >
-        <Grid item xs={12} align="right">
-          {/* <Navbar /> */}
-        </Grid>
-        <Grid item align="left" xs={12}>
-          <h2>{userDisplayName}'s Friends</h2>
+    <Grid
+      container
+      spacing={1}
+      columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
+    >
+      {/* Navbar Grid item */}
+      <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
+        {/* <Navbar /> */}
+      </Grid>
+
+      {/* Content Grid item */}
+      <Grid item xs={4} sm={4} md={8} lg={16} xl={16}>
+        <Grid container spacing={1} alignItems="flex-start">
+          <Grid
+            item
+            xs={12}
+            style={{
+              borderBottom: "2px solid #2a2a2a",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <h1>{userDisplayName}'s Friends</h1>
+            </div>
+          </Grid>
           {loading ? (
-            <h3>Loading...</h3>
+            <h2>Loading...</h2>
           ) : (
             <div>
               {results && results.length > 0 ? (
-                <ul>
+                <ul className="searchpage">
                   {results.map((item, index) => (
-                    <li key={index}>
+                    <li key={index} className="list-item">
                       <Link
                         to={`/user/${item.spotify_id}`}
-                        style={{ textDecoration: "none", color: "black" }}
+                        style={{ textDecoration: "none", color: "white" }}
                       >
-                        {renderContent(item)}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          {renderContent(item)}
+                        </div>
                       </Link>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p>No friends found.</p>
+                <h2>No friends found.</h2>
               )}
             </div>
           )}
         </Grid>
       </Grid>
-    </div>
+    </Grid>
   );
 };
 
