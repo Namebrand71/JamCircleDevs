@@ -13,33 +13,32 @@ const HomePage = () => {
   const isAuthenticated = !!accessToken;
 
   useEffect(() => {
-    // Fetch listening history when the component mounts
-    if (isAuthenticated) {
-      fetch("/api/all-listening-history/${encodeURIComponent(spotify_id)}")
-        .then((response) => response.json())
-        .then((data) => {
-          setListeningHistory(data); // Assuming the data is an array of listening history objects
-        })
-        .catch((error) => console.error("Error:", error));
-    }
+    const fetchData = async () => {
+      try {
+        const profileResponse = await fetch("/auth/profile/");
+        if (!profileResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const profileData = await profileResponse.json();
+        setSpotifyUsername(profileData.display_name);
+        setCurrentSpotifyId(profileData.id);
 
-    if (isAuthenticated) {
-      fetch("/auth/profile/")
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
+        if (isAuthenticated) {
+          const historyResponse = await fetch(`/api/all-listening-history/${encodeURIComponent(profileData.id)}`);
+          if (historyResponse.ok) {
+            const historyData = await historyResponse.json();
+            setListeningHistory(historyData);
+          } else {
+            console.error("Failed to fetch listening history");
           }
-          return response.json();
-        })
-        .then((data) => {
-          setSpotifyUsername(data.display_name);
-          setCurrentSpotifyId(data.id);
-        })
-        .catch((error) => {
-          console.error("Fetch error:", error);
-          setSpotifyUsername("Loading...");
-        });
-    }
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setSpotifyUsername("Loading...");
+      }
+    };
+
+    fetchData();
   }, [isAuthenticated]);
 
   const displayedHistory = showAll ? listeningHistory : listeningHistory.slice(0, 10);
