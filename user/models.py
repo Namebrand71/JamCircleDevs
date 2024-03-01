@@ -15,7 +15,7 @@ class User(models.Model):
     )
     email = models.EmailField(
         max_length=100, unique=True, null=True, blank=True)
-    profile_pic_url = models.URLField(max_length=200, blank=True, null=True)
+    profile_pic_url = models.URLField(max_length=500, blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
     product_type = models.CharField(max_length=50, blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True)
