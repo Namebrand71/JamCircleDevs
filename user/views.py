@@ -151,10 +151,3 @@ def cancelFriendRequest(request, spotify_id):
     else:
         return HttpResponse('Error canceling friend request')
 
-
-def get_total_listening_time(user):
-    total_time = ListeningData.objects.filter(user=user).aggregate(
-        total_time_listened=Sum('duration_ms'))['total_time_listened']
-    if total_time is None:
-        total_time = 0
-    return total_time
