@@ -65,7 +65,8 @@ def spotfy_callback(request, format=None):
         {
             'id': track['id'],
             'name': track['name'],
-            'artist_names': [artist['name'] for artist in track['album']['artists']]
+            'artist_names': [artist['name'] for artist in track['album']['artists']],
+            'image_url': track['album']['images'][0]['url']
         }
         for track in pre_top_10_tracks
     ]
