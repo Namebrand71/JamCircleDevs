@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import SearchBar from "./SearchBar";
 import { useAuth } from "../contexts/AuthContext";
+import Leaderboard from "./LeaderBoard";
 
 const HomePage = () => {
   const [listeningHistory, setListeningHistory] = useState([]);
@@ -100,6 +101,21 @@ const HomePage = () => {
             </div>
           </Link>
         ))}
+      </Grid>
+      <Grid
+        item
+        xs={4}
+        sm={4}
+        md={8}
+        lg={16}
+        xl={16}
+        style={{ marginLeft: "280px" }}
+      >
+        {/* Render listening history */}
+
+        <br />
+        <h2>LeaderBoard</h2>
+          <Leaderboard/>
       </Grid>
     </Grid>
   );
