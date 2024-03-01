@@ -154,33 +154,21 @@ def save_spotify_listening_history(user, response_data):
                 explicit=track['explicit'],
             )
 
-def get_spotify_activity():
+def get_spotify_activity(request):
 
     user_list = ''
     endpoint = '/me/player/recently-played?limit=50'
 
-    for user in User.objects.all():
-        user_list += user.display_name
-        user_token = user.token
+    token = get_user_token(request.session.session_key)
+    user = User.objects.filter(token=token).first()
 
-        if user_token.expires_at < timezone.now():
-            print("token has expired, getting a new token now")
-            refresh_token(user_token.session_id)
+    response = spotify_api_request(
+        request.session.session_key, endpoint, False, False)
+    print(response)
+    save_spotify_listening_history(user, response)
+    print(
+        f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
 
-        header = {'Content-Type': 'application/json',
-                  'Authorization': "Bearer " + user_token.access_token}
-        response = get(SPOTIFY_URL + endpoint, headers=header)
-
-        if response.status_code == 200:
-            response_data = response.json()
-            save_spotify_listening_history(user, response_data)
-        else:
-            print(f"Failed to fetch Spotify activity for {user.display_name}")
-
-        print(
-            f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
-
-        # print(response.json())
 
 def get_total_listening_time(user):
     total_time = ListeningData.objects.filter(user=user).aggregate(

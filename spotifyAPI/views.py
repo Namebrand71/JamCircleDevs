@@ -76,6 +76,7 @@ def spotfy_callback(request, format=None):
     pre_top_10_artists = json.loads(getTop10Artist(request).content.decode())
     top_10_artists = [{'id': item['id'], 'name': item['name'],
                        'image_url': item['images'][0]['url']} for item in pre_top_10_artists]
+    
 
     user_defaults = {
         'display_name': user_data.get('display_name'),
@@ -91,6 +92,8 @@ def spotfy_callback(request, format=None):
 
     user, created = User.objects.update_or_create(
         spotify_id=user_data['id'], defaults=user_defaults)
+    
+    fetch_spotify_activity(request)
 
     return redirect('frontend:profile')
 
@@ -153,33 +156,24 @@ def search_spotify_artists(request, search_query):
 def fetch_spotify_activity(request):
     print("fetch_spotify_activity called")
 
-    user_list = ''
     endpoint = '/me/player/recently-played?limit=50'
 
     for user in User.objects.all():
-        user_list += user.display_name
         user_token = user.token
 
-        if user_token.expires_at < timezone.now():
-            print("token has expired, getting a new token now")
-            refresh_token(user_token.session_id)
+        if user_token is not None:
 
-        header = {'Content-Type': 'application/json',
-                  'Authorization': "Bearer " + user_token.access_token}
-        response = get(SPOTIFY_URL + endpoint, headers=header)
+            is_authenticated(user_token.session_id)
 
-        if response.status_code == 200:
-            response_data = response.json()
-            save_spotify_listening_history(user, response_data)
-        else:
-            print(f"Failed to fetch Spotify activity for {user.display_name}")
+            response = spotify_api_request(
+            user_token.session_id, endpoint, False, False)
+            #print(response)
+            save_spotify_listening_history(user, response)
+            print(f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
 
-        print(
-            f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
+            # print(response.json())
 
-        # print(response.json())
-
-    return JsonResponse(response.json(), safe=False)
+    return JsonResponse(response, safe=False)
 
 
 def get_currently_playing(request):

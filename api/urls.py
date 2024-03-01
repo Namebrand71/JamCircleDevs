@@ -5,4 +5,6 @@ urlpatterns = [
     path('profile', ProfileView.as_view()),
     path('all-listening-history/', all_listening_history,
          name='all_listening_history')
+    #path('all-review-history/', all_review_history,
+    #     name='all_review_history')
 ]
