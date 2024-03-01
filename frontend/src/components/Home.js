@@ -15,7 +15,7 @@ const HomePage = () => {
   useEffect(() => {
     // Fetch listening history when the component mounts
     if (isAuthenticated) {
-      fetch("/api/all-listening-history/")
+      fetch("/api/all-listening-history/${encodeURIComponent(spotify_id)}")
         .then((response) => response.json())
         .then((data) => {
           setListeningHistory(data); // Assuming the data is an array of listening history objects

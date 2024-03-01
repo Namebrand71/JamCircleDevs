@@ -7,6 +7,8 @@ from spotifyAPI.models import ListeningData
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from collections import defaultdict
+from django.shortcuts import get_object_or_404
+from user.models import User
 
 # Create your views here.
 
@@ -16,7 +18,7 @@ class ProfileView(generics.ListAPIView):
     serializer_class = ProfileSerializer
 
 
-def all_listening_history(request):
+def all_listening_history(request, spotify_id):
 
     history_items = ListeningData.objects.all().order_by(
         '-played_at').select_related('user')
@@ -67,3 +69,34 @@ def all_listening_history(request):
         print(item)
 
     return JsonResponse(list(history), safe=False)
+
+
+def all_review_history(request, spotify_id):
+
+    user = get_object_or_404(User, spotify_id=spotify_id)
+
+    friends_ids = user.friends.values_list('spotify_id', flat=True)
+
+    # Filter history_items to include only friends
+    history_items = ListeningData.objects.filter(user__id__in=friends_ids).order_by('-played_at').select_related('user')
+
+    # Creating a list of dictionaries for each listening data entry
+    listening_data_list = [
+        {
+            'user_display_name': item.user.display_name,
+            'track_id': item.track_spotify_id,
+            'track_name': item.track_name,
+            'artist_names': item.artist_names,
+            'album_name': item.album_name,
+            'played_at': item.played_at.isoformat(),
+            'album_image_url': item.album_image_url,
+            'track_preview_url': item.track_preview_url,
+            'external_urls': item.external_urls,
+            'duration_ms': item.duration_ms,
+            'explicit': item.explicit,
+            'user_profile_image': item.user.profile_pic_url,
+        }
+        for item in history_items
+    ]
+
+    return JsonResponse(listening_data_list, safe=False)
