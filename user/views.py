@@ -158,3 +158,7 @@ def get_total_listening_time(user):
     if total_time is None:
         total_time = 0
     return total_time
+
+def count_unique_artists(request):
+    user = getUserFromSession(request.session.session_key)
+    

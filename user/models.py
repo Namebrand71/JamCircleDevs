@@ -2,15 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-#Init function to fill in defaults for time-based stats
-#Time bounds are 1month, 3months, 1yr
-def init_stats():
-    return {
-        "past_month": 0,
-        "past_3_months": 0,
-        "past_year": 0
-    }
-
 class User(models.Model):
     spotify_id = models.CharField(max_length=50, unique=True)
     display_name = models.CharField(max_length=100)
@@ -34,9 +25,9 @@ class User(models.Model):
     pending_friend_requests = models.ManyToManyField("Friend_Request", blank=True)
 
     #Stats to Track
-    unique_artists = models.JSONField(default=init_stats)
-    unique_genres = models.JSONField(default=init_stats)
-
+    unique_artists = models.JSONField(default=dict)
+    unique_genres = models.JSONField(default=dict)
+    num_popularity = models.JSONField(default=dict)
 
 
     def __str__(self):
