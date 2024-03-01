@@ -109,30 +109,31 @@ const Reviews = ({ spotifyContentId }) => {
             margin="normal"
             required
           />
-        </Box>
-        <Stack
-          direction="column"
-          spacing={2}
-          alignItems="center"
-          style={{ paddingBottom: "30px" }}
-        >
-          <Rating
-            name="rating"
-            value={rating}
-            onChange={(event, newValue) => {
-              setRating(newValue);
-            }}
-            precision={0.5}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ mt: 2, mb: 1 }}
-            size="small"
+
+          <Stack
+            direction="column"
+            spacing={2}
+            alignItems="center"
+            style={{ paddingBottom: "30px" }}
           >
-            Submit Review
-          </Button>
-        </Stack>
+            <Rating
+              name="rating"
+              value={rating}
+              onChange={(event, newValue) => {
+                setRating(newValue);
+              }}
+              precision={0.5}
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 2, mb: 1 }}
+              size="small"
+            >
+              Submit Review
+            </Button>
+          </Stack>
+        </Box>
         {reviews.length > 0 ? (
           reviews.map((review, index) => (
             <Paper key={index} sx={{ p: 2, mb: 2 }}>
