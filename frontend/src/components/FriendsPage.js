@@ -72,19 +72,15 @@ const FriendsPage = () => {
             item
             xs={12}
             style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "28px",
               borderBottom: "2px solid #2a2a2a",
             }}
           >
             <div style={{ display: "flex", alignItems: "center" }}>
-              <h2>{userDisplayName}'s Friends</h2>
+              <h1>{userDisplayName}'s Friends</h1>
             </div>
           </Grid>
           {loading ? (
-            <h3>Loading...</h3>
+            <h2>Loading...</h2>
           ) : (
             <div>
               {results && results.length > 0 ? (
@@ -101,7 +97,7 @@ const FriendsPage = () => {
                   ))}
                 </ul>
               ) : (
-                <p>No friends found.</p>
+                <h2>No friends found.</h2>
               )}
             </div>
           )}
