@@ -46,10 +46,27 @@ const FriendsPage = () => {
       <div>
         <img
           src={item.profile_pic_url}
+          width="100px"
           alt="Profile"
-          style={{ width: "50px", height: "50px" }}
+          style={{
+            paddingRight: "20px",
+            paddingTop: "5px",
+            paddingBottom: "2px",
+            width: "80px",
+            maxHeight: "80px",
+          }}
         />
-        <span>{item.display_name}</span>
+        <span
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "18px",
+            fontWeight: "bold",
+            paddingBottom: "5px",
+          }}
+        >
+          {item.display_name}
+        </span>
       </div>
     );
   };
@@ -91,7 +108,14 @@ const FriendsPage = () => {
                         to={`/user/${item.spotify_id}`}
                         style={{ textDecoration: "none", color: "white" }}
                       >
-                        {renderContent(item)}
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          {renderContent(item)}
+                        </div>
                       </Link>
                     </li>
                   ))}
