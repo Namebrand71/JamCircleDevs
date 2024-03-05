@@ -14,16 +14,6 @@ from rest_framework.response import Response
 from user.views import getUserFromSession
 
 
-
-# Create your views here.
-
-def lobby(request):
-    return render(request, 'base/lobby.html')
-
-def room(request):
-    return render(request, 'base/room.html')
-
-
 def make_token(displayName, channelName, role):
     appId = "YOUR APP ID"
     appCertificate = "YOUR APP CERTIFICATE"
