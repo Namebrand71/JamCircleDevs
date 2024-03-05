@@ -11,6 +11,7 @@ import {
   Stack,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { format } from "date-fns";
 
 const theme = createTheme({
   palette: {
@@ -61,7 +62,7 @@ const Reviews = ({ spotifyContentId }) => {
   const postReview = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-
+    
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/reviews/post_review/`,
@@ -94,7 +95,7 @@ const Reviews = ({ spotifyContentId }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="md" sx={{ mt: 4 }}>
+      <Container component="main" maxWidth="md" sx={{ mt: 4,mb: 4 }}>
         <Typography variant="h4" gutterBottom>
           Reviews
         </Typography>
@@ -108,13 +109,14 @@ const Reviews = ({ spotifyContentId }) => {
             placeholder="Write your review here..."
             margin="normal"
             required
+            sx={{ width: "50%" }}
           />
 
           <Stack
             direction="column"
             spacing={2}
             alignItems="center"
-            style={{ paddingBottom: "30px" }}
+            style={{ paddingBottom: "30px", width:'50%', margin: "auto" }}
           >
             <Rating
               name="rating"
@@ -127,8 +129,9 @@ const Reviews = ({ spotifyContentId }) => {
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 2, mb: 1 }}
               size="small"
+              sx={{ mt: 2, mb: 1, width: "50%" }}
+              disabled={submitting}
             >
               Submit Review
             </Button>
@@ -136,18 +139,17 @@ const Reviews = ({ spotifyContentId }) => {
         </Box>
         {reviews.length > 0 ? (
           reviews.map((review, index) => (
-            <Paper key={index} sx={{ p: 2, mb: 2 }}>
-              <Typography variant="subtitle1" gutterBottom>
-                <strong>Author:</strong> {review.author_display_name}
+            <Paper key={index} sx={{ p: 2, mb: 2, maxWidth: "100%" }}>
+              <Typography variant="body1" paragraph>
+                {review.text}
               </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                <strong>Rating:</strong> {review.rating}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                <strong>Posted on:</strong>{" "}
-                {new Date(review.posted_at).toLocaleDateString()}
-              </Typography>
-              <Typography variant="body1">{review.text}</Typography>
+              <Rating value={review.rating} precision={0.5} readOnly size="small" />
+              <Box display="flex" justifyContent="center" alignItems="center">
+                {/* Smaller text for author and date */}
+                <Typography variant="caption" display="block"  style={{ textAlign: "center" }} gutterBottom>
+                    {review.author_display_name} · {format(new Date(review.posted_at), "PPpp")}
+                </Typography>
+              </Box>
             </Paper>
           ))
         ) : (

@@ -29,6 +29,7 @@
     "@mui/material": "^5.15.6",
     "browser-sync": "^3.0.2",
     "caniuse-lite": "^1.0.30001591",
+    "date-fns": "^3.3.1",
     "react-router-dom": "^6.21.3",
     "react-spotify-web-playback": "^0.14.3"
   }
