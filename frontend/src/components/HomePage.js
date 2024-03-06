@@ -25,7 +25,6 @@ export default class HomePage extends Component {
   render() {
     return (
     <div style={{ paddingLeft: '250px' }}>
-      <Stats />
       <Home />
     </div>
     );
