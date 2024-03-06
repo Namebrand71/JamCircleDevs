@@ -2,19 +2,47 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import SearchBar from "./SearchBar";
+import { useAuth } from "../contexts/AuthContext";
+import Leaderboard from "./LeaderBoard";
 
 const HomePage = () => {
   const [listeningHistory, setListeningHistory] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+  const [spotifyUsername, setSpotifyUsername] = useState("Loading...");
+  const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
+  const { accessToken } = useAuth();
+  const isAuthenticated = !!accessToken;
 
   useEffect(() => {
-    // Fetch listening history when the component mounts
-    fetch("/api/all-listening-history/")
-      .then((response) => response.json())
-      .then((data) => {
-        setListeningHistory(data); // Assuming the data is an array of listening history objects
-      })
-      .catch((error) => console.error("Error:", error));
-  }, []);
+    const fetchData = async () => {
+      try {
+        const profileResponse = await fetch("/auth/profile/");
+        if (!profileResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const profileData = await profileResponse.json();
+        setSpotifyUsername(profileData.display_name);
+        setCurrentSpotifyId(profileData.id);
+
+        if (isAuthenticated) {
+          const historyResponse = await fetch(`/api/all-listening-history/${encodeURIComponent(profileData.id)}`);
+          if (historyResponse.ok) {
+            const historyData = await historyResponse.json();
+            setListeningHistory(historyData);
+          } else {
+            console.error("Failed to fetch listening history");
+          }
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setSpotifyUsername("Loading...");
+      }
+    };
+
+    fetchData();
+  }, [isAuthenticated]);
+
+  const displayedHistory = showAll ? listeningHistory : listeningHistory.slice(0, 10);
 
   return (
     <Grid
@@ -41,44 +69,60 @@ const HomePage = () => {
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <h1>Home</h1>
+          <h1 style={{ fontSize: "3rem" }}>
+            {isAuthenticated ? `Welcome ${spotifyUsername}` : "Please log in to view history"}
+          </h1>
         </div>
         <SearchBar onSearch={() => {}} />
       </Grid>
-      <Grid
-        item
-        xs={4}
-        sm={4}
-        md={8}
-        lg={16}
-        xl={16}
-        style={{ marginLeft: "280px" }}
-      >
-        {/* Render listening history */}
 
-        <br />
-        <h2>Activity</h2>
-        {listeningHistory.map((track, index) => (
-          <Link
-            to={`/song/${track.track_id}`}
-            key={index}
-            style={{ textDecoration: "none" }}
-          >
-            <div style={{ display: "flex", marginBottom: "5px" }}>
-              <img
-                src={track.user_profile_image}
-                style={{ borderRadius: "50%" }}
-                alt="Profile"
-              />
+      {isAuthenticated && (
+        <Grid
+          item
+          xs={4}
+          sm={4}
+          md={8}
+          lg={16}
+          xl={16}
+          style={{ marginLeft: "280px" }}
+        >
+          {/* Render listening history */}
 
-              <p style={{ marginLeft: "10px", color: "white" }}>
-                {track.track_name} by {track.artist_names}
-              </p>
-              {/* Additional track details */}
-            </div>
-          </Link>
-        ))}
-      </Grid>
+          <br />
+          <h2>Activity</h2>
+          {displayedHistory.map((track, index) => (
+            <Link
+              to={`/song/${track.track_id}`}
+              key={index}
+              style={{ textDecoration: "none" }}
+            >
+              <div style={{ display: "flex", marginBottom: "5px" }}>
+                <img
+                  src={track.user_profile_image}
+                  style={{ borderRadius: "50%" }}
+                  alt="Profile"
+                />
+
+                <p style={{ marginLeft: "10px", color: "white" }}>
+                  {`${index + 1}. ${track.track_name} by ${track.artist_names}`}
+                  <br />
+                  {new Date(track.played_at).toLocaleString()}
+                </p>
+                {/* Additional track details */}
+              </div>
+            </Link>
+          ))}
+
+          {listeningHistory.length > 10 && !showAll && (
+            <p
+              style={{ color: "blue", cursor: "pointer" }}
+              onClick={() => setShowAll(true)}
+            >
+              Show more
+            </p>
+          )}
+        </Grid>
+      )}
     </Grid>
   );
 };

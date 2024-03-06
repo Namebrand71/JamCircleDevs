@@ -12,12 +12,12 @@ from rest_framework.response import Response
 from .util import *
 from .models import SpotifyToken, ListeningData
 from user.models import User
-from user.views import get_total_listening_time, getUserFromSession
 from django.utils import timezone
 from datetime import timedelta, datetime
 from django.utils.dateparse import parse_datetime
 import pytz
 from base64 import b64encode
+
 
 
 class SpotifyLogin(APIView):
@@ -65,7 +65,8 @@ def spotfy_callback(request, format=None):
         {
             'id': track['id'],
             'name': track['name'],
-            'artist_names': [artist['name'] for artist in track['album']['artists']]
+            'artist_names': [artist['name'] for artist in track['album']['artists']],
+            'image_url': track['album']['images'][0]['url']
         }
         for track in pre_top_10_tracks
     ]
@@ -75,6 +76,7 @@ def spotfy_callback(request, format=None):
     pre_top_10_artists = json.loads(getTop10Artist(request).content.decode())
     top_10_artists = [{'id': item['id'], 'name': item['name'],
                        'image_url': item['images'][0]['url']} for item in pre_top_10_artists]
+    
 
     user_defaults = {
         'display_name': user_data.get('display_name'),
@@ -90,6 +92,8 @@ def spotfy_callback(request, format=None):
 
     user, created = User.objects.update_or_create(
         spotify_id=user_data['id'], defaults=user_defaults)
+    
+    fetch_spotify_activity(request)
 
     return redirect('frontend:profile')
 
@@ -152,69 +156,24 @@ def search_spotify_artists(request, search_query):
 def fetch_spotify_activity(request):
     print("fetch_spotify_activity called")
 
-    user_list = ''
     endpoint = '/me/player/recently-played?limit=50'
 
     for user in User.objects.all():
-        user_list += user.display_name
         user_token = user.token
 
-        if user_token.expires_at < timezone.now():
-            print("token has expired, getting a new token now")
-            refresh_token(user_token.session_id)
+        if user_token is not None:
 
-        header = {'Content-Type': 'application/json',
-                  'Authorization': "Bearer " + user_token.access_token}
-        response = get(SPOTIFY_URL + endpoint, headers=header)
+            is_authenticated(user_token.session_id)
 
-        if response.status_code == 200:
-            response_data = response.json()
-            save_spotify_listening_history(user, response_data)
-        else:
-            print(f"Failed to fetch Spotify activity for {user.display_name}")
+            response = spotify_api_request(
+            user_token.session_id, endpoint, False, False)
+            #print(response)
+            save_spotify_listening_history(user, response)
+            print(f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
 
-        print(
-            f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
+            # print(response.json())
 
-        # print(response.json())
-
-    return JsonResponse(response.json(), safe=False)
-
-
-def save_spotify_listening_history(user, response_data):
-    for item in response_data['items']:
-        track = item['track']
-        album = track['album']
-        artists = ', '.join(artist['name'] for artist in track['artists'])
-        played_at = parse_datetime(item['played_at'])
-        album_image_url = album['images'][0]['url'] if album['images'] else None
-        external_urls = {
-            'spotify_track': track['external_urls']['spotify'],
-            'spotify_album': album['external_urls']['spotify'],
-        }
-        history_exists = ListeningData.objects.filter(
-            user=user,
-            track_spotify_id=track['id'],
-            played_at=played_at
-        ).exists()
-
-        if not history_exists:
-            ListeningData.objects.create(
-                user=user,
-                track_name=track['name'],
-                track_spotify_id=track['id'],
-                artist_names=artists,
-                album_name=album['name'],
-                album_spotify_id=album['id'],
-                played_at=played_at,
-                track_popularity=track['popularity'],
-                album_image_url=album_image_url,
-                track_preview_url=track.get(
-                    'preview_url'),
-                external_urls=external_urls,
-                duration_ms=track['duration_ms'],
-                explicit=track['explicit'],
-            )
+    return JsonResponse(response, safe=False)
 
 
 def get_currently_playing(request):

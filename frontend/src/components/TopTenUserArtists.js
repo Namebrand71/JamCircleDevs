@@ -69,7 +69,7 @@ class MyComponent extends React.Component {
                       marginBottom: 5,
                     }}
                     alt={artist.name}
-                    src={artist.images[2].url}
+                    src={artist.image_url}
                   />
                   <Typography align="center">
                     {index + 1}. {artist.name}

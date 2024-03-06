@@ -69,11 +69,10 @@ class MyComponent extends React.Component {
                       marginBottom: 1,
                     }}
                     alt={track.name}
-                    src={track.album.images[0].url}
+                    src={track.image_url}
                   />
                   <Typography align="center">
-                    {index + 1}. {track.name} -{" "}
-                    {track.artists.map((artist) => artist.name).join(", ")}{" "}
+                    {`${index + 1}. ${track.name} - ${track.artist_names.join(", ")}`}
                   </Typography>
                 </Box>
               </Link>
