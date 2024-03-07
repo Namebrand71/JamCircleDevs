@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Grid, Typography, Button, Box, Paper } from '@mui/material';
+import { Grid, Typography, Button, Box, Paper } from "@mui/material";
 import Reviews from "./Reviews";
 
 const SongPage = ({ onPlay }) => {
@@ -39,43 +39,47 @@ const SongPage = ({ onPlay }) => {
   }, [spotify_content_id]);
 
   return (
-    <div className="songpage" style={{ backgroundColor: "#121212", color: "#fff" }}>
-    <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ padding: '20px' }}>
-      {/* Optionally include Navbar grid item here */}
+    <div className="songpage">
+      <Grid container spacing={1}>
+        {/* Navbar grid item */}
+        <Grid item xs={2} sm={2} md={2} lg={2} xl={2}>
+          {/* <Navbar /> */}
+        </Grid>
 
-      {/* Songcard grid item */}
-      <Grid item xs={12} sm={8} md={6} lg={5}>
-        {trackInfo ? (
-          <Paper elevation={3} style={{ padding: '20px', backgroundColor: "#181818", color: "#fff" }}>
-            <Box display="flex" flexDirection="column" alignItems="center">
+        {/* Songcard grid item */}
+        <Grid item xs={6} sm={6} md={5} lg={5} xl={5}>
+          {trackInfo ? (
+            <div align="center" className="songcard">
               <img
                 src={trackInfo.album.images[0].url}
-                width="100%"
+                width="350px"
                 alt="Track Cover"
-                style={{ maxWidth: "350px", paddingBottom: "20px" }}
+                style={{ paddingTop: "20px" }}
               />
-              <Typography variant="h5" gutterBottom>
+              <h1>
                 {trackInfo.name} - {trackInfo.artists[0].name}
-              </Typography>
-              <Typography variant="subtitle1">
-                {Math.floor(trackInfo.duration_ms / 60000)}:{("0" + ((trackInfo.duration_ms % 60000) / 1000).toFixed(0)).slice(-2)}
-              </Typography>
-              <Button variant="contained" color="primary" onClick={() => onPlay(spotify_content_id, "track")} style={{ marginTop: '20px' }}>
+              </h1>
+              <h2>
+                {Math.floor(trackInfo.duration_ms / 60000)}:
+                {(
+                  "0" + ((trackInfo.duration_ms % 60000) / 1000).toFixed(0)
+                ).slice(-2)}
+              </h2>
+              <button onClick={() => onPlay(spotify_content_id, "track")}>
                 Play Song
-              </Button>
-            </Box>
-          </Paper>
-        ) : (
-          <Typography variant="h6">Loading track info...</Typography>
-        )}
-      </Grid>
+              </button>
+            </div>
+          ) : (
+            <h1>Loading track info...</h1>
+          )}
+        </Grid>
 
-      {/* Reviews grid item */}
-      <Grid item xs={12} sm={10} md={8} lg={6}>
-        <Reviews spotifyContentId={spotify_content_id} />
+        {/* Reviews grid item */}
+        <Grid item xs={3} sm={3} md={5} lg={5} xl={5} align="center">
+          <Reviews spotifyContentId={spotify_content_id} />
+        </Grid>
       </Grid>
-    </Grid>
-  </div>
+    </div>
   );
 };
 

@@ -2,7 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-
 class User(models.Model):
     spotify_id = models.CharField(max_length=50, unique=True)
     display_name = models.CharField(max_length=100)
@@ -25,6 +24,13 @@ class User(models.Model):
     top_10_artists = models.JSONField(encoder=None, decoder=None)
     friends = models.ManyToManyField("User", blank=True)
     pending_friend_requests = models.ManyToManyField("Friend_Request", blank=True)
+
+    #Stats to Track
+    unique_songs = models.IntegerField(default=0)
+    unique_artists = models.IntegerField(default=0)
+    high_popularity_tracks = models.IntegerField(default=0)
+    low_popularity_tracks = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.display_name

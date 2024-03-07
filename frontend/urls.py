@@ -15,4 +15,6 @@ urlpatterns = [
     path('artist/<str:spotify_content_id>', artist_page, name='artist'),
     path('album/<str:spotify_content_id>', album_page, name='artist'),
     path('friends/<str:spotify_id>/', friends_page, name='friends_page'),
+    path('lobby', index, name='lobby'),
+    path('musicroom', index, name='musicroom'),
 ]

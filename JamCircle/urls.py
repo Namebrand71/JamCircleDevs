@@ -26,4 +26,4 @@ urlpatterns = [
     path('users/', include('user.urls')),
     path('musicrooms/', include('musicrooms.urls')),
 ]
-]
+

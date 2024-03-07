@@ -9,10 +9,10 @@ def generate_unique_code():
     length = 6
 
     while True:
-        code = "".join(random.choices(string.ascii_uppercase, k=length))
-        if Room.objects.filter(code=code).count() == 0:
+        passcode = "".join(random.choices(string.ascii_uppercase, k=length))
+        if Room.objects.filter(passcode=passcode).count() == 0:
             break
-    return code
+    return passcode
 
 class Room(models.Model):
     room_name = models.CharField(max_length=100, default='', unique=True)
@@ -20,4 +20,4 @@ class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.CASCADE, related_name='host')
     created_at = models.DateTimeField(auto_now_add=True)
     current_song_id = models.CharField(max_length=100, null=True)
-    current_users = models.ManyToManyField("User", blank=True)
+    current_users = models.ManyToManyField(User, blank=True)

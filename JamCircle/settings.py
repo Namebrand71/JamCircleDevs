@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'spotifyAPI.apps.SpotifyapiConfig',
     'user.apps.UserConfig',
     'reviews.apps.ReviewsConfig',
-    'musicrooms.apps.MusicroomsConfig'
+    'musicrooms.apps.MusicroomsConfig',
     'corsheaders',
 ]
 

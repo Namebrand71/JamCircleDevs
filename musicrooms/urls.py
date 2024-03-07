@@ -1,5 +1,9 @@
 from django.urls import path
-from .views import get_track_info, get_reviews, post_review, get_artist_info, get_album_info
+from .views import *
 
 urlpatterns = [
+    path('create-room', create_room, name='create_room'),
+    path('join-room', join_room, name='join_room'),
+    path('leave-room', leave_room, name='leave_room'),
+    path('get-room-info', get_room_info, name='get_room_info')
 ]

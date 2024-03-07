@@ -9,6 +9,9 @@ from collections import OrderedDict
 import os
 import sys
 
+AGORA_ID = "4cf14a91f7524ce19e73280a93036030"
+AGORA_CERT = "50bcea86356f40ee80629ed0fc2da3a0"
+
 kJoinChannel = 1
 kPublishAudioStream = 2
 kPublishVideoStream = 3
