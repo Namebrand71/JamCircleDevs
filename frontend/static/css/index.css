@@ -89,6 +89,7 @@ h2 {
 
 .songcard {
   margin-top: 50px;
+  margin-left: 50px;
   width: 380px; /* or you can specify a width like 50% or 200px */
   padding: 16px; /* adjust the padding to control the space inside the box */
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;

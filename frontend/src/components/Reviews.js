@@ -62,7 +62,7 @@ const Reviews = ({ spotifyContentId }) => {
   const postReview = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    
+
     try {
       const response = await fetch(
         `http://127.0.0.1:8000/reviews/post_review/`,
@@ -95,11 +95,17 @@ const Reviews = ({ spotifyContentId }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="md" sx={{ mt: 4,mb: 4 }}>
+      <Container component="main" maxWidth="md" sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h4" gutterBottom>
           Reviews
         </Typography>
-        <Box component="form" onSubmit={postReview} noValidate sx={{ mb: 2 }}>
+        <Box
+          component="form"
+          onSubmit={postReview}
+          noValidate
+          sx={{ mb: 2 }}
+          style={{ paddingBottom: "30px" }}
+        >
           <TextField
             fullWidth
             multiline
@@ -109,14 +115,14 @@ const Reviews = ({ spotifyContentId }) => {
             placeholder="Write your review here..."
             margin="normal"
             required
-            sx={{ width: "50%" }}
+            sx={{ width: "80%" }}
           />
 
           <Stack
             direction="column"
             spacing={2}
             alignItems="center"
-            style={{ paddingBottom: "30px", width:'50%', margin: "auto" }}
+            style={{ width: "50%", margin: "auto" }}
           >
             <Rating
               name="rating"
@@ -143,17 +149,28 @@ const Reviews = ({ spotifyContentId }) => {
               <Typography variant="body1" paragraph>
                 {review.text}
               </Typography>
-              <Rating value={review.rating} precision={0.5} readOnly size="small" />
+              <Rating
+                value={review.rating}
+                precision={0.5}
+                readOnly
+                size="small"
+              />
               <Box display="flex" justifyContent="center" alignItems="center">
                 {/* Smaller text for author and date */}
-                <Typography variant="caption" display="block"  style={{ textAlign: "center" }} gutterBottom>
-                    {review.author_display_name} · {format(new Date(review.posted_at), "PPpp")}
+                <Typography
+                  variant="caption"
+                  display="block"
+                  style={{ textAlign: "center" }}
+                  gutterBottom
+                >
+                  {review.author_display_name} ·{" "}
+                  {format(new Date(review.posted_at), "PPpp")}
                 </Typography>
               </Box>
             </Paper>
           ))
         ) : (
-          <Typography variant="h6">No reviews yet.</Typography>
+          <Typography variant="h4">No reviews yet.</Typography>
         )}
       </Container>
     </ThemeProvider>
