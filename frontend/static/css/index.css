@@ -78,6 +78,13 @@ h2 {
   overflow-y: auto;
 }
 
+.activity-item {
+  text-decoration: none;
+}
+.activity-item:hover {
+  background: #ffffff;
+}
+
 .songpage {
   min-height: 100vh;
   width: 100%;
