@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const Navbar = ({ spotifyContentId, spotifyContentType }) => {
+const Navbar = () => {
   const { accessToken, setAccessToken } = useAuth();
+  const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
   const [currentSong, setCurrentSong] = useState({
     songName: "",
     artistName: "",
@@ -14,8 +15,23 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
 
   const isAuthenticated = !!accessToken;
 
+  fetch("/auth/profile/")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      setCurrentSpotifyId(data.id);
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
+      loadProfile();
       fetch("/auth/logout/")
         .then((response) => response.json())
         .then((data) => {
@@ -38,7 +54,7 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
   };
 
   const activeStyle = {
-    color: "#ff0095", // Set the color for the active text
+    color: "#c679ed", // Set the color for the active text
     backgroundColor: "black", // Set the background color for the active box
     width: "100%",
   };
@@ -76,11 +92,19 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
         style={{
           fontSize: "24px",
           paddingBottom: "20px",
+          marginLeft: "-15px",
           textAlign: "center",
-          width: "100%",
+          width: "90%",
+          borderBottom: "1px solid #2a2a2a",
         }}
       >
-        Jam Circle
+        <span style={{ float: "right", paddingTop: "1px" }}>Jam Circle</span>
+        <img
+          src="../../../static/images/logo.png"
+          width="30px"
+          height="30px"
+          float="left"
+        />
       </div>
       {/* <SearchBar onSearch={handleSearch} /> */}
       <NavLink
@@ -102,6 +126,17 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
       >
         Profile
       </NavLink>
+
+      <NavLink
+        to={`/friends/${currentSpotifyId}`}
+        style={({ isActive }) => ({
+          ...linkStyle, // spread the base styles
+          ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
+        })}
+      >
+        Friends
+      </NavLink>
+
       {/* Add additional navigation links or content here */}
       <button
         onClick={handleAuthButtonClick}
@@ -110,10 +145,9 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
           color: "white",
           padding: "10px 10px",
           border: "none",
-          textTransform: "uppercase",
           marginTop: "20px",
           cursor: "pointer",
-          width: "50%", // Use full width of the sidebar
+          width: "40%", // Use full width of the sidebar
         }}
         className="login-btn"
       >

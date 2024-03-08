@@ -64,25 +64,29 @@ const HomePage = () => {
   return (
     <Grid
       container
-      spacing={1}
+      spacing={4}
       columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
     >
+      <img src="../../../static/images/Banner.png" width="100%" />
       <Grid
         item
         xs={4}
         sm={4}
-        md={8}
+        md={10}
         lg={20}
         xl={20}
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "28px",
-          borderBottom: "2px solid #2a2a2a",
+          padding: "15px",
+          background: "#171717",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div
+          id="Stats"
+          style={{ marginLeft: "20px", display: "flex", alignItems: "center" }}
+        >
           <h1 style={{ fontSize: "3rem" }}>
             {isAuthenticated
               ? `Welcome ${spotifyUsername}`
@@ -94,16 +98,18 @@ const HomePage = () => {
         </div>
       </Grid>
 
+      <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
+        {/* <Navbar /> */}
+      </Grid>
       {isAuthenticated && (
-        <Grid item xs={4} sm={4} md={8} lg={16} xl={16}>
-          <div style={{ paddingBottom: "20px" }}>
-            <Leaderboard />
-          </div>
+        <Grid item xs={4} sm={4} md={10} lg={14} xl={14}>
+          <h2>Leaderboard</h2>
+          <Leaderboard />
           {/* Render listening history */}
 
           <div
             style={{
-              marginLeft: "200px",
+              marginLeft: "auto",
               marginRight: "auto",
               boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
               borderRadius: "15px",
