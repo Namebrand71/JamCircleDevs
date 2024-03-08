@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-const Navbar = ({ spotifyContentId, spotifyContentType }) => {
+const Navbar = () => {
   const { accessToken, setAccessToken } = useAuth();
+  const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
   const [currentSong, setCurrentSong] = useState({
     songName: "",
     artistName: "",
@@ -14,8 +15,23 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
 
   const isAuthenticated = !!accessToken;
 
+  fetch("/auth/profile/")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      setCurrentSpotifyId(data.id);
+    })
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
+      loadProfile();
       fetch("/auth/logout/")
         .then((response) => response.json())
         .then((data) => {
@@ -102,6 +118,17 @@ const Navbar = ({ spotifyContentId, spotifyContentType }) => {
       >
         Profile
       </NavLink>
+
+      <NavLink
+        to={`/friends/${currentSpotifyId}`}
+        style={({ isActive }) => ({
+          ...linkStyle, // spread the base styles
+          ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
+        })}
+      >
+        Friends
+      </NavLink>
+
       {/* Add additional navigation links or content here */}
       <button
         onClick={handleAuthButtonClick}
