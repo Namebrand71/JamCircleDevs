@@ -41,9 +41,10 @@ const Leaderboard = () => {
         marginBottom: "40px",
         marginLeft: "auto",
         marginRight: "auto",
+        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
       }}
     >
-      <Table align="center">
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell>Rank</TableCell>
