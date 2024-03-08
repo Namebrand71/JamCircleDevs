@@ -51,9 +51,10 @@ const HomePage = () => {
   return (
     <Grid
       container
-      spacing={1}
+      spacing={4}
       columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
     >
+      <img src="../../../static/images/Banner.png" width="100%" />
       <Grid
         item
         xs={4}
@@ -65,11 +66,14 @@ const HomePage = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "28px",
-          borderBottom: "2px solid #2a2a2a",
+          padding: "15px",
+          background: "#171717",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div
+          id="Stats"
+          style={{ marginLeft: "20px", display: "flex", alignItems: "center" }}
+        >
           <h1 style={{ fontSize: "3rem" }}>
             {isAuthenticated
               ? `Welcome ${spotifyUsername}`

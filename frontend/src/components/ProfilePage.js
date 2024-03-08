@@ -31,8 +31,6 @@ const ProfilePage = () => {
   const [profileImageUrl, setProfileImageUrl] = useState(
     "https://fakeimg.pl/750x750?text=Loading&font=noto"
   );
-  const [friendRequests, setFriendRequests] = useState([]);
-  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   const { accessToken } = useAuth();
   const isAuthenticated = !!accessToken;
@@ -40,7 +38,6 @@ const ProfilePage = () => {
   useEffect(() => {
     if (isAuthenticated) {
       loadProfile();
-      fetchFriendRequests();
     }
   }, [isAuthenticated]);
 
@@ -67,52 +64,6 @@ const ProfilePage = () => {
       });
   };
 
-  // Add a method to toggle the dropdown visibility
-  const toggleDropdown = () => {
-    setIsDropdownVisible((prevState) => ({
-      isDropdownVisible: !prevState.isDropdownVisible,
-    }));
-  };
-
-  // Add a method to fetch friend requests
-  const fetchFriendRequests = async () => {
-    try {
-      const response = await fetch("/users/get-user-pending-friends/");
-      const data = await response.json();
-      setFriendRequests(data);
-    } catch (error) {
-      console.error("Error fetching friend requests:", error);
-    }
-  };
-
-  const handleAcceptRequest = async (friendRequest) => {
-    const spotify_id = friendRequest?.from_user__spotify_id;
-
-    // Ensure spotify_id is not undefined before making the fetch
-    if (spotify_id) {
-      try {
-        await fetch(`/users/accept-friend-request/${spotify_id}`);
-        // After accepting the request, fetch updated friend requests
-        fetchFriendRequests();
-      } catch (error) {
-        console.error("Error accepting friend request:", error);
-      }
-    } else {
-      console.error("Invalid friend request data:", friendRequest);
-    }
-  };
-
-  const handleRejectRequest = async (friendRequest) => {
-    const spotify_id = friendRequest?.from_user__display_name;
-    try {
-      await fetch(`/users/reject-friend-request/${spotify_id}`);
-      // After rejecting the request, fetch updated friend requests
-      fetchFriendRequests();
-    } catch (error) {
-      console.error("Error rejecting friend request:", error);
-    }
-  };
-
   return (
     <div className="profilepage">
       <Grid
@@ -137,6 +88,7 @@ const ProfilePage = () => {
                 alignItems: "center",
                 justifyContent: "space-between",
                 padding: "28px",
+                marginTop: "10px",
                 borderBottom: "2px solid #2a2a2a",
               }}
             >
@@ -154,51 +106,6 @@ const ProfilePage = () => {
               </div>
 
               <SearchBar onSearch={handleSearch} />
-            </Grid>
-
-            {/* Button to toggle the dropdown */}
-            <Grid item xs={12} style={{ paddingLeft: "28px" }}>
-              {/* Add the "Friends" button */}
-              <Link
-                to={`/friends/${currentSpotifyId}`}
-                style={{ paddingRight: "10px" }}
-              >
-                <Button variant="contained">Friends</Button>
-              </Link>
-              <Button variant="contained" onClick={toggleDropdown}>
-                Show Friend Requests
-              </Button>
-              {isDropdownVisible && (
-                <div style={{ marginTop: "16px" }}>
-                  {/* Display friend requests in the dropdown */}
-                  {friendRequests.map((request) => (
-                    <div
-                      key={request.from_user__display_name}
-                      style={{
-                        border: "1px solid #ccc",
-                        borderRadius: "8px",
-                        padding: "8px",
-                        marginBottom: "8px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <Typography>
-                        <Link to={`/user/${request.from_user__spotify_id}`}>
-                          {request.from_user__display_name}
-                        </Link>
-                      </Typography>
-                      <Button onClick={() => handleAcceptRequest(request)}>
-                        Accept
-                      </Button>
-                      <Button onClick={() => handleRejectRequest(request)}>
-                        Reject
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
             </Grid>
 
             {/* Conditional rendering if authenticated */}

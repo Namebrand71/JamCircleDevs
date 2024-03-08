@@ -54,7 +54,7 @@ const Navbar = () => {
   };
 
   const activeStyle = {
-    color: "#ff0095", // Set the color for the active text
+    color: "#c679ed", // Set the color for the active text
     backgroundColor: "black", // Set the background color for the active box
     width: "100%",
   };
@@ -92,11 +92,19 @@ const Navbar = () => {
         style={{
           fontSize: "24px",
           paddingBottom: "20px",
+          marginLeft: "-15px",
           textAlign: "center",
-          width: "100%",
+          width: "90%",
+          borderBottom: "1px solid #2a2a2a",
         }}
       >
-        Jam Circle
+        <span style={{ float: "right", paddingTop: "1px" }}>Jam Circle</span>
+        <img
+          src="../../../static/images/logo.png"
+          width="30px"
+          height="30px"
+          float="left"
+        />
       </div>
       {/* <SearchBar onSearch={handleSearch} /> */}
       <NavLink
@@ -137,10 +145,9 @@ const Navbar = () => {
           color: "white",
           padding: "10px 10px",
           border: "none",
-          textTransform: "uppercase",
           marginTop: "20px",
           cursor: "pointer",
-          width: "50%", // Use full width of the sidebar
+          width: "40%", // Use full width of the sidebar
         }}
         className="login-btn"
       >

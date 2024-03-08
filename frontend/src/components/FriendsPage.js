@@ -143,7 +143,7 @@ const FriendsPage = () => {
             }}
           >
             <Button
-              style={{ marginTop: "10px" }}
+              style={{ marginTop: "20px" }}
               variant="contained"
               onClick={toggleDropdown}
             >
