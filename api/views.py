@@ -7,6 +7,8 @@ from spotifyAPI.models import ListeningData
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from collections import defaultdict
+from django.shortcuts import get_object_or_404
+from user.models import User
 
 # Create your views here.
 
@@ -16,10 +18,17 @@ class ProfileView(generics.ListAPIView):
     serializer_class = ProfileSerializer
 
 
-def all_listening_history(request):
+def all_listening_history(request, spotify_id):
 
-    history_items = ListeningData.objects.all().order_by(
-        '-played_at').select_related('user')
+    user = get_object_or_404(User, spotify_id=spotify_id)
+
+    # Assuming 'user' is a ForeignKey in your ListeningData model
+    # Include the user's own ID
+    friend_ids = list(user.friends.values_list('id', flat=True)) + [user.id]
+    print(friend_ids)
+
+    # Filter history_items to include only friends
+    history_items = ListeningData.objects.filter(user_id__in=friend_ids).order_by('-played_at').select_related('user')
 
     # Creating a list of dictionaries for each listening data entry
     listening_data_list = [
@@ -67,3 +76,27 @@ def all_listening_history(request):
         print(item)
 
     return JsonResponse(list(history), safe=False)
+
+
+def all_review_history(request, spotify_id):
+
+    user = get_object_or_404(User, spotify_id=spotify_id)
+
+    # Step 2: Get the friends for the given user
+    friends = user.friends.all()  # Assuming 'friends' is the ManyToManyField
+
+    # Step 3: Query ListeningData for friends and order by datetime in descending order
+    history_items = ListeningData.objects.filter(user__in=friends).order_by('-datetime_field')
+
+    # Creating a list of dictionaries for each listening data entry
+    listening_data_list = [
+        {
+            "author_display_name": item.author_display_name,
+            "rating": review.rating,
+            "text": review.text,
+            "posted_at": review.posted_at,
+        }
+        for item in history_items
+    ]
+
+    return JsonResponse(listening_data_list, safe=False)

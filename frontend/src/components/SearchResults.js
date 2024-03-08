@@ -87,7 +87,12 @@ const SearchResults = () => {
               borderBottom: "2px solid #2a2a2a",
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
               <Link
                 to="/profile"
                 style={{
@@ -97,7 +102,13 @@ const SearchResults = () => {
               >
                 <Button variant="contained">Go Back</Button>
               </Link>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  paddingTop: "20px",
+                }}
+              >
                 <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
               </div>
             </div>

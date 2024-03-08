@@ -9,6 +9,7 @@ const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
   overflowY: "auto",
   borderRadius: "10px",
+  BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
   backgroundColor: "#151515", // Dark grey color
   color: "white", // Sets text color to white
   padding: "20px",

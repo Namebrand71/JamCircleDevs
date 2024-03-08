@@ -36,6 +36,31 @@ h2 {
   border-radius: 50%;
 }
 
+.top {
+  --offset: 50px;
+
+  position: sticky;
+  bottom: 20px;
+  margin-right: 10px;
+  place-self: end;
+  margin-top: calc(100vh + var(--offset));
+
+  /* visual styling */
+  width: 45px;
+  aspect-ratio: 1;
+  background: #ff8b24;
+  border-radius: 10px;
+}
+
+.top:before {
+  content: "";
+  position: absolute;
+  inset: 30%;
+  transform: translateY(20%) rotate(-45deg);
+  border-top: 5px solid #fff;
+  border-right: 5px solid #fff;
+}
+
 .topTracksContainer,
 .topArtistsContainer {
   max-height: 90vh;
@@ -78,6 +103,13 @@ h2 {
   overflow-y: auto;
 }
 
+.activity-item {
+  text-decoration: none;
+}
+.activity-item:hover {
+  background: #ffffff;
+}
+
 .songpage {
   min-height: 100vh;
   width: 100%;
@@ -89,6 +121,7 @@ h2 {
 
 .songcard {
   margin-top: 50px;
+  margin-left: 50px;
   width: 380px; /* or you can specify a width like 50% or 200px */
   padding: 16px; /* adjust the padding to control the space inside the box */
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -134,7 +167,6 @@ h2 {
   transition-property: background-color;
   transition-duration: 0.3s;
   border-width: 0;
-  letter-spacing: 2px;
   min-width: 80px;
   text-transform: uppercase;
   white-space: normal;
