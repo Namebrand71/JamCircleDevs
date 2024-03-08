@@ -3,16 +3,20 @@ import { useParams } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const FriendsPage = () => {
   const { spotify_id } = useParams();
   const [results, setResults] = useState([]);
   const [userDisplayName, setUserDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [friendRequests, setFriendRequests] = useState([]);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
 
   useEffect(() => {
     if (spotify_id) {
       fetchFriendsList(spotify_id);
+      fetchFriendRequests();
     }
   }, [spotify_id]);
 
@@ -38,6 +42,52 @@ const FriendsPage = () => {
     setUserDisplayName(data2);
 
     setLoading(false);
+  };
+
+  // Add a method to toggle the dropdown visibility
+  const toggleDropdown = () => {
+    setIsDropdownVisible((prevState) => ({
+      isDropdownVisible: !prevState.isDropdownVisible,
+    }));
+  };
+
+  // Add a method to fetch friend requests
+  const fetchFriendRequests = async () => {
+    try {
+      const response = await fetch("/users/get-user-pending-friends/");
+      const data = await response.json();
+      setFriendRequests(data);
+    } catch (error) {
+      console.error("Error fetching friend requests:", error);
+    }
+  };
+
+  const handleAcceptRequest = async (friendRequest) => {
+    const spotify_id = friendRequest?.from_user__spotify_id;
+
+    // Ensure spotify_id is not undefined before making the fetch
+    if (spotify_id) {
+      try {
+        await fetch(`/users/accept-friend-request/${spotify_id}`);
+        // After accepting the request, fetch updated friend requests
+        fetchFriendRequests();
+      } catch (error) {
+        console.error("Error accepting friend request:", error);
+      }
+    } else {
+      console.error("Invalid friend request data:", friendRequest);
+    }
+  };
+
+  const handleRejectRequest = async (friendRequest) => {
+    const spotify_id = friendRequest?.from_user__display_name;
+    try {
+      await fetch(`/users/reject-friend-request/${spotify_id}`);
+      // After rejecting the request, fetch updated friend requests
+      fetchFriendRequests();
+    } catch (error) {
+      console.error("Error rejecting friend request:", error);
+    }
   };
 
   const renderContent = (item) => {
@@ -92,6 +142,44 @@ const FriendsPage = () => {
               borderBottom: "2px solid #2a2a2a",
             }}
           >
+            <Button
+              style={{ marginTop: "10px" }}
+              variant="contained"
+              onClick={toggleDropdown}
+            >
+              Show Friend Requests
+            </Button>
+            {isDropdownVisible && (
+              <div style={{ marginTop: "16px" }}>
+                {/* Display friend requests in the dropdown */}
+                {friendRequests.map((request) => (
+                  <div
+                    key={request.from_user__display_name}
+                    style={{
+                      border: "1px solid #ccc",
+                      borderRadius: "8px",
+                      padding: "8px",
+                      marginBottom: "8px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Typography>
+                      <Link to={`/user/${request.from_user__spotify_id}`}>
+                        {request.from_user__display_name}
+                      </Link>
+                    </Typography>
+                    <Button onClick={() => handleAcceptRequest(request)}>
+                      Accept
+                    </Button>
+                    <Button onClick={() => handleRejectRequest(request)}>
+                      Reject
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
             <div style={{ display: "flex", alignItems: "center" }}>
               <h1>{userDisplayName}'s Friends</h1>
             </div>
