@@ -1,6 +1,7 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { styled } from "@mui/material/styles";
 
 const StyledContainer = styled("div")(({ theme }) => ({
@@ -72,9 +73,12 @@ class Stats extends React.Component {
             <Typography variant="body1">
                 Low Popularity Tracks: {stats.low_popularity_tracks}
             </Typography>
+            <IconButton color="primary" onClick={this.fetchListening} aria-label="refresh">
+              <RefreshIcon />
+            </IconButton>
             </Box>
         </StyledContainer>
-        <button onClick={this.fetchListening}>Refresh Listening History</button>
+
         </div>
     );
   }

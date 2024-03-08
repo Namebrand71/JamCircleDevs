@@ -13,6 +13,7 @@ import Playlists from "./Playlists";
 import SearchBar from "./SearchBar";
 import handleSearch from "./NavBar";
 import { useAuth } from "../contexts/AuthContext";
+import Stats from "./Stats";
 
 const ProfilePage = () => {
   // constructor(props) {
@@ -105,7 +106,7 @@ const ProfilePage = () => {
                 </h1>
               </div>
 
-              <SearchBar onSearch={handleSearch} />
+             <Stats/>
             </Grid>
 
             {/* Conditional rendering if authenticated */}
