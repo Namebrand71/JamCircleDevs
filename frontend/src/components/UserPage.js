@@ -36,6 +36,7 @@ const UserPage = () => {
         const response = await fetch(
           `/users/get_user_info/${encodeURIComponent(spotify_id)}/`
         );
+        console.log(spotify_id);
 
         if (response.ok) {
           const data = await response.json();
@@ -52,6 +53,7 @@ const UserPage = () => {
     // Call the functions
     checkSessionUser();
     callDjangoAPI(spotify_id);
+
   }, [spotify_id]);
 
   return (

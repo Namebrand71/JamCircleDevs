@@ -13,4 +13,5 @@ urlpatterns = [
     path('accept-friend-request/<str:spotify_id>/', acceptFriendRequest, name='accept_friend_request'),
     path('reject-friend-request/<str:spotify_id>/', rejectFriendRequest, name='reject_friend_request'),
     path('cancel-friend-request/<str:spotify_id>/', cancelFriendRequest, name='cancel_friend_request'),
+    path('get-user-stats/', get_user_stats, name='get_user_stats')
 ]

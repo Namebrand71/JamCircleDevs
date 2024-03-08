@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import Grid from "@mui/material/Grid";
+import { Grid, Typography, Button, Box, Paper } from "@mui/material";
 import Reviews from "./Reviews";
 
 const SongPage = ({ onPlay }) => {

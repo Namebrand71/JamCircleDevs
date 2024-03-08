@@ -158,3 +158,45 @@ def get_total_listening_time(user):
     if total_time is None:
         total_time = 0
     return total_time
+
+
+def get_user_stats(request):
+    user = getUserFromSession(request.session.session_key)
+    print("Getting user stats for: ", user)
+    try:
+        update_stats(user)
+        user_obj = User.objects.get(pk=user.pk)
+
+        stats = {
+                'unique_songs': user_obj.unique_songs,
+                'unique_artists': user_obj.unique_artists,
+                'high_popularity_tracks': user_obj.high_popularity_tracks,
+                'low_popularity_tracks': user_obj.low_popularity_tracks
+            }
+        return JsonResponse(stats, safe=False)
+    except User.DoesNotExist:
+        return None
+
+def update_stats(user):
+    # Determine the cutoff between high/low popularity songs
+    POPULARITY_THRESHOLD = 50
+
+    '''
+    unique_tracks:  The number of unique songs in your listening history
+    unique_artists: number of unique artists in listening history
+    high_pop:       Number of "high popularity" songs in history (determined by POPULARITY_THRESHOLD value)
+    low_pop:        Number of "low popularity" songs in history
+    '''
+    unique_tracks = ListeningData.objects.filter(user=user).values("track_spotify_id").distinct().count()
+    unique_artists = ListeningData.objects.filter(user=user).values('artist_names').distinct().count()
+    high_pop = ListeningData.objects.filter(user=user, track_popularity__gt=POPULARITY_THRESHOLD).count()
+    low_pop = ListeningData.objects.filter(user=user, track_popularity__lt=POPULARITY_THRESHOLD).count()
+    
+    #Access and save computer values to User model
+    user_obj = User.objects.get(pk=user.pk)
+    user_obj.unique_artists = unique_artists
+    user_obj.unique_songs = unique_tracks
+    user_obj.high_popularity_tracks = high_pop
+    user_obj.low_popularity_tracks = low_pop
+    user_obj.save() 
+

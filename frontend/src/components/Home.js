@@ -7,116 +7,195 @@ import Leaderboard from "./LeaderBoard";
 
 const HomePage = () => {
   const [listeningHistory, setListeningHistory] = useState([]);
+  const [showAll, setShowAll] = useState(false);
   const [spotifyUsername, setSpotifyUsername] = useState("Loading...");
   const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
   const { accessToken } = useAuth();
   const isAuthenticated = !!accessToken;
 
   useEffect(() => {
-    // Fetch listening history when the component mounts
-    fetch("/api/all-listening-history/")
-      .then((response) => response.json())
-      .then((data) => {
-        setListeningHistory(data); // Assuming the data is an array of listening history objects
-      })
-      .catch((error) => console.error("Error:", error));
-    fetch("/auth/profile/")
-      .then((response) => {
-        if (!response.ok) {
+    const fetchData = async () => {
+      try {
+        const profileResponse = await fetch("/auth/profile/");
+        if (!profileResponse.ok) {
           throw new Error("Network response was not ok");
         }
-        return response.json();
-      })
-      .then((data) => {
-        setSpotifyUsername(data.display_name);
-        setCurrentSpotifyId(data.id);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
+        const profileData = await profileResponse.json();
+        setSpotifyUsername(profileData.display_name);
+        setCurrentSpotifyId(profileData.id);
+
+        if (isAuthenticated) {
+          const historyResponse = await fetch(
+            `/api/all-listening-history/${encodeURIComponent(profileData.id)}`
+          );
+          if (historyResponse.ok) {
+            const historyData = await historyResponse.json();
+            setListeningHistory(historyData);
+          } else {
+            console.error("Failed to fetch listening history");
+          }
+        }
+      } catch (error) {
+        console.error("Error:", error);
         setSpotifyUsername("Loading...");
-      });
+      }
+    };
+
+    fetchData();
   }, [isAuthenticated]);
+
+  const displayedHistory = showAll
+    ? listeningHistory
+    : listeningHistory.slice(0, 5);
 
   return (
     <Grid
       container
-      spacing={1}
+      spacing={4}
       columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
     >
-      <Grid item xs={4} sm={3} md={3} lg={3} xl={3} align="right">
-        {/* <Navbar /> */}
-      </Grid>
-
+      <img src="../../../static/images/Banner.png" width="100%" />
       <Grid
         item
         xs={4}
         sm={4}
-        md={8}
-        lg={16}
-        xl={16}
+        md={10}
+        lg={20}
+        xl={20}
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "28px",
+          padding: "15px",
+          background: "#171717",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div
+          id="Stats"
+          style={{ marginLeft: "20px", display: "flex", alignItems: "center" }}
+        >
           <h1 style={{ fontSize: "3rem" }}>
-            {isAuthenticated ? "Welcome " + spotifyUsername : "Not Logged in"}
+            {isAuthenticated
+              ? `Welcome ${spotifyUsername}`
+              : "Please log in to view history"}
           </h1>
         </div>
-        <SearchBar onSearch={() => {}} />
+        <div style={{ marginLeft: "auto" }}>
+          <SearchBar onSearch={() => {}} />
+        </div>
       </Grid>
-      <Grid
-        item
-        xs={4}
-        sm={4}
-        md={8}
-        lg={16}
-        xl={16}
-        style={{ marginLeft: "280px" }}
-      >
-        {/* Render listening history */}
 
-        <br />
-        <h2>Activity</h2>
-        {listeningHistory.map((track, index) => (
-          <Link
-            to={`/song/${track.track_id}`}
-            key={index}
-            style={{ textDecoration: "none" }}
+      <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
+        {/* <Navbar /> */}
+      </Grid>
+      {isAuthenticated && (
+        <Grid item xs={4} sm={4} md={10} lg={14} xl={14}>
+          <h2>Leaderboard</h2>
+          <Leaderboard />
+          {/* Render listening history */}
+
+          <div
+            style={{
+              marginLeft: "auto",
+              marginRight: "auto",
+              boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+              borderRadius: "15px",
+              padding: "10px",
+              backgroundColor: "#151515",
+              marginBottom: "40px",
+            }}
           >
-            <div style={{ display: "flex", marginBottom: "5px" }}>
-              <img
-                src={track.user_profile_image}
-                style={{ borderRadius: "50%" }}
-                alt="Profile"
-              />
+            <h2
+              style={{
+                paddingBottom: "10px",
+                paddingLeft: "10px",
+                borderBottom: "2px solid #2a2a2a",
+              }}
+            >
+              Recent Activity
+            </h2>
+            {displayedHistory.map((track, index) => (
+              <Link
+                to={`/song/${track.track_id}`}
+                key={index}
+                className="activity-item"
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginBottom: "10px",
+                    alignItems: "center",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                      src={track.user_profile_image}
+                      style={{ borderRadius: "50%" }}
+                      alt="Profile"
+                    />
 
-              <p style={{ marginLeft: "10px", color: "white" }}>
-                {track.track_name} by {track.artist_names}
-              </p>
-              {/* Additional track details */}
-            </div>
-          </Link>
-        ))}
-      </Grid>
-      <Grid
-        item
-        xs={4}
-        sm={4}
-        md={8}
-        lg={16}
-        xl={16}
-        style={{ marginLeft: "280px" }}
-      >
-        {/* Render listening history */}
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                      <span
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "bold",
+                          paddingBottom: "5px",
+                          marginLeft: "10px",
+                          color: "white",
+                        }}
+                      >
+                        {track.track_name}
+                      </span>
+                      <span
+                        style={{
+                          paddingBottom: "5px",
+                          marginLeft: "10px",
+                          color: "white",
+                        }}
+                      >
+                        {track.artist_names}
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p style={{ color: "white" }}>
+                      {new Date(track.played_at).toLocaleString()}
+                    </p>
+                  </div>
+                  {/* Additional track details */}
+                </div>
+              </Link>
+            ))}
 
-        <br />
-        <h2>LeaderBoard</h2>
-          <Leaderboard/>
-      </Grid>
+            {listeningHistory.length > 5 && !showAll && (
+              <h3
+                style={{
+                  color: "white",
+                  cursor: "pointer",
+                  textAlign: "center",
+                }}
+                onClick={() => setShowAll(true)}
+              >
+                Show more
+              </h3>
+            )}
+
+            {listeningHistory.length > 5 && showAll && (
+              <h3
+                style={{
+                  color: "white",
+                  cursor: "pointer",
+                  textAlign: "center",
+                }}
+                onClick={() => setShowAll(false)}
+              >
+                Show less
+              </h3>
+            )}
+          </div>
+        </Grid>
+      )}
     </Grid>
   );
 };
