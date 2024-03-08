@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -10,29 +10,26 @@ import {
   Avatar,
 } from "@mui/material";
 
-// MOCK DATA
-const users = [
-  {
-    id: 1,
-    name: "User 1",
-    hoursListened: 120,
-    profilePic: "https://via.placeholder.com/40",
-  },
-  {
-    id: 2,
-    name: "User 2",
-    hoursListened: 110,
-    profilePic: "https://via.placeholder.com/40",
-  },
-  {
-    id: 3,
-    name: "User 3",
-    hoursListened: 105,
-    profilePic: "https://via.placeholder.com/40",
-  },
-];
-
 const Leaderboard = () => {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchLeaderboardData = async () => {
+      try {
+        const response = await fetch("/users/leaderboard/");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error("There was a problem with the fetch operation:", error);
+      }
+    };
+
+    fetchLeaderboardData();
+  }, []);
+
   return (
     <TableContainer
       component={Paper}
@@ -51,6 +48,8 @@ const Leaderboard = () => {
             <TableCell>Profile</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Hours Listened</TableCell>
+            <TableCell>Unique Songs</TableCell>
+            <TableCell>Unique Artists</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -58,10 +57,12 @@ const Leaderboard = () => {
             <TableRow key={user.id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>
-                <Avatar alt={user.name} src={user.profilePic} />
+                <Avatar alt={user.display_name} src={user.profile_pic_url} />
               </TableCell>
-              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.display_name}</TableCell>
               <TableCell>{user.hoursListened}</TableCell>
+              <TableCell>{user.uniqueSongs}</TableCell>
+              <TableCell>{user.uniqueArtists}</TableCell>
             </TableRow>
           ))}
         </TableBody>
