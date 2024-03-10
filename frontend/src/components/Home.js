@@ -1,12 +1,16 @@
+// HomePage.js
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useAuth } from "../contexts/AuthContext";
 import Leaderboard from "./LeaderBoard";
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 
 const HomePage = () => {
   const [listeningHistory, setListeningHistory] = useState([]);
+  const [reviews, setReviewsComments] = useState([]);  // New state for recent comments
   const [showAll, setShowAll] = useState(false);
   const [spotifyUsername, setSpotifyUsername] = useState("Loading...");
   const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
@@ -33,6 +37,15 @@ const HomePage = () => {
             setListeningHistory(historyData);
           } else {
             console.error("Failed to fetch listening history");
+          }
+
+          // Fetch recent comments
+          const commentsResponse = await fetch(`/api/all-review-history/${encodeURIComponent(profileData.id)}`);
+          if (commentsResponse.ok) {
+            const commentsData = await commentsResponse.json();
+            setReviewsComments(commentsData);
+          } else {
+            console.error("Failed to fetch recent comments");
           }
         }
       } catch (error) {

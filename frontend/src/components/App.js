@@ -1,7 +1,7 @@
 // App.js
 
-import React, { Component, useState, useEffect } from "react";
-import { createRoot } from "react-dom/client";
+import React, { useState } from "react";
+import ReactDOM from "react-dom/client"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
@@ -15,6 +15,8 @@ import Navbar from "./NavBar";
 import DummyPlayer from "./DummyPlayer";
 import PlayerWrapper from "./PlayerWrapper";
 import Auth from "./Auth";
+import Lobby from "./Lobby";
+import MusicRoom from "./MusicRoom";
 import { AuthProvider } from "../contexts/AuthContext";
 
 const App = () => {
@@ -49,6 +51,8 @@ const App = () => {
           />
           <Route path="/user/:spotify_id" element={<UserPage />} />
           <Route path="/friends/:spotify_id" element={<FriendsPage />} />
+          <Route path="/lobby" element={<Lobby />} />
+          <Route path="/musicroom" element={<MusicRoom />} />
           <Route
             path="/album/:spotify_content_id"
             element={<AlbumPage onPlay={handlePlay} />}
@@ -67,8 +71,6 @@ const App = () => {
   );
 };
 
-export default App;
-
 const container = document.getElementById("app");
-const root = createRoot(container);
+const root = ReactDOM.createRoot(container);
 root.render(<App />);
