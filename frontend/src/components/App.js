@@ -1,7 +1,7 @@
 // App.js
 
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
@@ -72,4 +72,5 @@ const App = () => {
 };
 
 const container = document.getElementById("app");
-ReactDOM.render(<App />, container);
+const root = ReactDOM.createRoot(container);
+root.render(<App />);

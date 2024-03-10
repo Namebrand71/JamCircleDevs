@@ -1,4 +1,3 @@
-from .agora_key import RtcTokenBuilder
 from django.shortcuts import render
 from django.http import JsonResponse
 import random
@@ -12,6 +11,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from user.views import getUserFromSession
+import requests
 
 
 def make_token(displayName, channelName, role):
@@ -22,8 +22,34 @@ def make_token(displayName, channelName, role):
     privilegeExpiredTs = currentTimeStamp + expirationTimeInSeconds
 
     token = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, channelName, displayName, role, privilegeExpiredTs)
-    print(token)
+    print("THIS IS THE TOE"+token)
     return token
+
+def get_agora_token(request, channel_name, uid):
+    agora_token_server_url = "https://agora-token-server-qbmd.onrender.com/getToken"
+    print("THIS IS THE CHANNEL NAME: ", channel_name)
+    data = {
+        "tokenType": "rtc",
+        "channel": channel_name,
+        "role": "publisher",
+        "uid": uid,
+        "expire": 3600
+    }
+
+    headers = {
+        "Content-Type": "application/json",
+    }
+
+    try:
+        response = requests.post(agora_token_server_url, json=data, headers=headers)
+
+        if response.ok:
+            token_data = response.json()
+            return JsonResponse(token_data)
+        else:
+            return JsonResponse({"error": "Failed to get Agora token"}, status=response.status_code)
+    except requests.RequestException as e:
+        return JsonResponse({"error": f"Request failed: {e}"}, status=500)
 
 @api_view(['POST'])
 def create_room(request):
@@ -68,7 +94,7 @@ def get_room_info(request):
     room_list = {
         "AGORA_ID": AGORA_ID,
         "AGORA_CERT": AGORA_CERT,
-        "current_user_token": user.agora_token,
+        "current_user_uid": user.agora_uid,
         "current_user_name": user.display_name,
         "current_user_id": user.spotify_id,
         "room_name": room.room_name,
@@ -82,5 +108,6 @@ def get_room_info(request):
     print(room_list)
 
     return JsonResponse(room_list, safe=False)
+
 
 
