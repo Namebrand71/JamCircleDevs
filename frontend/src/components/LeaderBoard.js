@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -8,27 +8,27 @@ import {
   TableRow,
   Paper,
   Avatar,
-} from "@mui/material";
+} from '@mui/material';
 
 // MOCK DATA
 const users = [
   {
     id: 1,
-    name: "User 1",
+    name: 'User 1',
     hoursListened: 120,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: 'https://via.placeholder.com/40',
   },
   {
     id: 2,
-    name: "User 2",
+    name: 'User 2',
     hoursListened: 110,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: 'https://via.placeholder.com/40',
   },
   {
     id: 3,
-    name: "User 3",
+    name: 'User 3',
     hoursListened: 105,
-    profilePic: "https://via.placeholder.com/40",
+    profilePic: 'https://via.placeholder.com/40',
   },
 ];
 
@@ -38,10 +38,10 @@ const Leaderboard = () => {
       component={Paper}
       style={{
         marginTop: 20,
-        marginBottom: "40px",
-        marginLeft: "auto",
-        marginRight: "auto",
-        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+        marginBottom: '40px',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
       }}
     >
       <Table>

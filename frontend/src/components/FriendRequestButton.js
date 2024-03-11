@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 
-const SendFriendRequest = ({ spotify_id }) => {
+const SendFriendRequest = ({spotify_id}) => {
   const [requestSent, setRequestSent] = useState(false);
 
   const sendFriendRequest = async () => {
@@ -11,11 +11,11 @@ const SendFriendRequest = ({ spotify_id }) => {
       if (response.ok) {
         setRequestSent(true);
       } else {
-        console.error("Failed to send friend request");
+        console.error('Failed to send friend request');
         // Handle error as needed
       }
     } catch (error) {
-      console.error("Error sending friend request:", error);
+      console.error('Error sending friend request:', error);
       // Handle error as needed
     }
   };
@@ -28,11 +28,11 @@ const SendFriendRequest = ({ spotify_id }) => {
       if (response.ok) {
         setRequestSent(false);
       } else {
-        console.error("Failed to send friend request");
+        console.error('Failed to send friend request');
         // Handle error as needed
       }
     } catch (error) {
-      console.error("Error sending friend request:", error);
+      console.error('Error sending friend request:', error);
       // Handle error as needed
     }
   };

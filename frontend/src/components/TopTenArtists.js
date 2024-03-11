@@ -1,19 +1,19 @@
-import React from "react";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import { Box, Container } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import {Box, Container} from '@mui/material';
+import {styled} from '@mui/material/styles';
+import {Link} from 'react-router-dom';
 
-const StyledContainer = styled("div")(({ theme }) => ({
-  maxHeight: "90vh",
-  overflowY: "auto",
-  borderRadius: "10px",
-  backgroundColor: "#151515", // Dark grey color
-  color: "white", // Sets text color to white
-  padding: "20px",
-  margin: "10px 0", // Adds some space above and below the container
-  BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+const StyledContainer = styled('div')(({theme}) => ({
+  maxHeight: '90vh',
+  overflowY: 'auto',
+  borderRadius: '10px',
+  backgroundColor: '#151515', // Dark grey color
+  color: 'white', // Sets text color to white
+  padding: '20px',
+  margin: '10px 0', // Adds some space above and below the container
+  BoxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
 }));
 
 class MyComponent extends React.Component {
@@ -29,19 +29,19 @@ class MyComponent extends React.Component {
   }
 
   fetchTop10Artists = () => {
-    fetch("/auth/get-top-10-artists/")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Calling setState with values:", data);
-        this.setState({ topArtists: data });
-      })
-      .catch((error) => console.error("Error fetching top artists:", error));
+    fetch('/auth/get-top-10-artists/')
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Calling setState with values:', data);
+          this.setState({topArtists: data});
+        })
+        .catch((error) => console.error('Error fetching top artists:', error));
   };
 
   render() {
     console.log(
-      "About to render toptenartists with state",
-      this.state.topArtists
+        'About to render toptenartists with state',
+        this.state.topArtists,
     );
     return (
       <StyledContainer>
@@ -53,13 +53,13 @@ class MyComponent extends React.Component {
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
               <Link
                 to={`/artist/${artist.id}`}
-                style={{ textDecoration: "none", color: "white" }}
+                style={{textDecoration: 'none', color: 'white'}}
               >
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     marginBottom: 5, // Adds some space between the image and the artist name
                   }}
                 >
@@ -68,7 +68,7 @@ class MyComponent extends React.Component {
                     sx={{
                       height: 100,
                       width: 100,
-                      borderRadius: "50%",
+                      borderRadius: '50%',
                       marginBottom: 2,
                     }}
                     alt={artist.name}

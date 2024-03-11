@@ -1,21 +1,21 @@
 // App.js
 
-import React, { Component, useState, useEffect } from "react";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./HomePage";
-import ProfilePage from "./ProfilePage";
-import SongPage from "./SongPage";
-import UserPage from "./UserPage";
-import FriendsPage from "./FriendsPage";
-import AlbumPage from "./AlbumPage";
-import ArtistPage from "./ArtistPage";
-import SearchResults from "./SearchResults";
-import Navbar from "./NavBar";
-import DummyPlayer from "./DummyPlayer";
-import PlayerWrapper from "./PlayerWrapper";
-import Auth from "./Auth";
-import { AuthProvider } from "../contexts/AuthContext";
+import React, {Component, useState, useEffect} from 'react';
+import {createRoot} from 'react-dom/client';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import HomePage from './HomePage';
+import ProfilePage from './ProfilePage';
+import SongPage from './SongPage';
+import UserPage from './UserPage';
+import FriendsPage from './FriendsPage';
+import AlbumPage from './AlbumPage';
+import ArtistPage from './ArtistPage';
+import SearchResults from './SearchResults';
+import Navbar from './NavBar';
+import DummyPlayer from './DummyPlayer';
+import PlayerWrapper from './PlayerWrapper';
+import Auth from './Auth';
+import {AuthProvider} from '../contexts/AuthContext';
 
 const App = () => {
   const [spotifyContentId, setSpotifyContentId] = useState(null);
@@ -69,6 +69,6 @@ const App = () => {
 
 export default App;
 
-const container = document.getElementById("app");
+const container = document.getElementById('app');
 const root = createRoot(container);
 root.render(<App />);

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../../static/css/searchbar.css";
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import '../../static/css/searchbar.css';
 
-const SearchBar = ({ onSearch }) => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchType, setSearchType] = useState("track");
+const SearchBar = ({onSearch}) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchType, setSearchType] = useState('track');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {

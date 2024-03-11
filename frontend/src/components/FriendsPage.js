@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 
-import Grid from "@mui/material/Grid";
-import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
+import Grid from '@mui/material/Grid';
+import {Link} from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 const FriendsPage = () => {
-  const { spotify_id } = useParams();
+  const {spotify_id} = useParams();
   const [results, setResults] = useState([]);
-  const [userDisplayName, setUserDisplayName] = useState("");
+  const [userDisplayName, setUserDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const [friendRequests, setFriendRequests] = useState([]);
   const [isDropdownVisible, setIsDropdownVisible] = useState(false);
@@ -25,7 +25,7 @@ const FriendsPage = () => {
     console.log(spotify_id);
 
     // Assuming the endpoint is correct and id is used appropriately
-    let endpoint = `/users/get-user-friends/${spotify_id}`;
+    const endpoint = `/users/get-user-friends/${spotify_id}`;
 
     const response = await fetch(endpoint);
     console.log(response);
@@ -35,7 +35,7 @@ const FriendsPage = () => {
     setResults(data);
 
     const displayresponce = await fetch(
-      `/users/get-display-name/${spotify_id}/`
+        `/users/get-display-name/${spotify_id}/`,
     );
     const data2 = await displayresponce.json();
     console.log(data2);
@@ -54,11 +54,11 @@ const FriendsPage = () => {
   // Add a method to fetch friend requests
   const fetchFriendRequests = async () => {
     try {
-      const response = await fetch("/users/get-user-pending-friends/");
+      const response = await fetch('/users/get-user-pending-friends/');
       const data = await response.json();
       setFriendRequests(data);
     } catch (error) {
-      console.error("Error fetching friend requests:", error);
+      console.error('Error fetching friend requests:', error);
     }
   };
 
@@ -72,10 +72,10 @@ const FriendsPage = () => {
         // After accepting the request, fetch updated friend requests
         fetchFriendRequests();
       } catch (error) {
-        console.error("Error accepting friend request:", error);
+        console.error('Error accepting friend request:', error);
       }
     } else {
-      console.error("Invalid friend request data:", friendRequest);
+      console.error('Invalid friend request data:', friendRequest);
     }
   };
 
@@ -86,7 +86,7 @@ const FriendsPage = () => {
       // After rejecting the request, fetch updated friend requests
       fetchFriendRequests();
     } catch (error) {
-      console.error("Error rejecting friend request:", error);
+      console.error('Error rejecting friend request:', error);
     }
   };
 
@@ -99,20 +99,20 @@ const FriendsPage = () => {
           width="100px"
           alt="Profile"
           style={{
-            paddingRight: "20px",
-            paddingTop: "5px",
-            paddingBottom: "2px",
-            width: "80px",
-            maxHeight: "80px",
+            paddingRight: '20px',
+            paddingTop: '5px',
+            paddingBottom: '2px',
+            width: '80px',
+            maxHeight: '80px',
           }}
         />
         <span
           style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "18px",
-            fontWeight: "bold",
-            paddingBottom: "5px",
+            display: 'flex',
+            flexDirection: 'column',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            paddingBottom: '5px',
           }}
         >
           {item.display_name}
@@ -125,7 +125,7 @@ const FriendsPage = () => {
     <Grid
       container
       spacing={1}
-      columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
+      columns={{xs: 4, sm: 8, md: 12, lg: 20, xl: 20}}
     >
       {/* Navbar Grid item */}
       <Grid item xs={4} sm={3} md={3} lg={3} xl={3}>
@@ -139,30 +139,30 @@ const FriendsPage = () => {
             item
             xs={12}
             style={{
-              borderBottom: "2px solid #2a2a2a",
+              borderBottom: '2px solid #2a2a2a',
             }}
           >
             <Button
-              style={{ marginTop: "20px" }}
+              style={{marginTop: '20px'}}
               variant="contained"
               onClick={toggleDropdown}
             >
               Show Friend Requests
             </Button>
             {isDropdownVisible && (
-              <div style={{ marginTop: "16px" }}>
+              <div style={{marginTop: '16px'}}>
                 {/* Display friend requests in the dropdown */}
                 {friendRequests.map((request) => (
                   <div
                     key={request.from_user__display_name}
                     style={{
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                      padding: "8px",
-                      marginBottom: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                      padding: '8px',
+                      marginBottom: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
                     }}
                   >
                     <Typography>
@@ -180,7 +180,7 @@ const FriendsPage = () => {
                 ))}
               </div>
             )}
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
               <h1>{userDisplayName}'s Friends</h1>
             </div>
           </Grid>
@@ -194,12 +194,12 @@ const FriendsPage = () => {
                     <li key={index} className="list-item">
                       <Link
                         to={`/user/${item.spotify_id}`}
-                        style={{ textDecoration: "none", color: "white" }}
+                        style={{textDecoration: 'none', color: 'white'}}
                       >
                         <div
                           style={{
-                            display: "flex",
-                            alignItems: "center",
+                            display: 'flex',
+                            alignItems: 'center',
                           }}
                         >
                           {renderContent(item)}

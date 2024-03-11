@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
 
-import Grid from "@mui/material/Grid";
-import Reviews from "./Reviews";
+import Grid from '@mui/material/Grid';
+import Reviews from './Reviews';
 
-const ArtistPage = ({ onPlay }) => {
-  const { spotify_content_id } = useParams();
+const ArtistPage = ({onPlay}) => {
+  const {spotify_content_id} = useParams();
   const [artistInfo, setArtistInfo] = useState(null);
 
   useEffect(() => {
     const callDjangoAPI = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:8000/reviews/get_artist_info/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
+            'http://127.0.0.1:8000/reviews/get_artist_info/',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              credentials: 'include',
+              body: JSON.stringify({spotify_content_id: spotify_content_id}),
             },
-            credentials: "include",
-            body: JSON.stringify({ spotify_content_id: spotify_content_id }),
-          }
         );
 
         if (response.ok) {
           const data = await response.json();
           setArtistInfo(data); // Assuming data is the object with the track details
         } else {
-          console.error("Failed to fetch song data");
+          console.error('Failed to fetch song data');
           setArtistInfo(null);
         }
       } catch (error) {
-        console.error("There was an error!", error);
+        console.error('There was an error!', error);
       }
     };
 
@@ -53,16 +53,16 @@ const ArtistPage = ({ onPlay }) => {
             <div align="center" className="songcard">
               <img
                 src={
-                  artistInfo.images && artistInfo.images.length > 0
-                    ? artistInfo.images[0].url
-                    : ""
+                  artistInfo.images && artistInfo.images.length > 0 ?
+                    artistInfo.images[0].url :
+                    ''
                 }
                 width="350px"
                 alt="Missing Artist Picture"
-                style={{ paddingTop: "20px" }}
+                style={{paddingTop: '20px'}}
               />
               <h1>{artistInfo.name}</h1>
-              <button onClick={() => onPlay(spotify_content_id, "artist")}>
+              <button onClick={() => onPlay(spotify_content_id, 'artist')}>
                 Play
               </button>
             </div>
