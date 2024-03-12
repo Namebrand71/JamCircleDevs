@@ -10,6 +10,12 @@ from django.db.models import Sum
 from django.utils.dateparse import parse_datetime
 
 def is_authenticated(session_id):
+    '''
+    Checks if a user is authenticated
+
+    @param session_id: The session_id of the user
+    @return: If a user is authenticated along with their access token and expire time (if authenticated)
+    '''
     token = get_user_token(session_id)
     print(token)
     print("is_authenticated called")
@@ -25,12 +31,24 @@ def is_authenticated(session_id):
 
 
 def is_authenticated_api(request):
+    '''
+    Endpoint for checking user authentication
+
+    @param request: HTTP Request
+    @return: JSON authentication response
+    '''
     session_id = request.session.session_key
     is_auth = is_authenticated(session_id)
     return JsonResponse({'isAuthenticated': is_auth})
 
 
 def logout_api(request):
+    '''
+    Endpoint for logout request
+
+    @param request: HTTP Request
+    @return: JSON response of success or error
+    '''
     try:
         session_id = request.session.session_key
         SpotifyToken.objects.filter(session_id=session_id).delete()
@@ -40,6 +58,12 @@ def logout_api(request):
 
 
 def refresh_token(session_id):
+    '''
+    Refreshes a user token
+
+    @param session_id: session_id of user
+    @return: none
+    '''
     refresh_token = get_user_token(session_id).refresh_token
     response = post('https://accounts.spotify.com/api/token', data={
         'grant_type': 'refresh_token',
@@ -52,10 +76,17 @@ def refresh_token(session_id):
 
     refresh_token = response.get('refresh_token')
     token_type = response.get('token_type')
-    user_token_func(session_id, access_token, token_type, None, refresh_token)
+    update_user_token(session_id, access_token, token_type, None, refresh_token)
 
 
 def get_user_token(session_id):
+    '''
+    Retrieves the token of active user
+
+    @param session_id: session id of user
+    @return: user token or none
+    '''
+    
     user_tokens = SpotifyToken.objects.filter(session_id=session_id)
     if user_tokens.exists():
         return user_tokens[0]
@@ -63,7 +94,17 @@ def get_user_token(session_id):
         return None
 
 
-def user_token_func(session_id, access_token, token_type, expires_at, refresh_token):
+def update_user_token(session_id, access_token, token_type, expires_at, refresh_token):
+    '''
+    Updates or creates the token of current user
+
+    @param session_id: session ID of user
+    @param access_token: New access token
+    @param token_type: Type of new token
+    @param expires_at: Expiration time of new token
+    @param refresh_token: the refresh token
+    @return: updates or newly created token object
+    '''
     token = get_user_token(session_id)
     if not expires_at:
         expires_at = timezone.now() + timedelta(seconds=3600)
@@ -81,6 +122,16 @@ def user_token_func(session_id, access_token, token_type, expires_at, refresh_to
 
 
 def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
+    '''
+    Formulates and sends an api request to Spotify's API
+
+    @param session_id: session ID of user
+    @param endpoint: endpoint to access in spotify API
+    @param ifPost: Bool for if POST request
+    @param ifPut: Bool for if PUT request
+    @return: JSON response from spotify API
+    '''
+    
     token = get_user_token(session_id)
     header = {'Content-Type': 'application/json',
               'Authorization': "Bearer " + token.access_token}
@@ -100,6 +151,12 @@ def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
 
 
 def get_top_10_artist(request):
+    '''
+    Retrieves the top 10 artists of session user
+
+    @param request: HTTP request, containing session_key
+    @return: JSON response containing 10 artist items from SpotifyAPI
+    '''
     session_id = request.session.session_key
     #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
@@ -111,6 +168,12 @@ def get_top_10_artist(request):
 
 
 def get_top_10_tracks(request):
+    '''
+    Retrieves the top 10 tracks of session user
+
+    @param request: HTTP request, containing session_key
+    @return: JSON response containing 10 track items from SpotifyAPI
+    '''
     session_id = request.session.session_key
     #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
@@ -120,6 +183,14 @@ def get_top_10_tracks(request):
     return JsonResponse(track_list, safe=False)
 
 def save_spotify_listening_history(user, response_data):
+    '''
+    Saves a user's spotify listening history into our user model
+
+    @param user: the user to store to
+    @param response_data: The JSON listening data from a call to SpotifyAPI
+                          liestning history
+    @return: None
+    '''
     for item in response_data['items']:
         track = item['track']
         album = track['album']
@@ -155,8 +226,14 @@ def save_spotify_listening_history(user, response_data):
             )
 
 def get_spotify_activity(request):
+    '''
+    Retrieves the recent listening history of a user (last 50 items) 
+    and saves it to model (makes call to save_spotify_listening_history)
 
-    user_list = ''
+    @param request: HTTP request, contains session_key
+    @return: None
+    '''
+
     endpoint = '/me/player/recently-played?limit=50'
 
     token = get_user_token(request.session.session_key)
@@ -169,8 +246,13 @@ def get_spotify_activity(request):
     print(
         f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
 
-
 def get_total_listening_time(user):
+    '''
+    Reads the total listening time of a specified user from out database
+
+    @param user: The specified user
+    @return: Their total listening time in ms
+    '''
     total_time = ListeningData.objects.filter(user=user).aggregate(
         total_time_listened=Sum('duration_ms'))['total_time_listened']
     if total_time is None:
@@ -178,6 +260,12 @@ def get_total_listening_time(user):
     return total_time
 
 def get_playlists(request):
+    '''
+    Retrives a user's created playlists from spotify
+
+    @param request: HTTP request, contains session_key
+    @return: JSON of playilst items from SpotifyAPI call
+    '''
     session_id = request.session.session_key
     token = get_user_token(session_id)
     if not token:
@@ -201,14 +289,16 @@ def get_playlists(request):
 
     return JsonResponse(formatted_playlists, safe=False)
 
+def check_following(session_id, user_list):
+    '''
+    Given a list of users, checks if session user is following them
 
-# Give a list of strings of Spotify IDs. Give session_id and list of Spotify IDs
-
-
-def checkFollowing(session_id, list):
-    for x in list:
+    @param session_id: session ID of current user
+    @param user_list: list of users to check
+    @return: JSON response of spotify API endpoint that checks a user's following
+    '''
+    for x in user_list:
         idString = idString + "%2C" + x
-    # Removes first %2C
     idString = idString[3:]
 
     requestEndpoint = '/me/following/contains?type=user&ids=' + idString
@@ -217,7 +307,13 @@ def checkFollowing(session_id, list):
     return response.json
 
 
-def getUserJSON(session_id):
+def get_user_json(session_id):
+    '''
+    Retrive the SpotifyAPI JSON associated to the host of the session
+
+    @param session_id: The id of the session holder
+    @return: JSON response from SpotifyAPI
+    '''
     response = spotify_api_request(session_id, "/me", False, False)
     print(response)
     return response

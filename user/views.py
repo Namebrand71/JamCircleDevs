@@ -305,6 +305,13 @@ def update_stats(user):
 
 class LeaderboardList(APIView):
     def get(self, request, format=None):
+        '''
+        Updates and retrieves Leaderboard content for frontend
+
+        @param self: Leaderboard class
+        @param request: HTTP request
+        @return: Serialized leaderboard data
+        '''
         users = User.objects.all()
         users_listened_time = [
             (user, get_total_listening_time(user)) for user in users]
