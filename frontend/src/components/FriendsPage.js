@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 const FriendsPage = () => {
   const { spotify_id } = useParams();
