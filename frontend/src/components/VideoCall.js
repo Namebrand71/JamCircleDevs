@@ -13,10 +13,6 @@ import "./styles.css";
 const VideoCall = ({ appId: initialAppId, channel: initialChannel, token: initialToken, uid: initialUID}) => {
   const [calling, setCalling] = useState(false);
   const isConnected = useIsConnected();
-  const [appId, setAppId] = useState(initialAppId); 
-  const [channel, setChannel] = useState(initialChannel); 
-  const [token, setToken] = useState(initialToken);
-  const [uid, setUID] = useState(initialUID);
   console.log("JOIN PERAMS", initialAppId, initialChannel, initialToken, initialUID)
   useJoin({appid: initialAppId, channel: initialChannel, token: initialToken, uid: initialUID}, calling);
   //local user
