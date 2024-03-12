@@ -31,7 +31,6 @@ const Navbar = () => {
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
-      loadProfile();
       fetch("/auth/logout/")
         .then((response) => response.json())
         .then((data) => {
