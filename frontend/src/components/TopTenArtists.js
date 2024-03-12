@@ -14,6 +14,7 @@ const StyledContainer = styled("div")(({ theme }) => ({
   padding: "20px",
   margin: "10px 0", // Adds some space above and below the container
   BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+  height: "480px",
 }));
 
 class MyComponent extends React.Component {
@@ -51,16 +52,13 @@ class MyComponent extends React.Component {
         <Grid container spacing={1}>
           {this.state.topArtists.slice(0, 10).map((artist, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
-              <Link
-                to={`/artist/${artist.id}`}
-                style={{ textDecoration: "none", color: "white" }}
-              >
+              <Link to={`/artist/${artist.id}`} className="TopTen">
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    marginBottom: 5, // Adds some space between the image and the artist name
+                    marginBottom: 7,
                   }}
                 >
                   <Box

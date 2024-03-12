@@ -31,16 +31,7 @@ const Leaderboard = () => {
   }, []);
 
   return (
-    <TableContainer
-      component={Paper}
-      style={{
-        marginTop: 20,
-        marginBottom: "40px",
-        marginLeft: "auto",
-        marginRight: "auto",
-        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-      }}
-    >
+    <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
