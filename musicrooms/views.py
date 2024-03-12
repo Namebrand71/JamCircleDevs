@@ -10,7 +10,7 @@ import json
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from user.views import getUserFromSession
+from user.views import get_user_from_session
 from django.shortcuts import render, redirect
 import requests
 
@@ -50,7 +50,7 @@ def get_agora_token(request, channel_name, uid):
 @api_view(['POST'])
 def create_room(request):
     data = json.loads(request.body)
-    host = getUserFromSession(request.session.session_key)
+    host = get_user_from_session(request.session.session_key)
     room, created = Room.objects.get_or_create(
         host = host,
         room_name = data['room_name']
@@ -64,7 +64,7 @@ def create_room(request):
 @api_view(['POST'])
 def join_room(request):
     data = json.loads(request.body)
-    user = getUserFromSession(request.session.session_key)
+    user = get_user_from_session(request.session.session_key)
     room = Room.objects.get(room_name=data['room_name'], passcode=data['passcode'])
     if room is not None:
         room.current_users.add(user)
@@ -76,7 +76,7 @@ def join_room(request):
 @api_view(['POST'])
 def leave_room(request):
     data = json.loads(request.body)
-    user = getUserFromSession(request.session.session_key)
+    user = get_user_from_session(request.session.session_key)
     room = Room.objects.filter(room_name=data['room_name']).last()
 
     if room is not None:
@@ -98,7 +98,7 @@ def leave_room(request):
 @api_view(['POST'])
 def get_room_info(request):
     data = json.loads(request.body)
-    user = getUserFromSession(request.session.session_key)
+    user = get_user_from_session(request.session.session_key)
     room = Room.objects.filter(current_users=user).last()
     room_list = {
         "AGORA_ID": AGORA_ID,

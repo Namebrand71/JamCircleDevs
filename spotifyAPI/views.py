@@ -60,7 +60,7 @@ def spotfy_callback(request, format=None):
 
     user_data = getUserJSON(request.session.session_key)
 
-    pre_top_10_tracks = json.loads(getTop10Tracks(request).content.decode())
+    pre_top_10_tracks = json.loads(get_top_10_tracks(request).content.decode())
     top_10_tracks = [
         {
             'id': track['id'],
@@ -71,9 +71,9 @@ def spotfy_callback(request, format=None):
         for track in pre_top_10_tracks
     ]
 
-    playlists = json.loads(getPlaylists(request).content.decode())
+    playlists = json.loads(get_playlists(request).content.decode())
 
-    pre_top_10_artists = json.loads(getTop10Artist(request).content.decode())
+    pre_top_10_artists = json.loads(get_top_10_artist(request).content.decode())
     top_10_artists = [{'id': item['id'], 'name': item['name'],
                        'image_url': item['images'][0]['url']} for item in pre_top_10_artists]
     
@@ -90,8 +90,18 @@ def spotfy_callback(request, format=None):
         'playlists': playlists,
     }
 
-    user, created = User.objects.update_or_create(
-        spotify_id=user_data['id'], defaults=user_defaults)
+    # Fetch the existing user object based on spotify_id
+    try:
+        user = User.objects.get(spotify_id=user_data['id'])
+        
+        # Update the existing user with new values
+        for key, value in user_defaults.items():
+            setattr(user, key, value)
+        
+        user.save()
+    except User.DoesNotExist:
+        # If user doesn't exist, create a new one
+        user = User.objects.create(spotify_id=user_data['id'], **user_defaults)
     
     fetch_spotify_activity(request)
 
@@ -154,6 +164,13 @@ def search_spotify_artists(request, search_query):
 
 
 def fetch_spotify_activity(request):
+    '''
+    Fetches and saves a users current spotify listening history (limited to 50 tracks)
+
+    @param request: http request
+    @return: JSON response from SpotifyAPI containing 50 track items
+    
+    '''
     print("fetch_spotify_activity called")
 
     endpoint = '/me/player/recently-played?limit=50'
@@ -177,6 +194,13 @@ def fetch_spotify_activity(request):
 
 
 def get_currently_playing(request):
+    '''
+    Retrieves the song currently playing for a user on spotify
+
+    @param request: http request
+    @return: JSON item with (name, artist(s), cover image, track id, is playing?)
+    '''
+    
     print("get_currently_playing called")
     session_id = request.session.session_key
     token = get_user_token(session_id=session_id)
