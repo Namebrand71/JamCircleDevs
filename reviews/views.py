@@ -15,6 +15,7 @@ def artist_page(request, spotify_content_id):
 
     @param request: http request
     @param spotify_content_id: the artist ID for spotify api
+    @return: render of frontend component
     '''
     return render(request, 'frontend/index.html', {'spotify_content_id': spotify_content_id})
 
@@ -25,6 +26,7 @@ def song_page(request, spotify_content_id):
 
     @param request: http request
     @param spotify_content_id: the song ID for spotify api
+    @return: render of frontend component
     '''
     return render(request, 'frontend/index.html', {'spotify_content_id': spotify_content_id})
 
@@ -35,6 +37,7 @@ def album_page(request, spotify_content_id):
 
     @param request: http request
     @param spotify_content_id: the album ID for spotify api
+    @return: render of frontend component
     '''
     return render(request, 'frontend/index.html', {'spotify_content_id': spotify_content_id})
 
@@ -115,7 +118,6 @@ def post_review(request):
     try:
         token = SpotifyToken.objects.get(session_id=session_id)
         user = User.objects.get(token=token)
-
         review = Review.objects.create(
             spotify_content_id=data['spotify_content_id'],
             author=user,
