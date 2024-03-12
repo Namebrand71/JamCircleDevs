@@ -8,7 +8,7 @@ def generate_unique_code():
 
     while True:
         agora_uid = "".join(random.choices(string.digits, k=length))
-        if User.objects.filter(agora_uid=agora_uid).count() == 0:
+        if User.objects.filter(agora_uid=agora_uid).count() == 0 and int(agora_uid) >= 10000:
             break
     return agora_uid
 
