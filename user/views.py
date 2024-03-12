@@ -10,6 +10,7 @@ from .models import User, Friend_Request
 from spotifyAPI.models import ListeningData
 from django.db.models import Sum
 from django.http import HttpResponse
+from .serializers import UserLeaderboardSerializer
 
 # Create your views here.
 
@@ -168,14 +169,15 @@ def get_user_stats(request):
         user_obj = User.objects.get(pk=user.pk)
 
         stats = {
-                'unique_songs': user_obj.unique_songs,
-                'unique_artists': user_obj.unique_artists,
-                'high_popularity_tracks': user_obj.high_popularity_tracks,
-                'low_popularity_tracks': user_obj.low_popularity_tracks
-            }
+            'unique_songs': user_obj.unique_songs,
+            'unique_artists': user_obj.unique_artists,
+            'high_popularity_tracks': user_obj.high_popularity_tracks,
+            'low_popularity_tracks': user_obj.low_popularity_tracks
+        }
         return JsonResponse(stats, safe=False)
     except User.DoesNotExist:
         return None
+
 
 def update_stats(user):
     # Determine the cutoff between high/low popularity songs
@@ -187,16 +189,32 @@ def update_stats(user):
     high_pop:       Number of "high popularity" songs in history (determined by POPULARITY_THRESHOLD value)
     low_pop:        Number of "low popularity" songs in history
     '''
-    unique_tracks = ListeningData.objects.filter(user=user).values("track_spotify_id").distinct().count()
-    unique_artists = ListeningData.objects.filter(user=user).values('artist_names').distinct().count()
-    high_pop = ListeningData.objects.filter(user=user, track_popularity__gt=POPULARITY_THRESHOLD).count()
-    low_pop = ListeningData.objects.filter(user=user, track_popularity__lt=POPULARITY_THRESHOLD).count()
-    
-    #Access and save computer values to User model
+    unique_tracks = ListeningData.objects.filter(
+        user=user).values("track_spotify_id").distinct().count()
+    unique_artists = ListeningData.objects.filter(
+        user=user).values('artist_names').distinct().count()
+    high_pop = ListeningData.objects.filter(
+        user=user, track_popularity__gt=POPULARITY_THRESHOLD).count()
+    low_pop = ListeningData.objects.filter(
+        user=user, track_popularity__lt=POPULARITY_THRESHOLD).count()
+
+    # Access and save computer values to User model
     user_obj = User.objects.get(pk=user.pk)
     user_obj.unique_artists = unique_artists
     user_obj.unique_songs = unique_tracks
     user_obj.high_popularity_tracks = high_pop
     user_obj.low_popularity_tracks = low_pop
-    user_obj.save() 
+    user_obj.save()
 
+
+class LeaderboardList(APIView):
+    def get(self, request, format=None):
+        users = User.objects.all()
+        users_listened_time = [
+            (user, get_total_listening_time(user)) for user in users]
+        # Sort users by listening time in descending order
+        sorted_users = sorted(users_listened_time,
+                              key=lambda x: x[1], reverse=True)
+        serializer = UserLeaderboardSerializer(
+            [user[0] for user in sorted_users], many=True)
+        return Response(serializer.data)

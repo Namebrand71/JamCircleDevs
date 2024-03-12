@@ -1,6 +1,16 @@
 from django.db import models
-
+import random
+import string
 # Create your models here.
+
+def generate_unique_code():
+    length = 5
+
+    while True:
+        agora_uid = "".join(random.choices(string.digits, k=length))
+        if User.objects.filter(agora_uid=agora_uid).count() == 0:
+            break
+    return agora_uid
 
 class User(models.Model):
     spotify_id = models.CharField(max_length=50, unique=True)
@@ -12,6 +22,7 @@ class User(models.Model):
         null=True,
         blank=True
     )
+    agora_uid = models.CharField(max_length=20, default=generate_unique_code, unique=True)
     email = models.EmailField(
         max_length=100, unique=True, null=True, blank=True)
     profile_pic_url = models.URLField(max_length=500, blank=True, null=True)

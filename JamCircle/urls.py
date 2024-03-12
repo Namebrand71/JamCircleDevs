@@ -23,5 +23,7 @@ urlpatterns = [
     path('', include('frontend.urls')),
     path('auth/', include('spotifyAPI.urls')),
     path('reviews/', include('reviews.urls')),
-    path('users/', include('user.urls'))
+    path('users/', include('user.urls')),
+    path('musicrooms/', include('musicrooms.urls')),
 ]
+

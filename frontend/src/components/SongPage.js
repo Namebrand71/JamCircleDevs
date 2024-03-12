@@ -65,7 +65,18 @@ const SongPage = ({onPlay}) => {
                   '0' + ((trackInfo.duration_ms % 60000) / 1000).toFixed(0)
                 ).slice(-2)}
               </h2>
-              <button onClick={() => onPlay(spotify_content_id, 'track')}>
+              <button
+                onClick={() => onPlay(spotify_content_id, "track")}
+                style={{
+                  backgroundColor: "green",
+                  color: "white",
+                  padding: "10px 10px",
+                  border: "none",
+                  marginTop: "20px",
+                  cursor: "pointer",
+                  width: "40%", // Use full width of the sidebar
+                }}
+              >
                 Play Song
               </button>
             </div>

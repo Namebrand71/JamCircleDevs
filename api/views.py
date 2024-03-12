@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from collections import defaultdict
 from django.shortcuts import get_object_or_404
 from user.models import User
+from reviews.models import Review
 
 # Create your views here.
 
@@ -86,17 +87,17 @@ def all_review_history(request, spotify_id):
     friends = user.friends.all()  # Assuming 'friends' is the ManyToManyField
 
     # Step 3: Query ListeningData for friends and order by datetime in descending order
-    history_items = ListeningData.objects.filter(user__in=friends).order_by('-datetime_field')
+    history_items = Review.objects.filter(author__in=friends).order_by('-posted_at')
 
     # Creating a list of dictionaries for each listening data entry
-    listening_data_list = [
+    reviews_list = [
         {
-            "author_display_name": item.author_display_name,
-            "rating": review.rating,
-            "text": review.text,
-            "posted_at": review.posted_at,
+            "name": item.author.display_name,
+            "rating": item.rating,
+            "text": item.text,
+            "posted_at": item.posted_at,
         }
         for item in history_items
     ]
 
-    return JsonResponse(listening_data_list, safe=False)
+    return JsonResponse(reviews_list, safe=False)

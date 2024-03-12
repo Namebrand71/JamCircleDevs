@@ -62,7 +62,18 @@ const ArtistPage = ({onPlay}) => {
                 style={{paddingTop: '20px'}}
               />
               <h1>{artistInfo.name}</h1>
-              <button onClick={() => onPlay(spotify_content_id, 'artist')}>
+              <button
+                onClick={() => onPlay(spotify_content_id, "artist")}
+                style={{
+                  backgroundColor: "green",
+                  color: "white",
+                  padding: "10px 10px",
+                  border: "none",
+                  marginTop: "20px",
+                  cursor: "pointer",
+                  width: "40%", // Use full width of the sidebar
+                }}
+              >
                 Play
               </button>
             </div>
