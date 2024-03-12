@@ -21,6 +21,7 @@ def user_page(request, spotify_id):
 
     @param request: Http Request
     @param spotify_id: Spotify ID of the User's page we want to render
+    @return: render request of frontend component
     '''
     return render(request, 'frontend/index.html', {'spotify_id': spotify_id})
 
@@ -31,6 +32,7 @@ def friends_page(request, spotify_id):
 
     @param request: Http Request
     @param spotify_id: Spotify ID of the User's page we want to render
+    @return: render request of frontend component
     '''
     return render(request, 'frontend/index.html', {'spotify_id': spotify_id})
 
@@ -41,7 +43,8 @@ def get_user_info(request, spotify_id):
     Makes API call to spotify to retrieve user info
 
     @param request: http request, contains session_key
-    @param spotify_id: 
+    @param spotify_id: spotify ID of user to retrieve info of
+    @return: SpotifyAPI JSON response 
     '''
     print("Request: ", request)
     print("SESSIONID: ", request.session.session_key)
@@ -60,6 +63,7 @@ def get_user_top_10_artist(request, spotify_id):
 
     @param request: Http request
     @param spotify_id: Spotify username of desired user
+    @return: top10 artists from a user in our database
     """
     user = User.objects.filter(spotify_id=spotify_id).first()
     return JsonResponse(user.top_10_artists, safe=False)
@@ -71,6 +75,7 @@ def get_user_top_10_tracks(request, spotify_id):
 
     @param request: Http request
     @param spotify_id: Spotify username of desired user
+    @return: top10 tracks from a user in our databse
     """
     user = User.objects.filter(spotify_id=spotify_id).first()
     return JsonResponse(user.top_10_tracks, safe=False)
@@ -81,6 +86,7 @@ def get_user_playlists(request, spotify_id):
 
     @param request: Http request
     @param spotify_id: Spotify username of desired user
+    @return: User's playlists stored in our database
     """
     user = User.objects.filter(spotify_id=spotify_id).first()
     return JsonResponse(user.playlists, safe=False)
@@ -92,6 +98,7 @@ def is_session_user(request, spotify_id):
 
     @param request: http request
     @param spotify_id: Spotify ID of the user making the request
+    @return: True/False JSON response if current user is valid session user
     """
     current_user = get_user_from_session(request.session.session_key)
     if current_user.spotify_id == spotify_id:
@@ -107,6 +114,7 @@ def get_user_from_session(session_id):
     Retrieves the user key in our database associated with the holder of the current session_id
 
     @param session_id: session identifier granted on login
+    @return: Current user of the session
     '''
     token = get_user_token(session_id)
     current_user = User.objects.filter(token=token).first()
@@ -119,6 +127,7 @@ def get_display_name(request, spotify_id):
 
     @param request: http request
     @param spotify_id: desired users spotify ID
+    @return: Display name of user with spotify_id
     '''
     user = get_object_or_404(User, spotify_id=spotify_id)
     return JsonResponse(user.display_name, safe=False)
@@ -130,6 +139,7 @@ def get_users_friends(request, spotify_id):
 
     @param request: HTTP request
     @param spotify_id: The spotify id of desired user
+    @return: JSON formatted list of a user's friends
     '''
     user = get_object_or_404(User, spotify_id=spotify_id)
     print(User)
@@ -144,6 +154,7 @@ def get_user_pending_friends(request):
     Retrieves list of pending freind requests for the user of current session
 
     @param request: Http request, contains session key
+    @return: JSON formatted list of pending friends (sent, and recieved requests)
     '''
     user = get_user_from_session(request.session.session_key)
     pending_friends_list = list(user.pending_friend_requests.all().values(
@@ -158,6 +169,7 @@ def send_freind_request(request, spotify_id):
 
     @param request: HTTP request, contains session_key
     @param spotify_id: The spotify id of a user you would like to send a friend request to
+    @return: HTTP response if the request was made or already sent
     '''
     from_user = get_user_from_session(request.session.session_key)
     to_user = User.objects.filter(spotify_id=spotify_id).first()
@@ -179,6 +191,7 @@ def accept_friend_request(request, spotify_id):
 
     @param request: contains session_key (acceptee)
     @param spotify_id: id of friend request sender
+    @return: Success message
     '''
     to_user = get_user_from_session(request.session.session_key)
     from_user = User.objects.filter(spotify_id=spotify_id).first()
@@ -198,6 +211,7 @@ def reject_friend_request(request, spotify_id):
 
     @param request: http request, contains session_key
     @param spotify_id: freind request sender's spotify ID
+    @return: HTTP response if the rejection was successful
     '''
     to_user = get_user_from_session(request.session.session_key)
     from_user = User.objects.filter(spotify_id=spotify_id).first()
@@ -217,6 +231,7 @@ def cancel_friend_request(request, spotify_id):
 
     @param request: http request, contains session_key
     @param spotify_id: freind request recipient's spotify ID
+    @return: HTTP response if cancelation was successful
     '''
     to_user = User.objects.filter(spotify_id=spotify_id).first()
     from_user = get_user_from_session(request.session.session_key)
@@ -236,7 +251,9 @@ def cancel_friend_request(request, spotify_id):
 def get_total_listening_time(user):
     '''
     Retrieves total listening time in ms of a user
+    
     @param user: the id of user in the database
+    @return: User's total listening time in ms
     '''
     total_time = ListeningData.objects.filter(user=user).aggregate(
         total_time_listened=Sum('duration_ms'))['total_time_listened']
@@ -251,6 +268,7 @@ def get_user_stats(request, spotify_id):
 
     @param request: HTTP Request, contains session_key
     @param spotify_id: spotify id of user whos stats to get
+    @return: JSON formatted list of user stats defined in user.models
     '''
     print("Getting user stats for: ", spotify_id)
     try:

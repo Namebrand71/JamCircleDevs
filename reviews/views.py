@@ -5,7 +5,6 @@ from spotifyAPI.util import spotify_api_request
 from .models import Review
 from spotifyAPI.models import SpotifyToken
 from user.models import User
-
 # Create your views here.
 
 
@@ -44,6 +43,12 @@ def album_page(request, spotify_content_id):
 
 @api_view(['POST'])
 def get_artist_info(request):
+    '''
+    Retrieves artist info from spotify API and returns JSON of artist
+
+    @param request: http request, contains content id
+    @return: SpotifyAPI JSON containing artist info
+    '''
     print("get_artist_info called with arg: ",
           request.data.get('spotify_content_id'))
 
@@ -60,6 +65,12 @@ def get_artist_info(request):
 
 @api_view(['POST'])
 def get_track_info(request):
+    '''
+    Retrieves track info from spotify API and returns JSON of track
+
+    @param request: http request, contains content id
+    @return: SpotifyAPI JSON containing track info
+    '''
     print("get_track_info called with arg: ",
           request.data.get('spotify_content_id'))
 
@@ -78,7 +89,8 @@ def get_album_info(request):
     '''
     Retrieves album info from spotify API and returns JSON of album
 
-    @param request: http request
+    @param request: http request, contains content id
+    @return: SpotifyAPI JSON containing album info
     '''
     #print("get_album_info called with arg: ", request.data.get('spotify_content_id'))
     #print("SESSIONID: ", request.session.session_key)
@@ -92,6 +104,12 @@ def get_album_info(request):
 
 @api_view(['POST'])
 def get_reviews(request):
+    '''
+    Retrieves the reviews for a given spotify content
+
+    @param request: HTTP request, containts spotify_content_id to display reviews
+    @return: JSON formatted list of reviews tied to a given content
+    '''
     spotify_content_id = request.data.get('spotify_content_id')
     #print("ACCESSING REVIEWS FOR ", spotify_content_id)
 
@@ -113,6 +131,12 @@ def get_reviews(request):
 
 @api_view(['POST'])
 def post_review(request):
+    '''
+    Stores a new review into reviews database for a piece of content
+
+    @param request: HTTP Request, contains the review data
+    @response: Success or error message
+    '''
     data = request.data
     session_id = request.session.session_key
     try:
