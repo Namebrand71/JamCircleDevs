@@ -23,7 +23,10 @@ from base64 import b64encode
 class SpotifyLogin(APIView):
     def get(self, request, format=None):
         '''
-        handles authorization path for user logon redirects to spotify login
+        Initiates Spotify auth
+
+        @param request: HTTP request
+        @return: JSON response with URL for Spotify auth
         '''
         scopes = "user-read-private user-read-email user-top-read user-read-recently-played user-read-currently-playing user-read-playback-state streaming user-modify-playback-state user-library-read user-library-modify"
 
