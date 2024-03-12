@@ -10,7 +10,6 @@ import AlbumPage from "./AlbumPage";
 import ArtistPage from "./ArtistPage";
 import SearchResults from "./SearchResults";
 import Navbar from "./NavBar";
-import DummyPlayer from "./DummyPlayer";
 import PlayerWrapper from "./PlayerWrapper";
 import Auth from "./Auth";
 import Lobby from "./Lobby";
@@ -29,17 +28,17 @@ const App = () => {
         const response = await fetch(`/musicrooms/start-token-server`); // Replace with your API endpoint
         if (response.ok) {
           const data = await response.json();
-          console.log('Initial data:', data);
+          console.log("Initial data:", data);
 
           // Update state with initial data if needed
           // setSpotifyContentId(data.spotifyContentId);
           // setSpotifyContentType(data.spotifyContentType);
           // setAccessToken(data.accessToken);
         } else {
-          console.error('Failed to fetch initial data');
+          console.error("Failed to fetch initial data");
         }
       } catch (error) {
-        console.error('Error fetching initial data', error);
+        console.error("Error fetching initial data", error);
       }
     };
 

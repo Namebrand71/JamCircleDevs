@@ -1,33 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import AgoraRTC, { AgoraRTCProvider } from 'agora-rtc-react';
-import VideoCall from './VideoCall';
-import SpotifyPlayer from 'react-spotify-web-playback';
-import { useAuth } from '../contexts/AuthContext';
-import '../../static/css/searchbar.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import AgoraRTC, { AgoraRTCProvider } from "agora-rtc-react";
+import VideoCall from "./VideoCall";
+import SpotifyPlayer from "react-spotify-web-playback";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Musicroom = () => {
   const navigate = useNavigate();
-  const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+  const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
   const [roomInfo, setRoomInfo] = useState(null);
   const [tokenInfo, setTokenInfo] = useState(null);
-  const [spotifyContentId, setSpotifyContentId] = useState('6uLMxmK9MHb6fiecxn2yrp');
+  const [spotifyContentId, setSpotifyContentId] = useState(
+    "6uLMxmK9MHb6fiecxn2yrp"
+  );
   const [spotifyIsHost, setSpotifyIsHost] = useState(false);
-  const [spotifyLayout, setSpotifyLayout] = useState('responsive');
+  const [spotifyLayout, setSpotifyLayout] = useState("responsive");
   const { accessToken } = useAuth();
   const [searchResults, setSearchResults] = useState([]);
   const [loadingSearch, setLoadingSearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [spotify_id, setSpotifyId] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [spotify_id, setSpotifyId] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`/musicrooms/get-room-info`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ spotify_id }),
         });
@@ -37,32 +38,33 @@ const Musicroom = () => {
 
           if (data.host_id === data.current_user_id) {
             setSpotifyIsHost(true);
-            setSpotifyLayout('responsive');
+            setSpotifyLayout("responsive");
           }
 
           if (data) {
             const agoraTokenResponse = await fetch(
-              `musicrooms/get-agora-token/${encodeURIComponent(data.room_name)}/${encodeURIComponent(
-                data.current_user_uid
-              )}`
+              `musicrooms/get-agora-token/${encodeURIComponent(
+                data.room_name
+              )}/${encodeURIComponent(data.current_user_uid)}`
             );
             if (!agoraTokenResponse.ok) {
-              throw new Error(`HTTP error! Status: ${agoraTokenResponse.status}`);
+              throw new Error(
+                `HTTP error! Status: ${agoraTokenResponse.status}`
+              );
             }
             const agoraTokenData = await agoraTokenResponse.json();
             setTokenInfo(agoraTokenData);
           }
         } else {
-          console.error('Failed to fetch room data');
+          console.error("Failed to fetch room data");
           setRoomInfo(null);
         }
       } catch (error) {
-        console.error('Error fetching room data', error);
+        console.error("Error fetching room data", error);
       }
     };
 
     fetchData();
-
   }, []);
 
   useEffect(() => {
@@ -74,11 +76,11 @@ const Musicroom = () => {
     };
 
     // Attach the event listener to the window
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     // Cleanup function to remove the event listener
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 
@@ -88,15 +90,17 @@ const Musicroom = () => {
     try {
       setLoadingSearch(true);
       setTimeout(1000);
-      const endpoint = `/auth/search_spotify_tracks/${encodeURIComponent(searchQuery)}/`;
+      const endpoint = `/auth/search_spotify_tracks/${encodeURIComponent(
+        searchQuery
+      )}/`;
       const response = await fetch(endpoint);
       const data = await response.json();
       setSearchResults(data.tracks.items);
     } catch (error) {
-      console.error('Error fetching search results', error);
+      console.error("Error fetching search results", error);
     } finally {
       setLoadingSearch(false);
-      setSearchQuery('');
+      setSearchQuery("");
     }
   };
 
@@ -107,30 +111,30 @@ const Musicroom = () => {
   const leaveRoom = async () => {
     try {
       const response = await fetch(`/musicrooms/leave-room`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ room_name: roomInfo.room_name }),
       });
 
       if (response.ok) {
-        console.log('Left room successfully');
+        console.log("Left room successfully");
         // Redirect to /lobby
-        navigate('/lobby');
+        navigate("/lobby");
       } else {
-        console.error('Failed to leave room');
+        console.error("Failed to leave room");
       }
     } catch (error) {
-      console.error('Error leaving room', error);
+      console.error("Error leaving room", error);
     }
   };
 
   const videoCallContainerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100vh",
   };
 
   return (
@@ -165,11 +169,16 @@ const Musicroom = () => {
       </form>
       <div>
         {loadingSearch && <p>Loading...</p>}
-        {!loadingSearch && searchResults.length === 0 && <p>No results found.</p>}
+        {!loadingSearch && searchResults.length === 0 && (
+          <p>No results found.</p>
+        )}
         {!loadingSearch && searchResults.length > 0 && (
           <ul>
             {searchResults.map((result) => (
-              <li key={result.id} onClick={() => handleSearchResultClick(result.id)}>
+              <li
+                key={result.id}
+                onClick={() => handleSearchResultClick(result.id)}
+              >
                 <div>
                   <p>{result.name}</p>
                   <img src={result.album.images[0].url} alt={result.name} />
@@ -186,13 +195,13 @@ const Musicroom = () => {
         layout={spotifyLayout}
         hideAttribution={true}
         styles={{
-          activeColor: '#fff',
-          bgColor: '#333',
-          color: '#fff',
-          loaderColor: '#fff',
-          sliderColor: '#1cb954',
-          trackArtistColor: '#ccc',
-          trackNameColor: '#fff',
+          activeColor: "#fff",
+          bgColor: "#333",
+          color: "#fff",
+          loaderColor: "#fff",
+          sliderColor: "#1cb954",
+          trackArtistColor: "#ccc",
+          trackNameColor: "#fff",
         }}
       />
     </>

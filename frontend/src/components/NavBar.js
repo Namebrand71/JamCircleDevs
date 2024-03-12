@@ -113,6 +113,16 @@ const Navbar = () => {
         Friends
       </NavLink>
 
+      <NavLink
+        to={`/lobby`}
+        style={({ isActive }) => ({
+          ...linkStyle, // spread the base styles
+          ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
+        })}
+      >
+        Music Rooms
+      </NavLink>
+
       {/* Add additional navigation links or content here */}
       <button
         onClick={handleAuthButtonClick}
