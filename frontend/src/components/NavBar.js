@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
   const { accessToken, setAccessToken } = useAuth();
-  const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
+  const [spotifyUsername, setSpotifyUsername] = useState(undefined);
   const [currentSong, setCurrentSong] = useState({
     songName: "",
     artistName: "",
@@ -14,22 +14,6 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const isAuthenticated = !!accessToken;
-
-  const loadProfile = () => {
-    fetch("/auth/profile/")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setCurrentSpotifyId(data.id);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
-  };
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
@@ -49,6 +33,24 @@ const Navbar = () => {
         .catch((error) => console.error("Error:", error));
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const profileResponse = await fetch("/auth/profile/");
+        if (!profileResponse.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const profileData = await profileResponse.json();
+        setSpotifyUsername(profileData.display_name);
+      } catch (error) {
+        console.error("Error:", error);
+        setSpotifyUsername(undefined);
+      }
+    };
+
+    fetchData();
+  }, [isAuthenticated]);
 
   const handleSearch = (query) => {
     console.log("Searching for:", query);
@@ -104,7 +106,7 @@ const Navbar = () => {
       </NavLink>
 
       <NavLink
-        to={`/friends/${currentSpotifyId}`}
+        to={`/friends/${spotifyUsername}`}
         style={({ isActive }) => ({
           ...linkStyle, // spread the base styles
           ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
