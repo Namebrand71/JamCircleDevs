@@ -102,17 +102,17 @@ const HomePage = () => {
           <div className="HomeContent">
             <h2>Recent Activity</h2>
             {displayedHistory.map((track, index) => (
-              <Link to={`/song/${track.track_id}`} key={index}>
+              <Link to={`/song/${track.track_id}`} key={index} id="Link">
                 <div id="Activities">
-                  <img src={track.user_profile_image} alt="Profile" />
+                  <div>
+                    <img src={track.user_profile_image} alt="Profile" />
+                    <p>{new Date(track.played_at).toLocaleString()}</p>
+                  </div>
 
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div id="Names">
                     <span id="TrackName">{track.track_name}</span>
                     <span id="ArtistName">{track.artist_names}</span>
                   </div>
-                </div>
-                <div>
-                  <p>{new Date(track.played_at).toLocaleString()}</p>
                 </div>
               </Link>
             ))}

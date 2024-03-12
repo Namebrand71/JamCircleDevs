@@ -1,4 +1,4 @@
-from django.shortcuts import render
+
 from django.http import JsonResponse
 import random
 import time
@@ -11,19 +11,15 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from user.views import get_user_from_session
+from django.shortcuts import render, redirect
 import requests
 
+@api_view(['GET'])
+def start_token_server(request):
+    agora_token_server_url = "https://agora-token-server-qbmd.onrender.com/getToken"
+    response = requests.post(agora_token_server_url)
+    return JsonResponse(123, safe=False)
 
-def make_token(displayName, channelName, role):
-    appId = AGORA_ID
-    appCertificate = AGORA_CERT
-    expirationTimeInSeconds = 3600
-    currentTimeStamp = int(time.time())
-    privilegeExpiredTs = currentTimeStamp + expirationTimeInSeconds
-
-    token = RtcTokenBuilder.buildTokenWithUid(appId, appCertificate, channelName, displayName, role, privilegeExpiredTs)
-    print("THIS IS THE TOE"+token)
-    return token
 
 def get_agora_token(request, channel_name, uid):
     agora_token_server_url = "https://agora-token-server-qbmd.onrender.com/getToken"
@@ -54,16 +50,14 @@ def get_agora_token(request, channel_name, uid):
 @api_view(['POST'])
 def create_room(request):
     data = json.loads(request.body)
-    print(data['room_name'])
     host = get_user_from_session(request.session.session_key)
     room, created = Room.objects.get_or_create(
         host = host,
         room_name = data['room_name']
     )
     if created:
-        host.agora_token = make_token(host.display_name, data['room_name'], 1)
         room.current_users.add(host)
-        host.save()
+        room.save()
         return JsonResponse({'name':data['room_name'], 'passcode':room.passcode}, safe=False)
 
     return Response({'Not Found': 'room couldnt be created'}, status=status.HTTP_404_NOT_FOUND)
@@ -71,32 +65,48 @@ def create_room(request):
 def join_room(request):
     data = json.loads(request.body)
     user = get_user_from_session(request.session.session_key)
-    room = Room.objects.filter(room_name=data['room_name'], passcode=data['passcode']).first()
+    room = Room.objects.get(room_name=data['room_name'], passcode=data['passcode'])
     if room is not None:
-        user.agora_token = make_token(user.display_name, data['room_name'], 2)
         room.current_users.add(user)
         user.save()
+        room.save()
         return Response({'Ok': 'Succsess'}, status=status.HTTP_200_OK)
-    return Response({'Not Found': 'room not found'}, status=status.HTTP_404_NOT_FOUND)
+    return Response({'Not Foundh': 'room not foundh'}, status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['POST'])
 def leave_room(request):
     data = json.loads(request.body)
     user = get_user_from_session(request.session.session_key)
-    room = Room.objects.filter(room_name=data['room_name']).first()
-    if room is not None:
-        room.current_users.delete(user)
-        return Response({'Ok': 'Succsess'}, status=status.HTTP_200_OK)
-    return Response({'Not Found': 'room not found'}, status=status.HTTP_404_NOT_FOUND)
+    room = Room.objects.filter(room_name=data['room_name']).last()
 
+    if room is not None:
+        # Remove the user from the current_users field
+        room.current_users.remove(user)
+
+        # Check if the current_users field is empty
+        if not room.current_users.exists():
+            # If it's empty, delete the room object
+            room.delete()
+        else:
+            # If it's not empty, update the room's host to the next user in the list
+            room.host = room.current_users.first()
+            room.save()
+
+        return redirect('frontend:profile')
+
+    return Response({'Forbidden': 'Room not found'}, status=status.HTTP_403_FORBIDDEN)
+@api_view(['POST'])
 def get_room_info(request):
+    data = json.loads(request.body)
     user = get_user_from_session(request.session.session_key)
-    room = Room.objects.filter(current_users=user).first()
+    room = Room.objects.filter(current_users=user).last()
     room_list = {
         "AGORA_ID": AGORA_ID,
         "AGORA_CERT": AGORA_CERT,
         "current_user_uid": user.agora_uid,
         "current_user_name": user.display_name,
         "current_user_id": user.spotify_id,
+        "current_user_spotify_token": user.token.access_token,
         "room_name": room.room_name,
         "passcode": room.passcode,
         "host_name": room.host.display_name,

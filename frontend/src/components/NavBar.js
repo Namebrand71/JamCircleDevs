@@ -15,19 +15,23 @@ const Navbar = () => {
 
   const isAuthenticated = !!accessToken;
 
-  fetch("/auth/profile/")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      setCurrentSpotifyId(data.id);
-    })
-    .catch((error) => {
-      console.error("Fetch error:", error);
-    });
+  const loadProfile = () => {
+    fetch("/auth/profile/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("data returned from loadProfile:", data);
+        console.log("data.id: ", data.id);
+        setCurrentSpotifyId(data.id);
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  };
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
@@ -47,6 +51,7 @@ const Navbar = () => {
         .catch((error) => console.error("Error:", error));
     }
   };
+  loadProfile();
 
   const handleSearch = (query) => {
     console.log("Searching for:", query);
@@ -109,6 +114,16 @@ const Navbar = () => {
         })}
       >
         Friends
+      </NavLink>
+
+      <NavLink
+        to={`/lobby`}
+        style={({ isActive }) => ({
+          ...linkStyle, // spread the base styles
+          ...(isActive ? activeStyle : {}), // spread the active styles if the link is active
+        })}
+      >
+        Music Rooms
       </NavLink>
 
       {/* Add additional navigation links or content here */}
