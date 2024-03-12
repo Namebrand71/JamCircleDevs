@@ -31,14 +31,13 @@ const Navbar = () => {
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
-      loadProfile();
-      fetch('/auth/logout/')
-          .then((response) => response.json())
-          .then((data) => {
-            setAccessToken(null);
-            window.location.href = '/';
-          })
-          .catch((error) => console.error('Error:', error));
+      fetch("/auth/logout/")
+        .then((response) => response.json())
+        .then((data) => {
+          setAccessToken(null);
+          window.location.href = "/";
+        })
+        .catch((error) => console.error("Error:", error));
     } else {
       fetch('/auth/authSpotify')
           .then((response) => response.json())
