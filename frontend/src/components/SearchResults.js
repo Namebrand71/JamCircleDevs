@@ -76,39 +76,12 @@ const SearchResults = () => {
       {/* Content Grid item */}
       <Grid item xs={4} sm={4} md={8} lg={16} xl={16}>
         <Grid container spacing={1} alignItems="flex-start">
-          <Grid
-            item
-            xs={12}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '28px',
-              borderBottom: '2px solid #2a2a2a',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Link
-                to="/profile"
-                style={{
-                  textDecoration: 'none',
-                  color: 'white',
-                }}
-              >
+          <Grid item xs={12} className="SearchResultsHeading">
+            <div id="Head">
+              <Link to="/profile" id="Back">
                 <Button variant="contained">Go Back</Button>
               </Link>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  paddingTop: '20px',
-                }}
-              >
+              <div id="Title">
                 <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
               </div>
             </div>
@@ -119,9 +92,9 @@ const SearchResults = () => {
           {loading ? (
             <h1>Loading...</h1>
           ) : (
-            <ul className="searchpage">
+            <ul>
               {results.map((item, index) => (
-                <li key={index} className="list-item">
+                <li key={index} className="ListItem">
                   {/* TODO: The track ternary is a bandaid fix, should switch the
                   url to /track/id */}
                   <Link
@@ -130,14 +103,9 @@ const SearchResults = () => {
                         `/song/${item.id}` :
                         `/${search_type}/${item.id}`
                     }
-                    style={{textDecoration: 'none', color: 'white'}}
+                    id="Item"
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
+                    <div id="ItemContent">
                       <img
                         src={
                           search_type === 'artist' ?
@@ -148,27 +116,11 @@ const SearchResults = () => {
                             item.images[0].url :
                             item.album.images[0].url
                         }
-                        width="100px"
                         alt="NO PICTURE"
-                        style={{
-                          paddingRight: '20px',
-                          paddingTop: '5px',
-                          paddingBottom: '2px',
-                          width: '80px',
-                          maxHeight: '80px',
-                        }}
                       />
 
-                      <div style={{display: 'flex', flexDirection: 'column'}}>
-                        <span
-                          style={{
-                            fontSize: '18px',
-                            fontWeight: 'bold',
-                            paddingBottom: '5px',
-                          }}
-                        >
-                          {item.name}
-                        </span>
+                      <div id="Name">
+                        <span>{item.name}</span>
                         {renderContent(search_type, item)}
                       </div>
                     </div>

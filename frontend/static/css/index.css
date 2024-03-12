@@ -32,8 +32,356 @@ h2 {
   display: flex;
 }
 
-.ProfilePicture {
+/* NavBar */
+
+.NavBar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  width: 220px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #111111;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.NavBar #Title {
+  font-size: 24px;
+  padding-bottom: 20px;
+  margin-left: -15px;
+  text-align: center;
+  width: 90%;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.NavBar span {
+  float: right;
+  padding-top: 1px;
+}
+
+.NavBar button {
+  background-color: isA;
+}
+
+.Playback {
+  margin-top: auto;
+  text-align: center;
+  border-top: 1px solid #fff;
+  color: white;
+}
+
+.Playback #NowPlaying {
+  margin-top: 10px;
+}
+
+.Playback link {
+  text-decoration: none;
+}
+
+.Playback img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.NoAction {
+  margin-top: auto;
+  text-align: center;
+}
+
+.login-btn {
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 50px;
+  padding: 10px 10px;
+  transition-property: background-color;
+  transition-duration: 0.3s;
+  border: none;
+  min-width: 80px;
+  text-transform: uppercase;
+  white-space: normal;
+  cursor: pointer;
+  width: 40%;
+  margin-top: 20px;
+}
+
+/* Profile Page */
+
+.ProfilePage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px;
+  margin-top: 10px;
+  border-bottom: 2px solid #2a2a2a;
+}
+
+.ProfilePage img {
   border-radius: 50%;
+}
+
+.ProfilePage h1 {
+  margin-left: 40px;
+  font-size: 3em;
+}
+
+/* Playlists */
+
+.ShowMore {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 20px;
+  padding-left: 20px;
+  color: white;
+}
+
+.ShowMore button {
+  align-self: flex-end;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+}
+
+.Playlist {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.Playlist div {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #181818;
+}
+
+.Playlist img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.Playlist h3 {
+  margin-top: 10px;
+}
+
+/* Home Page */
+
+.HomeTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  background: #171717;
+  height: 120px;
+}
+
+.HomeTopBar #Welcome {
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.HomeTopBar h1 {
+  font-size: 3rem;
+}
+
+.HomeContent {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 15px;
+  padding: 10px;
+  background-color: #151515;
+  margin-bottom: 40px;
+}
+
+.HomeContent h2 {
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-bottom: 2px solid #2a2a2a;
+}
+
+.HomeContent img {
+  border-radius: 50%;
+}
+
+.HomeContent Link {
+  text-decoration: none;
+}
+
+.HomeContent #Activity {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.HomeContent #TrackName {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 5px;
+  margin-left: 10px;
+  color: white;
+}
+
+.HomeContent #ArtistName {
+  padding-bottom: 5px;
+  margin-left: 10px;
+  color: white;
+}
+
+.HomeContent p {
+  color: white;
+}
+
+.HomeContent h3 {
+  color: white;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* Song/Album Pages */
+
+.songcard {
+  margin-top: 50px;
+  margin-left: 50px;
+  width: 380px;
+  padding: 16px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 15px;
+  padding: 10px;
+  background: #141414;
+}
+
+.songcard img {
+  width: 350px;
+  padding-top: 20px;
+}
+
+.songcard button {
+  background-color: rgb(61, 163, 211);
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  margin-top: 20px;
+  cursor: pointer;
+  width: 40%;
+  border-radius: 8px;
+}
+
+/* Search Bar */
+
+.SearchBar {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.SearchBar input[type="text"] {
+  max-height: 30px;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Search Results */
+
+.SearchResultsHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px;
+  border-bottom: 2px solid #2a2a2a;
+}
+
+.SearchResultsHeading #Head {
+  display: flex;
+  flex-direction: column;
+}
+
+.SearchResultsHeading #Back {
+  margin-top: 20px;
+  text-decoration: none;
+  color: white;
+}
+
+.SearchResultsHeading #Title {
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.ListItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
+  list-style-type: none;
+}
+
+.ListItem:hover {
+  background-color: #111111;
+}
+
+.ListItem #Item {
+  text-decoration: none;
+  color: white;
+}
+
+.ListItem img {
+  width: 80px;
+  margin: 5px;
+  max-height: 80px;
+}
+
+.ListItem #ItemContent {
+  display: flex;
+  align-items: center;
+}
+
+.ListItem #Name {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.ListItem span {
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 5px;
+}
+
+/* LeaderBoard */
+
+.Leaderboard {
+  margin-top: 20;
+  margin-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* Top Ten */
+
+.TopTen {
+  text-decoration: none;
+  color: white;
 }
 
 .top {
@@ -72,13 +420,6 @@ h2 {
   margin: 10px 0; /* Adds some space above and below the container */
 }
 
-.more-btn {
-  background: "transparent";
-  border: "none";
-  color: "white";
-  cursor: "pointer";
-}
-
 .topTracksContainer p,
 .topArtistsContainer p {
   margin: 0;
@@ -103,13 +444,6 @@ h2 {
   overflow-y: auto;
 }
 
-.activity-item {
-  text-decoration: none;
-}
-.activity-item:hover {
-  background: #ffffff;
-}
-
 .songpage {
   min-height: 100vh;
   width: 100%;
@@ -117,17 +451,6 @@ h2 {
 
 .songpage h1 {
   color: white;
-}
-
-.songcard {
-  margin-top: 50px;
-  margin-left: 50px;
-  width: 380px; /* or you can specify a width like 50% or 200px */
-  padding: 16px; /* adjust the padding to control the space inside the box */
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-  border-radius: 15px;
-  padding: 10px;
-  background: #141414;
 }
 
 .artistcard {
@@ -138,39 +461,6 @@ h2 {
   border-radius: 15px;
   padding: 10px;
   background: #141414;
-}
-
-.searchpage li {
-  color: white;
-  margin-bottom: 10px;
-  list-style-type: none;
-  min-width: 500px;
-}
-
-.searchpage li:hover {
-  background-color: #151515;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  width: 100%;
-}
-
-.login-btn {
-  color: #fff;
-  font-size: 12px;
-  line-height: 1;
-  border-radius: 50px;
-  padding: 4px 12px 4px;
-  transition-property: background-color;
-  transition-duration: 0.3s;
-  border-width: 0;
-  min-width: 80px;
-  text-transform: uppercase;
-  white-space: normal;
-  cursor: pointer;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
@@ -257,9 +547,5 @@ h2 {
     position: static; /* or fixed, depending on your design */
     width: 100%; /* Make the navbar full-width */
     height: auto; /* Adjust height as necessary */
-  }
-
-  .profilepage {
-    padding-top: 100vh;
   }
 }

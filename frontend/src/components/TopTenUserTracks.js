@@ -48,10 +48,7 @@ class MyComponent extends React.Component {
         <Grid container spacing={1}>
           {this.state.topTracks.slice(0, 10).map((track, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
-              <Link
-                to={`/song/${track.id}`}
-                style={{textDecoration: 'none', color: 'white'}}
-              >
+              <Link to={`/song/${track.id}`} className="TopTen">
                 <Box
                   sx={{
                     display: 'flex',
@@ -72,7 +69,9 @@ class MyComponent extends React.Component {
                     src={track.image_url}
                   />
                   <Typography align="center">
-                    {`${index + 1}. ${track.name} - ${track.artist_names.join(', ')}`}
+                    {`${index + 1}. ${track.name} - ${track.artist_names.join(
+                      ", "
+                    )}`}
                   </Typography>
                 </Box>
               </Link>

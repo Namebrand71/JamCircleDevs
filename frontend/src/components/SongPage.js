@@ -50,12 +50,7 @@ const SongPage = ({onPlay}) => {
         <Grid item xs={6} sm={6} md={5} lg={5} xl={5}>
           {trackInfo ? (
             <div align="center" className="songcard">
-              <img
-                src={trackInfo.album.images[0].url}
-                width="350px"
-                alt="Track Cover"
-                style={{paddingTop: '20px'}}
-              />
+              <img src={trackInfo.album.images[0].url} alt="Track Cover" />
               <h1>
                 {trackInfo.name} - {trackInfo.artists[0].name}
               </h1>
@@ -65,18 +60,7 @@ const SongPage = ({onPlay}) => {
                   '0' + ((trackInfo.duration_ms % 60000) / 1000).toFixed(0)
                 ).slice(-2)}
               </h2>
-              <button
-                onClick={() => onPlay(spotify_content_id, "track")}
-                style={{
-                  backgroundColor: "green",
-                  color: "white",
-                  padding: "10px 10px",
-                  border: "none",
-                  marginTop: "20px",
-                  cursor: "pointer",
-                  width: "40%", // Use full width of the sidebar
-                }}
-              >
+              <button onClick={() => onPlay(spotify_content_id, "track")}>
                 Play Song
               </button>
             </div>

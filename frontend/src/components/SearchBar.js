@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
-import '../../static/css/searchbar.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({onSearch}) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -13,7 +12,7 @@ const SearchBar = ({onSearch}) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
+    <form onSubmit={handleSubmit} autoComplete="off" className="SearchBar">
       <select
         value={searchType}
         onChange={(e) => setSearchType(e.target.value)}

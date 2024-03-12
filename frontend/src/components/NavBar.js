@@ -71,34 +71,9 @@ const Navbar = () => {
   };
 
   return (
-    <nav
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center', // Changed to center the children horizontally
-        height: '100vh', // Full height of the viewport
-        width: '220px', // Width of the sidebar
-        position: 'fixed', // Fixed position
-        left: '0', // Align to the left side of the viewport
-        top: '0', // Align to the top of the viewport
-        backgroundColor: '#111111', // Background color of the sidebar
-        color: 'white',
-        padding: '20px', // Padding inside the sidebar
-        boxSizing: 'border-box', // Ensures padding doesn't affect the set width
-      }}
-    >
-      <div
-        style={{
-          fontSize: '24px',
-          paddingBottom: '20px',
-          marginLeft: '-15px',
-          textAlign: 'center',
-          width: '90%',
-          borderBottom: '1px solid #2a2a2a',
-        }}
-      >
-        <span style={{float: 'right', paddingTop: '1px'}}>Jam Circle</span>
+    <nav className="NavBar">
+      <div id="Title">
+        <span>Jam Circle</span>
         <img
           src="../../../static/images/logo.png"
           width="30px"
@@ -141,54 +116,21 @@ const Navbar = () => {
       <button
         onClick={handleAuthButtonClick}
         style={{
-          backgroundColor: isAuthenticated ? '#D7504D' : '#5fa052',
-          color: 'white',
-          padding: '10px 10px',
-          border: 'none',
-          marginTop: '20px',
-          cursor: 'pointer',
-          width: '40%', // Use full width of the sidebar
+          backgroundColor: isAuthenticated ? "#D7504D" : "#5fa052",
         }}
         className="login-btn"
       >
         {isAuthenticated ? 'Logout' : 'Login'}
       </button>
 
-      {/* <PlayerWrapper
-        spotifyContentId={spotifyContentId}
-        spotifyContentType={spotifyContentType}
-        accessToken={accessToken}
-      /> */}
-
       {isAuthenticated ? (
         currentSong.songName && currentSong.artistName ? (
-          <div
-            style={{
-              marginTop: 'auto',
-              textAlign: 'center',
-              borderTop: '1px solid #fff',
-            }}
-          >
-            <div style={{marginTop: '20px'}}>Now Playing:</div>
-            <Link
-              to={`/song/${currentSong.trackID}`}
-              style={{textDecoration: 'none'}}
-            >
-              <img
-                src={currentSong.albumCoverImageUrl}
-                alt="Album cover"
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                  borderRadius: '8px',
-                  marginTop: '20px',
-                }}
-              />
+          <div id="Playback">
+            <div id="NowPlaying">Now Playing:</div>
+            <Link to={`/song/${currentSong.trackID}`}>
+              <img src={currentSong.albumCoverImageUrl} alt="Album cover" />
             </Link>
-            <Link
-              to={`/song/${currentSong.trackID}`}
-              style={{textDecoration: 'none', color: 'white'}}
-            >
+            <Link to={`/song/${currentSong.trackID}`}>
               <div>
                 {currentSong.songName} - {currentSong.artistName}
               </div>
@@ -196,15 +138,11 @@ const Navbar = () => {
           </div>
         ) : (
           // This block renders when no song is currently playing
-          <div
-            style={{marginTop: 'auto', textAlign: 'center', color: 'white'}}
-          >
-            No song is currently playing.
-          </div>
+          <div className="NoAction">No song is currently playing.</div>
         )
       ) : (
         // This block can render when the user is not authenticated or as a fallback
-        <div style={{marginTop: 'auto', textAlign: 'center', color: 'white'}}>
+        <div className="NoAction">
           Please log in to view the currently playing song.
         </div>
       )}
