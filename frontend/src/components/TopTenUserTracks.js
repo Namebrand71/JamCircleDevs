@@ -70,7 +70,7 @@ class MyComponent extends React.Component {
                   />
                   <Typography align="center">
                     {`${index + 1}. ${track.name} - ${track.artist_names.join(
-                      ", "
+                        ', ',
                     )}`}
                   </Typography>
                 </Box>

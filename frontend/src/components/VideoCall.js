@@ -7,25 +7,25 @@ import {
   useLocalCameraTrack,
   usePublish,
   useRemoteUsers,
-} from "agora-rtc-react";
-import React, { useState } from "react";
-import "./styles.css";
-const VideoCall = ({ appId: initialAppId, channel: initialChannel, token: initialToken, uid: initialUID}) => {
+} from 'agora-rtc-react';
+import React, {useState} from 'react';
+import './styles.css';
+const VideoCall = ({appId: initialAppId, channel: initialChannel, token: initialToken, uid: initialUID}) => {
   const [calling, setCalling] = useState(false);
   const isConnected = useIsConnected();
-  const [appId, setAppId] = useState(initialAppId); 
-  const [channel, setChannel] = useState(initialChannel); 
+  const [appId, setAppId] = useState(initialAppId);
+  const [channel, setChannel] = useState(initialChannel);
   const [token, setToken] = useState(initialToken);
   const [uid, setUID] = useState(initialUID);
-  console.log("JOIN PERAMS", initialAppId, initialChannel, initialToken, initialUID)
+  console.log('JOIN PERAMS', initialAppId, initialChannel, initialToken, initialUID);
   useJoin({appid: initialAppId, channel: initialChannel, token: initialToken, uid: initialUID}, calling);
-  //local user
+  // local user
   const [micOn, setMic] = useState(true);
   const [cameraOn, setCamera] = useState(true);
-  const { localMicrophoneTrack } = useLocalMicrophoneTrack(micOn);
-  const { localCameraTrack } = useLocalCameraTrack(cameraOn);
+  const {localMicrophoneTrack} = useLocalMicrophoneTrack(micOn);
+  const {localCameraTrack} = useLocalCameraTrack(cameraOn);
   usePublish([localMicrophoneTrack, localCameraTrack]);
-  //remote users
+  // remote users
   const remoteUsers = useRemoteUsers();
 
   return (
@@ -66,16 +66,16 @@ const VideoCall = ({ appId: initialAppId, channel: initialChannel, token: initia
       {isConnected && (
         <div className="control">
           <div className="left-control">
-            <button className="btn" onClick={() => setMic(a => !a)}>
-              <i className={`i-microphone ${!micOn ? "off" : ""}`} />
+            <button className="btn" onClick={() => setMic((a) => !a)}>
+              <i className={`i-microphone ${!micOn ? 'off' : ''}`} />
             </button>
-            <button className="btn" onClick={() => setCamera(a => !a)}>
-              <i className={`i-camera ${!cameraOn ? "off" : ""}`} />
+            <button className="btn" onClick={() => setCamera((a) => !a)}>
+              <i className={`i-camera ${!cameraOn ? 'off' : ''}`} />
             </button>
           </div>
           <button
-            className={`btn btn-phone ${calling ? "btn-phone-active" : ""}`}
-            onClick={() => setCalling(a => !a)}
+            className={`btn btn-phone ${calling ? 'btn-phone-active' : ''}`}
+            onClick={() => setCalling((a) => !a)}
           >
             {calling ? <i className="i-phone-hangup" /> : <i className="i-mdi-phone" />}
           </button>

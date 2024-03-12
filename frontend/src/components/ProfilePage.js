@@ -1,14 +1,14 @@
-import React, { Component, useEffect, useState } from "react";
-import Grid from "@mui/material/Grid";
-import TopTenTracks from "./TopTenTracks";
-import TopTenArtists from "./TopTenArtists";
-import Playlists from "./Playlists";
-import SearchBar from "./SearchBar";
-import handleSearch from "./NavBar";
-import { useAuth } from "../contexts/AuthContext";
+import React, {Component, useEffect, useState} from 'react';
+import Grid from '@mui/material/Grid';
+import TopTenTracks from './TopTenTracks';
+import TopTenArtists from './TopTenArtists';
+import Playlists from './Playlists';
+import SearchBar from './SearchBar';
+import handleSearch from './NavBar';
+import {useAuth} from '../contexts/AuthContext';
 
 const ProfilePage = () => {
-  const [spotifyUsername, setSpotifyUsername] = useState("Loading...");
+  const [spotifyUsername, setSpotifyUsername] = useState('Loading...');
   const [currentSpotifyId, setCurrentSpotifyId] = useState(undefined);
   const [profileImageUrl, setProfileImageUrl] = useState(
       'https://fakeimg.pl/750x750?text=Loading&font=noto',
@@ -50,7 +50,7 @@ const ProfilePage = () => {
     <Grid
       container
       spacing={1}
-      columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
+      columns={{xs: 4, sm: 8, md: 12, lg: 20, xl: 20}}
     >
       {/* Create space for Navbar on the left side */}
       <Grid item xs={4} sm={3} md={3} lg={4} xl={3}>
@@ -62,9 +62,9 @@ const ProfilePage = () => {
         {/* Profile picture and username */}
         <Grid container spacing={1} alignItems="flex-start">
           {/* Spaces out profile picture/username with the search bar */}
-          <Grid item xs={12} marginTop={"20px"} className="ProfilePage">
+          <Grid item xs={12} marginTop={'20px'} className="ProfilePage">
             {/* Profile Picture and Username */}
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{display: 'flex', alignItems: 'center'}}>
               {/* Display profile picture */}
               <img
                 src={profileImageUrl}
@@ -73,7 +73,7 @@ const ProfilePage = () => {
                 alt="Profile"
               />
               {/* Display username */}
-              <h1>{isAuthenticated ? spotifyUsername : "Not Logged in"}</h1>
+              <h1>{isAuthenticated ? spotifyUsername : 'Not Logged in'}</h1>
             </div>
 
             {/* Display searchbar */}

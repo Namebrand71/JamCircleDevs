@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   Table,
   TableBody,
@@ -16,14 +16,14 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
-        const response = await fetch("/users/leaderboard/");
+        const response = await fetch('/users/leaderboard/');
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await response.json();
         setUsers(data);
       } catch (error) {
-        console.error("There was a problem with the fetch operation:", error);
+        console.error('There was a problem with the fetch operation:', error);
       }
     };
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import AgoraRTC, { AgoraRTCProvider } from 'agora-rtc-react';
-import VideoCall from "./VideoCall";
+import React, {useEffect, useState} from 'react';
+import AgoraRTC, {AgoraRTCProvider} from 'agora-rtc-react';
+import VideoCall from './VideoCall';
 
-const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
+const client = AgoraRTC.createClient({mode: 'rtc', codec: 'vp8'});
 
 const Musicroom = () => {
   const [roomInfo, setRoomInfo] = useState([]);
@@ -17,37 +17,37 @@ const Musicroom = () => {
           console.log(data.room_name);
           console.log(data);
           setRoomInfo(data);
-  
+
           // Fetch token only if room data is available
           if (data) {
             fetch(`musicrooms/get-agora-token/${encodeURIComponent(data.room_name)}/${encodeURIComponent(data.current_user_uid)}`)
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-              })
-              .then(data => {
-                console.log('Token request successful:', data);
-                setTokenInfo(data);
-              })
-              .catch(error => {
-                console.error('Error during token request:', error);
-                console.log("testtest");
-              });
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  console.log('Token request successful:', data);
+                  setTokenInfo(data);
+                })
+                .catch((error) => {
+                  console.error('Error during token request:', error);
+                  console.log('testtest');
+                });
           }
         } else {
-          console.error("Failed to fetch room data");
+          console.error('Failed to fetch room data');
           setRoomInfo(null);
         }
       } catch (error) {
-        console.error("Error fetching room data", error);
+        console.error('Error fetching room data', error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
+
 
   const videoCallContainerStyle = {
     display: 'flex',

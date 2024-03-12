@@ -60,7 +60,7 @@ const ArtistPage = ({onPlay}) => {
                 alt="Missing Artist Picture"
               />
               <h1>{artistInfo.name}</h1>
-              <button onClick={() => onPlay(spotify_content_id, "artist")}>
+              <button onClick={() => onPlay(spotify_content_id, 'artist')}>
                 Play
               </button>
             </div>

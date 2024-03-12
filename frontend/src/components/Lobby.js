@@ -1,54 +1,54 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 
 const Lobby = () => {
-  const [room_name, setRoomName] = useState("");
-  const [passcode, setPasscode] = useState("");
+  const [room_name, setRoomName] = useState('');
+  const [passcode, setPasscode] = useState('');
   const [showLobby, setShowLobby] = useState(true);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showJoinRoom, setShowJoinRoom] = useState(false);
   const handleCreateRoom = async () => {
     // Logic to create a room...
-    const apiBaseUrl = "musicrooms";
-    const endpoint = "create-room";
+    const apiBaseUrl = 'musicrooms';
+    const endpoint = 'create-room';
     console.log(room_name);
     const response = await fetch(`${apiBaseUrl}/${endpoint}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ room_name }),
+      body: JSON.stringify({room_name}),
     });
 
     if (response.ok) {
       window.location.href = '/musicroom';
     } else {
       // Handle error
-      console.error("Failed to create room");
+      console.error('Failed to create room');
     }
   };
 
   const handleJoinRoom = async () => {
     // Logic to join a room...
-    const apiBaseUrl = "musicrooms";
-    const endpoint = "join-room";
+    const apiBaseUrl = 'musicrooms';
+    const endpoint = 'join-room';
     const response = await fetch(`${apiBaseUrl}/${endpoint}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ room_name, passcode }),
+      body: JSON.stringify({room_name, passcode}),
     });
 
     if (response.ok) {
       // Redirect to the joined room
     } else {
       // Handle error
-      console.error("Failed to join room");
+      console.error('Failed to join room');
     }
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px", marginLeft: '300px', backgroundColor: "black" }}>
+    <div style={{textAlign: 'center', marginTop: '50px', marginLeft: '300px', backgroundColor: 'black'}}>
       {showLobby && (
         // Lobby Page
         <div>

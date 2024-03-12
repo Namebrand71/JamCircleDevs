@@ -31,13 +31,13 @@ const Navbar = () => {
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
-      fetch("/auth/logout/")
-        .then((response) => response.json())
-        .then((data) => {
-          setAccessToken(null);
-          window.location.href = "/";
-        })
-        .catch((error) => console.error("Error:", error));
+      fetch('/auth/logout/')
+          .then((response) => response.json())
+          .then((data) => {
+            setAccessToken(null);
+            window.location.href = '/';
+          })
+          .catch((error) => console.error('Error:', error));
     } else {
       fetch('/auth/authSpotify')
           .then((response) => response.json())
@@ -115,7 +115,7 @@ const Navbar = () => {
       <button
         onClick={handleAuthButtonClick}
         style={{
-          backgroundColor: isAuthenticated ? "#D7504D" : "#5fa052",
+          backgroundColor: isAuthenticated ? '#D7504D' : '#5fa052',
         }}
         className="login-btn"
       >

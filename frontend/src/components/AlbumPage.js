@@ -52,7 +52,7 @@ const SongPage = ({onPlay}) => {
           <div align="center" className="songcard">
             <img src={albumInfo.images[0].url} alt="Album Cover" />
             <h1>{albumInfo.name}</h1>
-            <button onClick={() => onPlay(spotify_content_id, "album")}>
+            <button onClick={() => onPlay(spotify_content_id, 'album')}>
               Play Album
             </button>
           </div>

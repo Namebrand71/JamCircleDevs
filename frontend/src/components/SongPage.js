@@ -60,7 +60,7 @@ const SongPage = ({onPlay}) => {
                   '0' + ((trackInfo.duration_ms % 60000) / 1000).toFixed(0)
                 ).slice(-2)}
               </h2>
-              <button onClick={() => onPlay(spotify_content_id, "track")}>
+              <button onClick={() => onPlay(spotify_content_id, 'track')}>
                 Play Song
               </button>
             </div>

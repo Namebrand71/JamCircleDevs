@@ -36,7 +36,7 @@ class Playlists extends Component {
           <h2>Playlists</h2>
           {playlists.length > 3 && (
             <button onClick={this.toggleExpand}>
-              {isExpanded ? "Show Less" : "Show More"}
+              {isExpanded ? 'Show Less' : 'Show More'}
             </button>
           )}
         </div>

@@ -51,9 +51,9 @@ class MyComponent extends React.Component {
               <Link to={`/artist/${artist.id}`} className="TopTen">
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     marginBottom: 7, // Adds some space between the image and the artist name
                   }}
                 >
@@ -62,7 +62,7 @@ class MyComponent extends React.Component {
                     sx={{
                       height: 100,
                       width: 100,
-                      borderRadius: "50%",
+                      borderRadius: '50%',
                       marginBottom: 2,
                     }}
                     alt={artist.name}

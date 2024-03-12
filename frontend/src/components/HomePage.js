@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Home from "./Home";
+import React, {Component} from 'react';
+import Home from './Home';
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -8,7 +8,7 @@ export default class HomePage extends Component {
 
   render() {
     return (
-      <div style={{ paddingLeft: "250px" }}>
+      <div style={{paddingLeft: '250px'}}>
         <Home />
       </div>
     );

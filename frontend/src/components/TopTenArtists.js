@@ -5,16 +5,16 @@ import {Box, Container} from '@mui/material';
 import {styled} from '@mui/material/styles';
 import {Link} from 'react-router-dom';
 
-const StyledContainer = styled("div")(({ theme }) => ({
-  maxHeight: "90vh",
-  overflowY: "auto",
-  borderRadius: "10px",
-  backgroundColor: "#151515", // Dark grey color
-  color: "white", // Sets text color to white
-  padding: "20px",
-  margin: "10px 0", // Adds some space above and below the container
-  BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-  height: "480px",
+const StyledContainer = styled('div')(({theme}) => ({
+  maxHeight: '90vh',
+  overflowY: 'auto',
+  borderRadius: '10px',
+  backgroundColor: '#151515', // Dark grey color
+  color: 'white', // Sets text color to white
+  padding: '20px',
+  margin: '10px 0', // Adds some space above and below the container
+  BoxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+  height: '480px',
 }));
 
 class MyComponent extends React.Component {
@@ -55,9 +55,9 @@ class MyComponent extends React.Component {
               <Link to={`/artist/${artist.id}`} className="TopTen">
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
                     marginBottom: 7,
                   }}
                 >

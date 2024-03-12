@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import Grid from "@mui/material/Grid";
-import { Link } from "react-router-dom";
-import SearchBar from "./SearchBar";
-import { useAuth } from "../contexts/AuthContext";
-import Leaderboard from "./LeaderBoard";
+import React, {useState, useEffect} from 'react';
+import Grid from '@mui/material/Grid';
+import {Link} from 'react-router-dom';
+import SearchBar from './SearchBar';
+import {useAuth} from '../contexts/AuthContext';
+import Leaderboard from './LeaderBoard';
 
 const HomePage = () => {
   const [listeningHistory, setListeningHistory] = useState([]);
@@ -33,18 +33,18 @@ const HomePage = () => {
             const historyData = await historyResponse.json();
             setListeningHistory(historyData);
           } else {
-            console.error("Failed to fetch listening history");
+            console.error('Failed to fetch listening history');
           }
 
           // Fetch recent comments
           const commentsResponse = await fetch(
-            `/api/all-review-history/${encodeURIComponent(profileData.id)}`
+              `/api/all-review-history/${encodeURIComponent(profileData.id)}`,
           );
           if (commentsResponse.ok) {
             const commentsData = await commentsResponse.json();
             setReviewsComments(commentsData);
           } else {
-            console.error("Failed to fetch recent comments");
+            console.error('Failed to fetch recent comments');
           }
         }
       } catch (error) {
@@ -74,9 +74,9 @@ const HomePage = () => {
         {/* Display usenname if authenticated */}
         <div id="Welcome">
           <h1>
-            {isAuthenticated
-              ? `Welcome ${spotifyUsername}`
-              : "Please log in to view history"}
+            {isAuthenticated ?
+              `Welcome ${spotifyUsername}` :
+              'Please log in to view history'}
           </h1>
         </div>
 
@@ -106,7 +106,7 @@ const HomePage = () => {
                 <div id="Activities">
                   <img src={track.user_profile_image} alt="Profile" />
 
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div style={{display: 'flex', flexDirection: 'column'}}>
                     <span id="TrackName">{track.track_name}</span>
                     <span id="ArtistName">{track.artist_names}</span>
                   </div>

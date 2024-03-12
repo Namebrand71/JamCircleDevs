@@ -59,7 +59,7 @@ const UserPage = () => {
     <Grid
       container
       spacing={1}
-      columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
+      columns={{xs: 4, sm: 8, md: 12, lg: 20, xl: 20}}
     >
       {/* Create space for Navbar on the left side */}
       <Grid item xs={4} sm={3} md={3} lg={4} xl={3}>
@@ -73,9 +73,9 @@ const UserPage = () => {
             {/* Profile picture and username */}
             <Grid container spacing={1} alignItems="flex-start">
               {/* Spaces out profile picture/username with the search bar */}
-              <Grid item xs={12} marginTop={"20px"} className="ProfilePage">
+              <Grid item xs={12} marginTop={'20px'} className="ProfilePage">
                 {/* Profile Picture and Username */}
-                <div style={{ display: "flex", alignItems: "center" }}>
+                <div style={{display: 'flex', alignItems: 'center'}}>
                   {/* Display profile picture */}
                   <img
                     src={UserInfo.images[1].url}
@@ -84,7 +84,7 @@ const UserPage = () => {
                     alt="Profile"
                   />
                   <h1>
-                    {isAuthenticated ? UserInfo.display_name : "Not Logged in"}
+                    {isAuthenticated ? UserInfo.display_name : 'Not Logged in'}
                     {isAuthenticated && !isSessionUser && (
                       <FriendRequestButton spotify_id={spotify_id} />
                     )}

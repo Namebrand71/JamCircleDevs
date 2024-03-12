@@ -1,22 +1,22 @@
 // App.js
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./HomePage";
-import ProfilePage from "./ProfilePage";
-import SongPage from "./SongPage";
-import UserPage from "./UserPage";
-import FriendsPage from "./FriendsPage";
-import AlbumPage from "./AlbumPage";
-import ArtistPage from "./ArtistPage";
-import SearchResults from "./SearchResults";
-import Navbar from "./NavBar";
-import DummyPlayer from "./DummyPlayer";
-import PlayerWrapper from "./PlayerWrapper";
-import Auth from "./Auth";
-import Lobby from "./Lobby";
-import MusicRoom from "./MusicRoom";
-import { AuthProvider } from "../contexts/AuthContext";
+import React, {useState} from 'react';
+import ReactDOM from 'react-dom/client';
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import HomePage from './HomePage';
+import ProfilePage from './ProfilePage';
+import SongPage from './SongPage';
+import UserPage from './UserPage';
+import FriendsPage from './FriendsPage';
+import AlbumPage from './AlbumPage';
+import ArtistPage from './ArtistPage';
+import SearchResults from './SearchResults';
+import Navbar from './NavBar';
+import DummyPlayer from './DummyPlayer';
+import PlayerWrapper from './PlayerWrapper';
+import Auth from './Auth';
+import Lobby from './Lobby';
+import MusicRoom from './MusicRoom';
+import {AuthProvider} from '../contexts/AuthContext';
 
 const App = () => {
   const [spotifyContentId, setSpotifyContentId] = useState(null);
@@ -71,5 +71,5 @@ const App = () => {
 };
 
 const container = document.getElementById('app');
-const root = createRoot(container);
+const root = ReactDOM.createRoot(container);
 root.render(<App />);
