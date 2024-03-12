@@ -1,11 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 const Lobby = () => {
   const [room_name, setRoomName] = useState("");
   const [passcode, setPasscode] = useState("");
+  const [spotify_id, setCurrentSpotifyId] = useState("");
   const [showLobby, setShowLobby] = useState(true);
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showJoinRoom, setShowJoinRoom] = useState(false);
+
+  const { accessToken } = useAuth();
+  const isAuthenticated = !!accessToken;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      loadProfile();
+    }
+  }, [isAuthenticated]);
+
+  const loadProfile = () => {
+    fetch("/auth/profile/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCurrentSpotifyId(data.id);
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  };
+
+
   const handleCreateRoom = async () => {
     // Logic to create a room...
     const apiBaseUrl = "musicrooms";
@@ -36,11 +65,11 @@ const Lobby = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ room_name, passcode }),
+      body: JSON.stringify({ room_name, passcode, spotify_id }),
     });
 
     if (response.ok) {
-      // Redirect to the joined room
+      window.location.href = '/musicroom';
     } else {
       // Handle error
       console.error("Failed to join room");
@@ -54,9 +83,9 @@ const Lobby = () => {
         <div>
           <p>Static Text for Testing</p>
           <br />
-          <button onClick={() => setShowCreateRoom(true)}>Create Room</button>
+          <button onClick={() => { setShowCreateRoom(true); setShowJoinRoom(false); }}>Create Room</button>
           <br />
-          <button onClick={() => setShowJoinRoom(true)}>Join Room</button>
+          <button onClick={() => { setShowJoinRoom(true); setShowCreateRoom(false); }}>Join Room</button>
         </div>
       )}
 

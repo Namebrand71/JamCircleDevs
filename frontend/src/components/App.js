@@ -1,7 +1,5 @@
-// App.js
-
-import React, { useState } from "react";
-import ReactDOM from "react-dom/client"
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
@@ -23,6 +21,30 @@ const App = () => {
   const [spotifyContentId, setSpotifyContentId] = useState(null);
   const [spotifyContentType, setSpotifyContentType] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
+
+  useEffect(() => {
+    // Fetch initial data when the component is mounted
+    const fetchInitialData = async () => {
+      try {
+        const response = await fetch(`/musicrooms/start-token-server`); // Replace with your API endpoint
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Initial data:', data);
+
+          // Update state with initial data if needed
+          // setSpotifyContentId(data.spotifyContentId);
+          // setSpotifyContentType(data.spotifyContentType);
+          // setAccessToken(data.accessToken);
+        } else {
+          console.error('Failed to fetch initial data');
+        }
+      } catch (error) {
+        console.error('Error fetching initial data', error);
+      }
+    };
+
+    fetchInitialData();
+  }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
 
   const handlePlay = (spotifyContentId, spotifyContentType) => {
     setSpotifyContentId(spotifyContentId);

@@ -15,19 +15,21 @@ const Navbar = () => {
 
   const isAuthenticated = !!accessToken;
 
-  fetch("/auth/profile/")
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      setCurrentSpotifyId(data.id);
-    })
-    .catch((error) => {
-      console.error("Fetch error:", error);
-    });
+  const loadProfile = () => {
+    fetch("/auth/profile/")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setCurrentSpotifyId(data.id);
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  };
 
   const handleAuthButtonClick = () => {
     if (isAuthenticated) {
