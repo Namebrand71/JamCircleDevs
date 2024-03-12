@@ -10,7 +10,7 @@ import json
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from user.views import getUserFromSession
+from user.views import get_user_from_session
 import requests
 
 
@@ -55,7 +55,7 @@ def get_agora_token(request, channel_name, uid):
 def create_room(request):
     data = json.loads(request.body)
     print(data['room_name'])
-    host = getUserFromSession(request.session.session_key)
+    host = get_user_from_session(request.session.session_key)
     room, created = Room.objects.get_or_create(
         host = host,
         room_name = data['room_name']
@@ -70,7 +70,7 @@ def create_room(request):
 @api_view(['POST'])
 def join_room(request):
     data = json.loads(request.body)
-    user = getUserFromSession(request.session.session_key)
+    user = get_user_from_session(request.session.session_key)
     room = Room.objects.filter(room_name=data['room_name'], passcode=data['passcode']).first()
     if room is not None:
         user.agora_token = make_token(user.display_name, data['room_name'], 2)
@@ -81,7 +81,7 @@ def join_room(request):
 @api_view(['POST'])
 def leave_room(request):
     data = json.loads(request.body)
-    user = getUserFromSession(request.session.session_key)
+    user = get_user_from_session(request.session.session_key)
     room = Room.objects.filter(room_name=data['room_name']).first()
     if room is not None:
         room.current_users.delete(user)
@@ -89,7 +89,7 @@ def leave_room(request):
     return Response({'Not Found': 'room not found'}, status=status.HTTP_404_NOT_FOUND)
 
 def get_room_info(request):
-    user = getUserFromSession(request.session.session_key)
+    user = get_user_from_session(request.session.session_key)
     room = Room.objects.filter(current_users=user).first()
     room_list = {
         "AGORA_ID": AGORA_ID,
