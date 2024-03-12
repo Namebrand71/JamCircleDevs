@@ -32,64 +32,20 @@ class Playlists extends Component {
 
     return (
       <div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingRight: "20px",
-            paddingLeft: "28px",
-          }}
-        >
-          <h2 style={{ color: "white" }}>Playlists</h2>
+        <div className="ShowMore">
+          <h2>Playlists</h2>
           {playlists.length > 3 && (
-            <button
-              onClick={this.toggleExpand}
-              style={{
-                alignSelf: "flex-end",
-                background: "transparent",
-                border: "none",
-                color: "white", // Adjust for visibility
-                cursor: "pointer",
-              }}
-              className="more-btn"
-            >
+            <button onClick={this.toggleExpand}>
               {isExpanded ? "Show Less" : "Show More"}
             </button>
           )}
         </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-            gap: "20px",
-            padding: "20px",
-          }}
-        >
+        <div className="Playlist">
           {displayedPlaylists.map((playlist, index) => (
-            <div
-              key={index}
-              style={{
-                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-                borderRadius: "8px",
-                padding: "10px",
-                backgroundColor: "#181818",
-              }}
-            >
-              <img
-                src={playlist.image_url}
-                alt={playlist.name}
-                style={{
-                  width: "100%",
-                  height: "200px",
-                  objectFit: "cover",
-                  borderRadius: "4px",
-                }}
-              />
-              <h3 style={{ marginTop: "10px", color: "white" }}>
-                {playlist.name}
-              </h3>
-              <p style={{ color: "white" }}>By {playlist.owner}</p>
+            <div key={index}>
+              <img src={playlist.image_url} alt={playlist.name} />
+              <h3>{playlist.name}</h3>
+              <p>By {playlist.owner}</p>
             </div>
           ))}
         </div>

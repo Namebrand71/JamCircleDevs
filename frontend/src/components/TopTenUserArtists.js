@@ -48,16 +48,13 @@ class MyComponent extends React.Component {
         <Grid container spacing={1}>
           {this.state.topArtists.slice(0, 10).map((artist, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
-              <Link
-                to={`/artist/${artist.id}`}
-                style={{ textDecoration: "none", color: "white" }}
-              >
+              <Link to={`/artist/${artist.id}`} className="TopTen">
                 <Box
                   sx={{
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    marginBottom: 6, // Adds some space between the image and the artist name
+                    marginBottom: 7, // Adds some space between the image and the artist name
                   }}
                 >
                   <Box
@@ -66,7 +63,7 @@ class MyComponent extends React.Component {
                       height: 100,
                       width: 100,
                       borderRadius: "50%",
-                      marginBottom: 5,
+                      marginBottom: 2,
                     }}
                     alt={artist.name}
                     src={artist.image_url}
