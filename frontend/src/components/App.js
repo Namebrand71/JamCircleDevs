@@ -1,7 +1,7 @@
 // App.js
 
 import React, { useState } from "react";
-import ReactDOM from "react-dom/client"
+import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./HomePage";
 import ProfilePage from "./ProfilePage";
@@ -12,7 +12,6 @@ import AlbumPage from "./AlbumPage";
 import ArtistPage from "./ArtistPage";
 import SearchResults from "./SearchResults";
 import Navbar from "./NavBar";
-import DummyPlayer from "./DummyPlayer";
 import PlayerWrapper from "./PlayerWrapper";
 import Auth from "./Auth";
 import Lobby from "./Lobby";
