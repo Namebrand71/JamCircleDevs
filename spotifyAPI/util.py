@@ -99,22 +99,22 @@ def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
     return response.json()
 
 
-def getTop10Artist(request):
+def get_top_10_artist(request):
     session_id = request.session.session_key
     #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
-        session_id, "/me/top/artists?limit=10&offset=0", False, False)
+        session_id, "/me/top/artists?time_range=short_term&limit=10&offset=0", False, False)
     # print("TOPTEN response: ", response)
     artist_list = response.get('items')
     # TODO: Check for 502 status code, if so return an error
     return JsonResponse(artist_list, safe=False)
 
 
-def getTop10Tracks(request):
+def get_top_10_tracks(request):
     session_id = request.session.session_key
     #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
     response = spotify_api_request(
-        session_id, "/me/top/tracks?limit=10&offset=0", False, False)
+        session_id, "/me/top/tracks?time_range=short_term&limit=10&offset=0", False, False)
     # print(response)
     track_list = response.get('items')
     return JsonResponse(track_list, safe=False)
@@ -177,7 +177,7 @@ def get_total_listening_time(user):
         total_time = 0
     return total_time
 
-def getPlaylists(request):
+def get_playlists(request):
     session_id = request.session.session_key
     token = get_user_token(session_id)
     if not token:
