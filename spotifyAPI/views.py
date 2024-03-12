@@ -164,6 +164,13 @@ def search_spotify_artists(request, search_query):
 
 
 def fetch_spotify_activity(request):
+    '''
+    Fetches and saves a users current spotify listening history (limited to 50 tracks)
+
+    @param request: http request
+    @return: JSON response from SpotifyAPI containing 50 track items
+    
+    '''
     print("fetch_spotify_activity called")
 
     endpoint = '/me/player/recently-played?limit=50'
@@ -187,6 +194,13 @@ def fetch_spotify_activity(request):
 
 
 def get_currently_playing(request):
+    '''
+    Retrieves the song currently playing for a user on spotify
+
+    @param request: http request
+    @return: JSON item with (name, artist(s), cover image, track id, is playing?)
+    '''
+    
     print("get_currently_playing called")
     session_id = request.session.session_key
     token = get_user_token(session_id=session_id)

@@ -10,17 +10,32 @@ from user.models import User
 
 
 def artist_page(request, spotify_content_id):
+    '''
+    Renders the react component for an artist page
+
+    @param request: http request
+    @param spotify_content_id: the artist ID for spotify api
+    '''
     return render(request, 'frontend/index.html', {'spotify_content_id': spotify_content_id})
 
 
 def song_page(request, spotify_content_id):
-    # You can add any necessary logic here, e.g., fetching data from the database
+    '''
+    Renders the react component for song pages
 
-    # Render the template that contains your React app
+    @param request: http request
+    @param spotify_content_id: the song ID for spotify api
+    '''
     return render(request, 'frontend/index.html', {'spotify_content_id': spotify_content_id})
 
 
 def album_page(request, spotify_content_id):
+    '''
+    Renders the react component for album pages
+
+    @param request: http request
+    @param spotify_content_id: the album ID for spotify api
+    '''
     return render(request, 'frontend/index.html', {'spotify_content_id': spotify_content_id})
 
 
@@ -57,16 +72,17 @@ def get_track_info(request):
 
 @api_view(['POST'])
 def get_album_info(request):
-    print("get_album_info called with arg: ",
-          request.data.get('spotify_content_id'))
+    '''
+    Retrieves album info from spotify API and returns JSON of album
 
-    print("SESSIONID: ", request.session.session_key)
+    @param request: http request
+    '''
+    #print("get_album_info called with arg: ", request.data.get('spotify_content_id'))
+    #print("SESSIONID: ", request.session.session_key)
 
     endpoint = '/albums/' + request.data.get('spotify_content_id')
-
-    response = spotify_api_request(
-        request.session.session_key, endpoint, False, False)
-    print(response)
+    response = spotify_api_request(request.session.session_key, endpoint, False, False)
+    #print(response)
 
     return JsonResponse(response)
 
@@ -74,12 +90,10 @@ def get_album_info(request):
 @api_view(['POST'])
 def get_reviews(request):
     spotify_content_id = request.data.get('spotify_content_id')
-    print("ACCESSING REVIEWS FOR ", spotify_content_id)
+    #print("ACCESSING REVIEWS FOR ", spotify_content_id)
 
     # Fetch reviews with related user data
-    reviews = Review.objects.filter(
-        spotify_content_id=spotify_content_id).select_related('author')
-
+    reviews = Review.objects.filter(spotify_content_id=spotify_content_id).select_related('author')
     reviews_list = []
     for review in reviews:
         author_display_name = review.author.display_name if review.author else 'Unknown'
