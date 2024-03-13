@@ -82,15 +82,16 @@ const Lobby = () => {
       sx={{
         mt: 8,
         textAlign: "center",
-        backgroundColor: "black",
+        backgroundColor: "#111111",
         p: 3,
         borderRadius: 2,
+        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
       }}
     >
       {showLobby && (
         <Box>
-          <Typography variant="h6" gutterBottom sx={{ color: "white" }}>
-            Static Text for Testing
+          <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
+            Music Room
           </Typography>
           <Button
             variant="contained"
