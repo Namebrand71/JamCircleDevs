@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { Grid, Button, TextField } from "@mui/material";
 
 const Lobby = () => {
   const [room_name, setRoomName] = useState("");
@@ -34,7 +35,6 @@ const Lobby = () => {
       });
   };
 
-
   const handleCreateRoom = async () => {
     // Logic to create a room...
     const apiBaseUrl = "musicrooms";
@@ -49,7 +49,7 @@ const Lobby = () => {
     });
 
     if (response.ok) {
-      window.location.href = '/musicroom';
+      window.location.href = "/musicroom";
     } else {
       // Handle error
       console.error("Failed to create room");
@@ -69,7 +69,7 @@ const Lobby = () => {
     });
 
     if (response.ok) {
-      window.location.href = '/musicroom';
+      window.location.href = "/musicroom";
     } else {
       // Handle error
       console.error("Failed to join room");
@@ -77,53 +77,152 @@ const Lobby = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px", marginLeft: '300px', backgroundColor: "black" }}>
-      {showLobby && (
-        // Lobby Page
-        <div>
-          <p>Static Text for Testing</p>
-          <br />
-          <button onClick={() => { setShowCreateRoom(true); setShowJoinRoom(false); }}>Create Room</button>
-          <br />
-          <button onClick={() => { setShowJoinRoom(true); setShowCreateRoom(false); }}>Join Room</button>
-        </div>
-      )}
+    <Grid
+      container
+      spacing={4}
+      columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
+    >
+      <Grid
+        item
+        xs={20}
+        sm={20}
+        md={20}
+        lg={20}
+        xl={20}
+        style={{
+          paddingLeft: "220px",
+          textAlign: "center",
+          fontSize: "2rem",
+        }}
+      >
+        <h1>Music Rooms</h1>
+      </Grid>
 
-      {showCreateRoom && (
-        // Create Room Page
-        <div>
-          <input
-            type="text"
-            placeholder="Room Name"
-            value={room_name}
-            onChange={(e) => setRoomName(e.target.value)}
-          />
-          <br />
-          <button onClick={handleCreateRoom}>Create Room</button>
-        </div>
-      )}
+      {/* Make space for the Navbar */}
+      <Grid item xs={8} sm={6} md={0} lg={3} xl={0}>
+        {/* <Navbar /> */}
+      </Grid>
 
-      {showJoinRoom && (
-        // Join Room Page
-        <div>
-          <input
-            type="text"
-            placeholder="Room Name"
-            value={room_name}
-            onChange={(e) => setRoomName(e.target.value)}
-          />
-          <br />
-          <input
-            type="text"
-            placeholder="Passcode"
-            value={passcode}
-            onChange={(e) => setPasscode(e.target.value)}
-          />
-          <br />
-          <button onClick={handleJoinRoom}>Join Room</button>
-        </div>
-      )}
-    </div>
+      <Grid item xs={4} sm={6} md={9} lg={9} xl={12}>
+        {showLobby && (
+          // Lobby Page
+          <Grid
+            container
+            spacing={2}
+            alignItems="center"
+            justify="center"
+            style={{
+              marginLeft: "180px",
+              marginTop: "100px",
+            }}
+          >
+            <Grid
+              item
+              xs={6}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => {
+                  setShowCreateRoom(true);
+                  setShowJoinRoom(false);
+                }}
+                style={{ width: "180px" }}
+              >
+                Create Room
+              </Button>
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => {
+                  setShowJoinRoom(true);
+                  setShowCreateRoom(false);
+                }}
+                style={{ width: "180px" }}
+              >
+                Join Room
+              </Button>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              {showCreateRoom && (
+                // Create Room Page
+                <div style={{ marginTop: "100px" }}>
+                  <div>
+                    <TextField
+                      placeholder="Room Name"
+                      fullWidth
+                      required
+                      value={room_name}
+                      onChange={(e) => setRoomName(e.target.value)}
+                      sx={{
+                        width: "500px",
+                        backgroundColor: "white",
+                        marginBottom: "20px",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <Button variant="contained" onClick={handleCreateRoom}>
+                      Create Room
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {showJoinRoom && (
+                // Join Room Page
+                <div style={{ marginTop: "100px" }}>
+                  <div>
+                    <TextField
+                      fullWidth
+                      placeholder="Room Name"
+                      required
+                      value={room_name}
+                      onChange={(e) => setRoomName(e.target.value)}
+                      sx={{
+                        width: "500px",
+                        backgroundColor: "white",
+                        marginBottom: "20px",
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                      fullWidth
+                      placeholder="Passcode"
+                      required
+                      value={passcode}
+                      onChange={(e) => setPasscode(e.target.value)}
+                      sx={{
+                        width: "500px",
+                        backgroundColor: "white",
+                        marginBottom: "20px",
+                      }}
+                    />
+                  </div>
+                  <div style={{ alignContent: "center" }}>
+                    <Button variant="contained" onClick={handleJoinRoom}>
+                      Join Room
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </Grid>
+          </Grid>
+        )}
+      </Grid>
+    </Grid>
   );
 };
 
