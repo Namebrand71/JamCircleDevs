@@ -1,4 +1,3 @@
-// Reviews.js
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -39,9 +38,9 @@ const Reviews = ({ spotifyContentId }) => {
   const fetchReviews = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/reviews/get_reviews/`, // Ensure the URL matches your Django routing pattern
+        `http://127.0.0.1:8000/reviews/get_reviews/`,
         {
-          method: "POST", // Assuming the Django view is expecting a GET request
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -106,6 +105,7 @@ const Reviews = ({ spotifyContentId }) => {
           sx={{ mb: 2 }}
           style={{ paddingBottom: "30px" }}
         >
+          {/* Text box to write reviews */}
           <TextField
             fullWidth
             multiline
@@ -124,6 +124,7 @@ const Reviews = ({ spotifyContentId }) => {
             alignItems="center"
             style={{ width: "50%", margin: "auto" }}
           >
+            {/* Star rating out of 5 */}
             <Rating
               name="rating"
               value={rating}
@@ -132,6 +133,8 @@ const Reviews = ({ spotifyContentId }) => {
               }}
               precision={0.5}
             />
+
+            {/* Submit button*/}
             <Button
               type="submit"
               variant="contained"
@@ -143,6 +146,8 @@ const Reviews = ({ spotifyContentId }) => {
             </Button>
           </Stack>
         </Box>
+
+        {/* Display reviews */}
         {reviews.length > 0 ? (
           reviews.map((review, index) => (
             <Paper key={index} sx={{ p: 2, mb: 2, maxWidth: "100%" }}>
@@ -170,7 +175,7 @@ const Reviews = ({ spotifyContentId }) => {
             </Paper>
           ))
         ) : (
-          <Typography variant="h4">No reviews yet.</Typography>
+          <Typography variant="h4">No reviews yet.</Typography> // If no reviews
         )}
       </Container>
     </ThemeProvider>

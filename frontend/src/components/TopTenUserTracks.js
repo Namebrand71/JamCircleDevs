@@ -9,10 +9,12 @@ const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
   overflowY: "auto",
   borderRadius: "10px",
-  backgroundColor: "#151515", // Dark grey color
-  color: "white", // Sets text color to white
+  BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+  backgroundColor: "#151515",
+  color: "white",
   padding: "20px",
-  margin: "10px 0", // Adds some space above and below the container
+  margin: "10px 0",
+  height: "480px",
 }));
 
 class MyComponent extends React.Component {
@@ -46,6 +48,7 @@ class MyComponent extends React.Component {
           Top Tracks
         </Typography>
         <Grid container spacing={1}>
+          {/* Display top 10 tracks */}
           {this.state.topTracks.slice(0, 10).map((track, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
               <Link to={`/song/${track.id}`} className="TopTen">
@@ -54,20 +57,22 @@ class MyComponent extends React.Component {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    marginBottom: 2, // Adds some space between the image and the artist name
+                    marginBottom: 2,
                   }}
                 >
+                  {/* Album cover */}
                   <Box
                     component="img"
                     sx={{
                       height: 100,
                       width: 100,
-                      // borderRadius: "50%",
                       marginBottom: 1,
                     }}
                     alt={track.name}
                     src={track.image_url}
                   />
+
+                  {/* Track name and artist*/}
                   <Typography align="center">
                     {`${index + 1}. ${track.name} - ${track.artist_names.join(
                       ", "

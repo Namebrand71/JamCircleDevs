@@ -25,7 +25,7 @@ const SongPage = ({ onPlay }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setAlbumInfo(data); // Assuming data is the object with the Album details
+          setAlbumInfo(data);
         } else {
           console.error("Failed to fetch song data");
           setAlbumInfo(null);
@@ -50,8 +50,11 @@ const SongPage = ({ onPlay }) => {
       <Grid item xs={6} sm={6} md={5} lg={5} xl={5}>
         {albumInfo ? (
           <div align="center" className="songcard">
+            {/* Album cover */}
             <img src={albumInfo.images[0].url} alt="Album Cover" />
+            {/* Album name */}
             <h1>{albumInfo.name}</h1>
+            {/* Play album button */}
             <button onClick={() => onPlay(spotify_content_id, "album")}>
               Play Album
             </button>

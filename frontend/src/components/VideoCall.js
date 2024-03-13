@@ -9,12 +9,39 @@ import {
   useRemoteUsers,
 } from "agora-rtc-react";
 import React, { useState } from "react";
-import "./styles.css";
-const VideoCall = ({ appId: initialAppId, channel: initialChannel, token: initialToken, uid: initialUID}) => {
+import "../../static/css/VideoStyles.css";
+import { Grid, Button, IconButton, Tooltip, Box } from "@mui/material";
+import MicIcon from "@mui/icons-material/Mic";
+import MicOffIcon from "@mui/icons-material/MicOff";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
+import PhoneIcon from "@mui/icons-material/Phone";
+import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
+
+const VideoCall = ({
+  appId: initialAppId,
+  channel: initialChannel,
+  token: initialToken,
+  uid: initialUID,
+}) => {
   const [calling, setCalling] = useState(false);
   const isConnected = useIsConnected();
-  console.log("JOIN PERAMS", initialAppId, initialChannel, initialToken, initialUID)
-  useJoin({appid: initialAppId, channel: initialChannel, token: initialToken, uid: initialUID}, calling);
+  console.log(
+    "JOIN PERAMS",
+    initialAppId,
+    initialChannel,
+    initialToken,
+    initialUID
+  );
+  useJoin(
+    {
+      appid: initialAppId,
+      channel: initialChannel,
+      token: initialToken,
+      uid: initialUID,
+    },
+    calling
+  );
   //local user
   const [micOn, setMic] = useState(true);
   const [cameraOn, setCamera] = useState(true);
@@ -25,59 +52,80 @@ const VideoCall = ({ appId: initialAppId, channel: initialChannel, token: initia
   const remoteUsers = useRemoteUsers();
 
   return (
-    <>
-      <div className="room">
+    <Box sx={{ flexGrow: 1 }}>
+      {/* Camera Feeds Container */}
+      <Grid container spacing={2} justifyContent="center">
         {isConnected ? (
-          <div className="user-list">
-            <div className="user">
-              <LocalUser
-                audioTrack={localMicrophoneTrack}
-                cameraOn={cameraOn}
-                micOn={micOn}
-                videoTrack={localCameraTrack}
-                cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
-              >
-                <samp className="user-name">You</samp>
-              </LocalUser>
-            </div>
-            {remoteUsers.map((user) => (
-              <div className="user" key={user.uid}>
-                <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
-                  <samp className="user-name">{user.uid}</samp>
-                </RemoteUser>
+          <>
+            {/* Local User */}
+            <Grid item xs={12} sm={6} md={3}>
+              <div className="user">
+                <LocalUser
+                  audioTrack={localMicrophoneTrack}
+                  cameraOn={cameraOn}
+                  micOn={micOn}
+                  videoTrack={localCameraTrack}
+                  cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
+                >
+                  <samp className="user-name">You</samp>
+                </LocalUser>
               </div>
+            </Grid>
+            {/* Remote Users */}
+            {remoteUsers.map((user) => (
+              <Grid item xs={12} sm={6} md={3} key={user.uid}>
+                <div className="user">
+                  <RemoteUser
+                    cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
+                    user={user}
+                  >
+                    <samp className="user-name">{user.uid}</samp>
+                  </RemoteUser>
+                </div>
+              </Grid>
             ))}
-          </div>
+          </>
         ) : (
-          <div className="join-room">
-            <button
-              className={`Ready?`}
-              onClick={() => setCalling(true)}
-            >
-              <span>Join Channel</span>
-            </button>
-          </div>
+          <Grid item xs={12}>
+            <Button variant="contained" onClick={() => setCalling(true)}>
+              Join Channel
+            </Button>
+          </Grid>
         )}
-      </div>
+      </Grid>
+
+      {/* Action Icons Container */}
       {isConnected && (
-        <div className="control">
-          <div className="left-control">
-            <button className="btn" onClick={() => setMic(a => !a)}>
-              <i className={`i-microphone ${!micOn ? "off" : ""}`} />
-            </button>
-            <button className="btn" onClick={() => setCamera(a => !a)}>
-              <i className={`i-camera ${!cameraOn ? "off" : ""}`} />
-            </button>
-          </div>
-          <button
-            className={`btn btn-phone ${calling ? "btn-phone-active" : ""}`}
-            onClick={() => setCalling(a => !a)}
-          >
-            {calling ? <i className="i-phone-hangup" /> : <i className="i-mdi-phone" />}
-          </button>
-        </div>
+        <Grid
+          container
+          justifyContent="center"
+          spacing={1}
+          sx={{ marginTop: 0, marginLeft: 5 }}
+        >
+          <Grid item>
+            <Tooltip title="Toggle Microphone">
+              <IconButton color="primary" onClick={() => setMic((a) => !a)}>
+                {micOn ? <MicIcon /> : <MicOffIcon />}
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <Tooltip title="Toggle Camera">
+              <IconButton color="primary" onClick={() => setCamera((a) => !a)}>
+                {cameraOn ? <VideocamIcon /> : <VideocamOffIcon />}
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <Tooltip title={calling ? "Hang Up" : "Call"}>
+              <IconButton color="error" onClick={() => setCalling((a) => !a)}>
+                {calling ? <PhoneDisabledIcon /> : <PhoneIcon />}
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        </Grid>
       )}
-    </>
+    </Box>
   );
 };
 

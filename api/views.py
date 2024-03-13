@@ -20,7 +20,13 @@ class ProfileView(generics.ListAPIView):
 
 
 def all_listening_history(request, spotify_id):
+    '''
+    Retrieves total stored listening histor of a user
 
+    @param request: HTTP Request
+    @param spotify_id: Spotify ID of the specified user
+    @return: JSON formatted list of all tracks in user's listening history
+    '''
     user = get_object_or_404(User, spotify_id=spotify_id)
 
     # Assuming 'user' is a ForeignKey in your ListeningData model
@@ -80,7 +86,13 @@ def all_listening_history(request, spotify_id):
 
 
 def all_review_history(request, spotify_id):
+    '''
+    Retrieves all reviews left by a specified user
 
+    @param request: HTTP request
+    @param spotify_id: the ID of the specified user
+    @return: JSON formatted list of all of a user's reviews
+    '''
     user = get_object_or_404(User, spotify_id=spotify_id)
 
     # Step 2: Get the friends for the given user

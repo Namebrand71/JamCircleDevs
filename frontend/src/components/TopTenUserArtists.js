@@ -9,10 +9,12 @@ const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
   overflowY: "auto",
   borderRadius: "10px",
-  backgroundColor: "#151515", // Dark grey color
-  color: "white", // Sets text color to white
+  backgroundColor: "#151515",
+  color: "white",
   padding: "20px",
-  margin: "10px 0", // Adds some space above and below the container
+  margin: "10px 0",
+  BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+  height: "480px",
 }));
 
 class MyComponent extends React.Component {
@@ -46,6 +48,7 @@ class MyComponent extends React.Component {
           Top Artists
         </Typography>
         <Grid container spacing={1}>
+          {/* Display top 10 artists */}
           {this.state.topArtists.slice(0, 10).map((artist, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
               <Link to={`/artist/${artist.id}`} className="TopTen">
@@ -54,9 +57,10 @@ class MyComponent extends React.Component {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    marginBottom: 7, // Adds some space between the image and the artist name
+                    marginBottom: 7,
                   }}
                 >
+                  {/* Artist's profile picture*/}
                   <Box
                     component="img"
                     sx={{
@@ -68,6 +72,7 @@ class MyComponent extends React.Component {
                     alt={artist.name}
                     src={artist.image_url}
                   />
+                  {/* Artist's name */}
                   <Typography align="center">
                     {index + 1}. {artist.name}
                   </Typography>

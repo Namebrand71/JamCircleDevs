@@ -308,6 +308,36 @@ h2 {
   box-sizing: border-box;
 }
 
+/* Friends Page */
+
+.FriendsPage {
+  border-bottom: 2px solid #2a2a2a;
+}
+
+.FriendsPage #button {
+  margin-top: 20px;
+}
+
+.FriendsPage #requests {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.FriendsPage #link {
+  text-decoration: none;
+  color: white;
+}
+
+.FriendsPage #TopBar {
+  display: flex;
+  align-items: center;
+}
+
 /* Search Results */
 
 .SearchResultsHeading {

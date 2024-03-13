@@ -58,20 +58,19 @@ const Navbar = () => {
   };
 
   const activeStyle = {
-    color: "#c679ed", // Set the color for the active text
-    backgroundColor: "black", // Set the background color for the active box
+    color: "#c679ed",
+    backgroundColor: "black",
     width: "100%",
   };
 
   const linkStyle = {
     display: "block",
-    color: "white", // default link color
+    color: "white",
     textDecoration: "none",
     padding: "20px",
     textAlign: "center",
-    width: "100%", // Full width
-    marginBottom: "0px", // Space between links
-    // add other styles as needed
+    width: "100%",
+    marginBottom: "0px",
   };
 
   return (
@@ -85,7 +84,8 @@ const Navbar = () => {
           float="left"
         />
       </div>
-      {/* <SearchBar onSearch={handleSearch} /> */}
+
+      {/* Home */}
       <NavLink
         to="/"
         style={({ isActive }) => ({
@@ -96,6 +96,7 @@ const Navbar = () => {
         Home
       </NavLink>
 
+      {/* Profile */}
       <NavLink
         to="/profile"
         style={({ isActive }) => ({
@@ -106,6 +107,7 @@ const Navbar = () => {
         Profile
       </NavLink>
 
+      {/* Friends */}
       <NavLink
         to={`/friends/${currentSpotifyId}`}
         style={({ isActive }) => ({
@@ -116,6 +118,7 @@ const Navbar = () => {
         Friends
       </NavLink>
 
+      {/* Music Rooms */}
       <NavLink
         to={`/lobby`}
         style={({ isActive }) => ({
@@ -126,7 +129,7 @@ const Navbar = () => {
         Music Rooms
       </NavLink>
 
-      {/* Add additional navigation links or content here */}
+      {/* Login/logout Button */}
       <button
         onClick={handleAuthButtonClick}
         style={{
@@ -137,6 +140,7 @@ const Navbar = () => {
         {isAuthenticated ? "Logout" : "Login"}
       </button>
 
+      {/* Playback */}
       {isAuthenticated ? (
         currentSong.songName && currentSong.artistName ? (
           <div id="Playback">
