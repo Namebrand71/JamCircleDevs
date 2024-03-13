@@ -86,36 +86,6 @@ const FriendsPage = () => {
     }
   };
 
-  const renderContent = (item) => {
-    return (
-      <div>
-        <img
-          src={item.profile_pic_url}
-          width="100px"
-          alt="Profile"
-          style={{
-            paddingRight: "20px",
-            paddingTop: "5px",
-            paddingBottom: "2px",
-            width: "80px",
-            maxHeight: "80px",
-          }}
-        />
-        <span
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: "18px",
-            fontWeight: "bold",
-            paddingBottom: "5px",
-          }}
-        >
-          {item.display_name}
-        </span>
-      </div>
-    );
-  };
-
   return (
     <Grid
       container
@@ -130,39 +100,21 @@ const FriendsPage = () => {
       {/* Content Grid item */}
       <Grid item xs={4} sm={4} md={8} lg={16} xl={16}>
         <Grid container spacing={1} alignItems="flex-start">
-          <Grid
-            item
-            xs={12}
-            style={{
-              borderBottom: "2px solid #2a2a2a",
-            }}
-          >
+          <Grid item xs={12} className="FriendsPage">
             {/* Display friend requests */}
-            <Button
-              style={{ marginTop: "20px" }}
-              variant="contained"
-              onClick={toggleDropdown}
-            >
+            <Button id="button" variant="contained" onClick={toggleDropdown}>
               Show Friend Requests
             </Button>
             {isDropdownVisible && (
-              <div style={{ marginTop: "16px" }}>
+              <div id="button">
                 {/* Display friend requests in the dropdown */}
                 {friendRequests.map((request) => (
-                  <div
-                    key={request.from_user__display_name}
-                    style={{
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                      padding: "8px",
-                      marginBottom: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
+                  <div key={request.from_user__display_name} id="requests">
                     <Typography>
-                      <Link to={`/user/${request.from_user__spotify_id}`}>
+                      <Link
+                        to={`/user/${request.from_user__spotify_id}`}
+                        id="link"
+                      >
                         {request.from_user__display_name}
                       </Link>
                     </Typography>
@@ -178,7 +130,7 @@ const FriendsPage = () => {
             )}
 
             {/* Top Bar */}
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <div id="TopBar">
               <h1>{userDisplayName}'s Friends</h1>
             </div>
           </Grid>
@@ -190,9 +142,14 @@ const FriendsPage = () => {
               {results && results.length > 0 ? (
                 <ul>
                   {results.map((item, index) => (
-                    <li key={index} className="list-item">
+                    <li key={index} className="ListItem">
                       <Link to={`/user/${item.spotify_id}`} id="Item">
-                        <div id="Name">{renderContent(item)}</div>
+                        <div id="ItemContent">
+                          <img src={item.profile_pic_url} alt="Profile" />
+                          <div id="Name">
+                            <span>{item.display_name}</span>
+                          </div>
+                        </div>
                       </Link>
                     </li>
                   ))}

@@ -13,6 +13,8 @@ const StyledContainer = styled("div")(({ theme }) => ({
   color: "white",
   padding: "20px",
   margin: "10px 0",
+  BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+  height: "480px",
 }));
 
 class MyComponent extends React.Component {
