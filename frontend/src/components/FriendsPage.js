@@ -143,6 +143,7 @@ const FriendsPage = () => {
               borderBottom: "2px solid #2a2a2a",
             }}
           >
+            {/* Display friend requests */}
             <Button
               style={{ marginTop: "20px" }}
               variant="contained"
@@ -181,6 +182,8 @@ const FriendsPage = () => {
                 ))}
               </div>
             )}
+
+            {/* Top Bar */}
             <div style={{ display: "flex", alignItems: "center" }}>
               <h1>{userDisplayName}'s Friends</h1>
             </div>
@@ -189,22 +192,13 @@ const FriendsPage = () => {
             <h2>Loading...</h2>
           ) : (
             <div>
+              {/* Display friends */}
               {results && results.length > 0 ? (
-                <ul className="searchpage">
+                <ul>
                   {results.map((item, index) => (
                     <li key={index} className="list-item">
-                      <Link
-                        to={`/user/${item.spotify_id}`}
-                        style={{ textDecoration: "none", color: "white" }}
-                      >
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          {renderContent(item)}
-                        </div>
+                      <Link to={`/user/${item.spotify_id}`} id="Item">
+                        <div id="Name">{renderContent(item)}</div>
                       </Link>
                     </li>
                   ))}

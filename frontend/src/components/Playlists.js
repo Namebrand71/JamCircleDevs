@@ -32,6 +32,7 @@ class Playlists extends Component {
 
     return (
       <div>
+        {/* Show more playlists */}
         <div className="ShowMore">
           <h2>Playlists</h2>
           {playlists.length > 3 && (
@@ -40,6 +41,8 @@ class Playlists extends Component {
             </button>
           )}
         </div>
+
+        {/* Display playlists */}
         <div className="Playlist">
           {displayedPlaylists.map((playlist, index) => (
             <div key={index}>
