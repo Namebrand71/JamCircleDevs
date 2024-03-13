@@ -9,10 +9,10 @@ const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
   overflowY: "auto",
   borderRadius: "10px",
-  backgroundColor: "#151515", // Dark grey color
-  color: "white", // Sets text color to white
+  backgroundColor: "#151515",
+  color: "white",
   padding: "20px",
-  margin: "10px 0", // Adds some space above and below the container
+  margin: "10px 0",
 }));
 
 class MyComponent extends React.Component {
@@ -55,7 +55,7 @@ class MyComponent extends React.Component {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    marginBottom: 2, // Adds some space between the image and the artist name
+                    marginBottom: 2,
                   }}
                 >
                   {/* Album cover */}
@@ -64,7 +64,6 @@ class MyComponent extends React.Component {
                     sx={{
                       height: 100,
                       width: 100,
-                      // borderRadius: "50%",
                       marginBottom: 1,
                     }}
                     alt={track.name}

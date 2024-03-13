@@ -1,4 +1,3 @@
-// Reviews.js
 import React, { useEffect, useState } from "react";
 import {
   Container,
@@ -39,9 +38,9 @@ const Reviews = ({ spotifyContentId }) => {
   const fetchReviews = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/reviews/get_reviews/`, // Ensure the URL matches your Django routing pattern
+        `http://127.0.0.1:8000/reviews/get_reviews/`,
         {
-          method: "POST", // Assuming the Django view is expecting a GET request
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
@@ -176,7 +175,7 @@ const Reviews = ({ spotifyContentId }) => {
             </Paper>
           ))
         ) : (
-          <Typography variant="h4">No reviews yet.</Typography> // If not reviews
+          <Typography variant="h4">No reviews yet.</Typography> // If no reviews
         )}
       </Container>
     </ThemeProvider>

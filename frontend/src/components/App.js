@@ -25,15 +25,10 @@ const App = () => {
     // Fetch initial data when the component is mounted
     const fetchInitialData = async () => {
       try {
-        const response = await fetch(`/musicrooms/start-token-server`); // Replace with your API endpoint
+        const response = await fetch(`/musicrooms/start-token-server`);
         if (response.ok) {
           const data = await response.json();
           console.log("Initial data:", data);
-
-          // Update state with initial data if needed
-          // setSpotifyContentId(data.spotifyContentId);
-          // setSpotifyContentType(data.spotifyContentType);
-          // setAccessToken(data.accessToken);
         } else {
           console.error("Failed to fetch initial data");
         }
@@ -43,7 +38,7 @@ const App = () => {
     };
 
     fetchInitialData();
-  }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
+  }, []);
 
   const handlePlay = (spotifyContentId, spotifyContentType) => {
     setSpotifyContentId(spotifyContentId);

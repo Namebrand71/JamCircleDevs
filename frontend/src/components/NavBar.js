@@ -58,20 +58,19 @@ const Navbar = () => {
   };
 
   const activeStyle = {
-    color: "#c679ed", // Set the color for the active text
-    backgroundColor: "black", // Set the background color for the active box
+    color: "#c679ed",
+    backgroundColor: "black",
     width: "100%",
   };
 
   const linkStyle = {
     display: "block",
-    color: "white", // default link color
+    color: "white",
     textDecoration: "none",
     padding: "20px",
     textAlign: "center",
-    width: "100%", // Full width
-    marginBottom: "0px", // Space between links
-    // add other styles as needed
+    width: "100%",
+    marginBottom: "0px",
   };
 
   return (

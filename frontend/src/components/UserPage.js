@@ -5,7 +5,7 @@ import TopTenUserTracks from "./TopTenUserTracks";
 import TopTenUserArtists from "./TopTenUserArtists";
 import UserPlaylists from "./UserPlaylists";
 import FriendRequestButton from "./FriendRequestButton";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 const UserPage = () => {
   const { spotify_id } = useParams();
@@ -40,7 +40,7 @@ const UserPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setUserInfo(data); // Assuming data is the object with the user details
+          setUserInfo(data);
         } else {
           console.error("Failed to fetch user data");
           setUserInfo(null);
@@ -50,7 +50,6 @@ const UserPage = () => {
       }
     };
 
-    // Call the functions
     checkSessionUser();
     callDjangoAPI(spotify_id);
   }, [spotify_id]);

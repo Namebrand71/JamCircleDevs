@@ -24,7 +24,7 @@ const SongPage = ({ onPlay }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setTrackInfo(data); // Assuming data is the object with the track details
+          setTrackInfo(data);
         } else {
           console.error("Failed to fetch song data");
           setTrackInfo(null);

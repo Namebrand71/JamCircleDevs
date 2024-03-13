@@ -9,10 +9,10 @@ const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
   overflowY: "auto",
   borderRadius: "10px",
-  backgroundColor: "#151515", // Dark grey color
-  color: "white", // Sets text color to white
+  backgroundColor: "#151515",
+  color: "white",
   padding: "20px",
-  margin: "10px 0", // Adds some space above and below the container
+  margin: "10px 0",
 }));
 
 class MyComponent extends React.Component {
