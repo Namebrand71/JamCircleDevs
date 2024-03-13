@@ -9,10 +9,12 @@ const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
   overflowY: "auto",
   borderRadius: "10px",
+  BoxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
   backgroundColor: "#151515", // Dark grey color
   color: "white", // Sets text color to white
   padding: "20px",
   margin: "10px 0", // Adds some space above and below the container
+  height: "480px",
 }));
 
 class MyComponent extends React.Component {
@@ -64,7 +66,6 @@ class MyComponent extends React.Component {
                     sx={{
                       height: 100,
                       width: 100,
-                      // borderRadius: "50%",
                       marginBottom: 1,
                     }}
                     alt={track.name}
