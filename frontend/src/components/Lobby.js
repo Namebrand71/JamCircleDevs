@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import { Container, Typography, TextField, Button, Box } from "@mui/material";
 
 const Lobby = () => {
   const [room_name, setRoomName] = useState("");
@@ -34,7 +35,6 @@ const Lobby = () => {
       });
   };
 
-
   const handleCreateRoom = async () => {
     // Logic to create a room...
     const apiBaseUrl = "musicrooms";
@@ -49,7 +49,7 @@ const Lobby = () => {
     });
 
     if (response.ok) {
-      window.location.href = '/musicroom';
+      window.location.href = "/musicroom";
     } else {
       // Handle error
       console.error("Failed to create room");
@@ -69,7 +69,7 @@ const Lobby = () => {
     });
 
     if (response.ok) {
-      window.location.href = '/musicroom';
+      window.location.href = "/musicroom";
     } else {
       // Handle error
       console.error("Failed to join room");
@@ -77,53 +77,90 @@ const Lobby = () => {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "50px", marginLeft: '300px', backgroundColor: "black" }}>
+    <Container
+      maxWidth="sm"
+      sx={{
+        mt: 8,
+        textAlign: "center",
+        backgroundColor: "#111111",
+        p: 3,
+        borderRadius: 2,
+        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      }}
+    >
       {showLobby && (
-        // Lobby Page
-        <div>
-          <p>Static Text for Testing</p>
-          <br />
-          <button onClick={() => { setShowCreateRoom(true); setShowJoinRoom(false); }}>Create Room</button>
-          <br />
-          <button onClick={() => { setShowJoinRoom(true); setShowCreateRoom(false); }}>Join Room</button>
-        </div>
+        <Box>
+          <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
+            Music Room
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ m: 1 }}
+            onClick={() => {
+              setShowCreateRoom(true);
+              setShowJoinRoom(false);
+            }}
+          >
+            Create Room
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              setShowJoinRoom(true);
+              setShowCreateRoom(false);
+            }}
+          >
+            Join Room
+          </Button>
+        </Box>
       )}
 
       {showCreateRoom && (
-        // Create Room Page
-        <div>
-          <input
-            type="text"
+        <Box>
+          <TextField
+            fullWidth
+            variant="outlined"
             placeholder="Room Name"
             value={room_name}
             onChange={(e) => setRoomName(e.target.value)}
+            sx={{ mb: 2, backgroundColor: "white" }}
           />
-          <br />
-          <button onClick={handleCreateRoom}>Create Room</button>
-        </div>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCreateRoom}
+          >
+            Create Room
+          </Button>
+        </Box>
       )}
 
       {showJoinRoom && (
-        // Join Room Page
-        <div>
-          <input
-            type="text"
+        <Box>
+          <TextField
+            fullWidth
+            variant="outlined"
             placeholder="Room Name"
             value={room_name}
             onChange={(e) => setRoomName(e.target.value)}
+            sx={{ mb: 2, backgroundColor: "white" }}
           />
-          <br />
-          <input
-            type="text"
+          <TextField
+            fullWidth
+            variant="outlined"
             placeholder="Passcode"
             value={passcode}
             onChange={(e) => setPasscode(e.target.value)}
+            sx={{ mb: 2, backgroundColor: "white" }}
           />
-          <br />
-          <button onClick={handleJoinRoom}>Join Room</button>
-        </div>
+          <Button variant="contained" color="primary" onClick={handleJoinRoom}>
+            Join Room
+          </Button>
+        </Box>
       )}
-    </div>
+    </Container>
   );
 };
 
