@@ -13,20 +13,19 @@ const PlayerWrapper = ({ spotifyContentId, spotifyContentType }) => {
     <>
       <div
         style={{
-          // display: "flex",
           flexDirection: "column",
           justifyContent: "flex-start",
-          alignItems: "center", // Changed to center the children horizontally
-          height: "auto", // Full height of the viewport
-          width: "100%", // Width of the sidebar
-          position: "fixed", // Fixed position
-          left: "0", // Align to the left side of the viewport
-          bottom: "0", // Align to the bottom of the viewport
+          alignItems: "center",
+          height: "auto",
+          width: "100%",
+          position: "fixed",
+          left: "0",
+          bottom: "0",
           maxHeight: "auto",
-          backgroundColor: "#111111", // Background color of the sidebar
+          backgroundColor: "#111111",
           color: "white",
-          padding: "0px", // Padding inside the sidebar
-          boxSizing: "border-box", // Ensures padding doesn't affect the set width
+          padding: "0px",
+          boxSizing: "border-box",
         }}
       >
         <SpotifyPlayer

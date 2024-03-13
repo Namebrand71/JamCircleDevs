@@ -23,15 +23,11 @@ const FriendsPage = () => {
 
   const fetchFriendsList = async (spotify_id) => {
     setLoading(true);
-    console.log(spotify_id);
 
-    // Assuming the endpoint is correct and id is used appropriately
     let endpoint = `/users/get-user-friends/${spotify_id}`;
 
     const response = await fetch(endpoint);
-    console.log(response);
     const data = await response.json();
-    console.log(data);
 
     setResults(data);
 
@@ -39,20 +35,19 @@ const FriendsPage = () => {
       `/users/get-display-name/${spotify_id}/`
     );
     const data2 = await displayresponce.json();
-    console.log(data2);
     setUserDisplayName(data2);
 
     setLoading(false);
   };
 
-  // Add a method to toggle the dropdown visibility
+  // method to toggle the dropdown visibility
   const toggleDropdown = () => {
     setIsDropdownVisible((prevState) => ({
       isDropdownVisible: !prevState.isDropdownVisible,
     }));
   };
 
-  // Add a method to fetch friend requests
+  // method to fetch friend requests
   const fetchFriendRequests = async () => {
     try {
       const response = await fetch("/users/get-user-pending-friends/");

@@ -7,10 +7,10 @@ const StyledContainer = styled("div")(({ theme }) => ({
   maxHeight: "90vh",
   overflowY: "auto",
   borderRadius: "10px",
-  backgroundColor: "#151515", // Dark grey color
-  color: "white", // Sets text color to white
+  backgroundColor: "#151515",
+  color: "white",
   padding: "20px",
-  margin: "10px 0", // Adds some space above and below the container
+  margin: "10px 0",
 }));
 
 class Stats extends React.Component {
@@ -21,8 +21,8 @@ class Stats extends React.Component {
         uniqueArtists: 0,
         uniqueSongs: 0,
         highPopularityTracks: 0,
-        lowPopularityTracks: 0
-      }
+        lowPopularityTracks: 0,
+      },
     };
   }
 
@@ -32,14 +32,15 @@ class Stats extends React.Component {
 
   fetchListening = () => {
     fetch("auth/fetch-spotify-activity/")
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.message);
-          this.fetchStats();
-        })
-        .catch(error => console.error('Error fetching listening history:', error));
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message);
+        this.fetchStats();
+      })
+      .catch((error) =>
+        console.error("Error fetching listening history:", error)
+      );
   };
-
 
   fetchStats = () => {
     fetch("users/get-user-stats/")
@@ -54,28 +55,28 @@ class Stats extends React.Component {
   render() {
     const { stats } = this.state;
     return (
-        <div>
+      <div>
         <StyledContainer>
-            <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom>
             User Statistics
-            </Typography>
-            <Box>
+          </Typography>
+          <Box>
             <Typography variant="body1">
-                Unique Artists: {stats.unique_artists}
-            </Typography>
-            <Typography variant="body1">
-                Unique Songs: {stats.unique_songs}
+              Unique Artists: {stats.unique_artists}
             </Typography>
             <Typography variant="body1">
-                High Popularity Tracks: {stats.high_popularity_tracks}
+              Unique Songs: {stats.unique_songs}
             </Typography>
             <Typography variant="body1">
-                Low Popularity Tracks: {stats.low_popularity_tracks}
+              High Popularity Tracks: {stats.high_popularity_tracks}
             </Typography>
-            </Box>
+            <Typography variant="body1">
+              Low Popularity Tracks: {stats.low_popularity_tracks}
+            </Typography>
+          </Box>
         </StyledContainer>
         <button onClick={this.fetchListening}>Refresh Listening History</button>
-        </div>
+      </div>
     );
   }
 }

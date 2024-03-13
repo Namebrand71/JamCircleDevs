@@ -51,7 +51,6 @@ const Lobby = () => {
     if (response.ok) {
       window.location.href = "/musicroom";
     } else {
-      // Handle error
       console.error("Failed to create room");
     }
   };
@@ -71,7 +70,6 @@ const Lobby = () => {
     if (response.ok) {
       window.location.href = "/musicroom";
     } else {
-      // Handle error
       console.error("Failed to join room");
     }
   };

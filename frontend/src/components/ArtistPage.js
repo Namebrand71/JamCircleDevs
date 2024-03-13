@@ -25,7 +25,7 @@ const ArtistPage = ({ onPlay }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setArtistInfo(data); // Assuming data is the object with the track details
+          setArtistInfo(data);
         } else {
           console.error("Failed to fetch song data");
           setArtistInfo(null);
@@ -35,7 +35,6 @@ const ArtistPage = ({ onPlay }) => {
       }
     };
 
-    // Call the function
     callDjangoAPI();
   }, [spotify_content_id]);
 

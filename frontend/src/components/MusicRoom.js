@@ -82,7 +82,6 @@ const Musicroom = () => {
     const handleBeforeUnload = (event) => {
       // Prevent the default behavior
       event.preventDefault();
-      // Call leaveRoom
       leaveRoom();
     };
 
@@ -165,7 +164,6 @@ const Musicroom = () => {
               }}
             >
               {" "}
-              {/* Adjust your styles accordingly */}
               <VideoCall
                 appId={roomInfo.AGORA_ID}
                 channel={roomInfo.room_name}

@@ -25,7 +25,7 @@ const SongPage = ({ onPlay }) => {
 
         if (response.ok) {
           const data = await response.json();
-          setAlbumInfo(data); // Assuming data is the object with the Album details
+          setAlbumInfo(data);
         } else {
           console.error("Failed to fetch song data");
           setAlbumInfo(null);
