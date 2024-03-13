@@ -51,6 +51,7 @@ const ArtistPage = ({ onPlay }) => {
         <Grid item xs={6} sm={6} md={5} lg={5} xl={5}>
           {artistInfo ? (
             <div align="center" className="songcard">
+              {/* Artist profile picture */}
               <img
                 src={
                   artistInfo.images && artistInfo.images.length > 0
@@ -59,7 +60,9 @@ const ArtistPage = ({ onPlay }) => {
                 }
                 alt="Missing Artist Picture"
               />
+              {/* Artist's name */}
               <h1>{artistInfo.name}</h1>
+              {/* Play songs from artist button */}
               <button onClick={() => onPlay(spotify_content_id, "artist")}>
                 Play
               </button>

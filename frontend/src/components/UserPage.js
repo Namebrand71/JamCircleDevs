@@ -90,11 +90,11 @@ const UserPage = () => {
                     )}
                   </h1>
                 </div>
-              </Grid>
 
-              <Link to={`/friends/${spotify_id}`}>
-                <Button variant="contained">Friends</Button>
-              </Link>
+                <Link to={`/friends/${spotify_id}`}>
+                  <Button variant="contained">Friends</Button>
+                </Link>
+              </Grid>
 
               {isAuthenticated && (
                 <>

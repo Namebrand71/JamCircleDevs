@@ -13,6 +13,7 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off" className="SearchBar">
+      {/* Dropdown to pick search type */}
       <select
         value={searchType}
         onChange={(e) => setSearchType(e.target.value)}
@@ -22,6 +23,8 @@ const SearchBar = ({ onSearch }) => {
         <option value="artist">Artist</option>
         <option value="album">Album</option>
       </select>
+
+      {/* Searchbar text input*/}
       <input
         type="text"
         name="search"
@@ -29,6 +32,8 @@ const SearchBar = ({ onSearch }) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
+
+      {/* Search button */}
       <button variant="contained" type="submit">
         Search
       </button>

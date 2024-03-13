@@ -40,6 +40,9 @@ const SearchResults = () => {
     const response = await fetch(endpoint);
     const data = await response.json();
 
+    {
+      /* sets results to data depending on type */
+    }
     if (type === "track") {
       setResults(data.tracks.items);
     } else if (type === "album") {
@@ -51,6 +54,9 @@ const SearchResults = () => {
     setLoading(false);
   };
 
+  {
+    /* Render content based on type */
+  }
   const renderContent = (type, item) => {
     switch (type) {
       case "track":
@@ -77,26 +83,27 @@ const SearchResults = () => {
       <Grid item xs={4} sm={4} md={8} lg={16} xl={16}>
         <Grid container spacing={1} alignItems="flex-start">
           <Grid item xs={12} className="SearchResultsHeading">
+            {/* Header */}
             <div id="Head">
+              {/* Back button */}
               <Link to="/profile" id="Back">
                 <Button variant="contained">Go Back</Button>
               </Link>
+              {/* Search info title */}
               <div id="Title">
                 <h2>Search Results for "{decodeURIComponent(search_query)}"</h2>
               </div>
             </div>
-            {/* <div style={{ paddingTop: "10px" }}> Searching for album from rsearch result page broken
-              <SearchBar onSearch={handleSearch} />
-            </div> */}
           </Grid>
+
+          {/* Load results */}
           {loading ? (
             <h1>Loading...</h1>
           ) : (
             <ul>
               {results.map((item, index) => (
                 <li key={index} className="ListItem">
-                  {/* TODO: The track ternary is a bandaid fix, should switch the
-                  url to /track/id */}
+                  {/* Link to review page */}
                   <Link
                     to={
                       search_type === "track"
@@ -106,6 +113,7 @@ const SearchResults = () => {
                     id="Item"
                   >
                     <div id="ItemContent">
+                      {/* Display corresponding image */}
                       <img
                         src={
                           search_type === "artist"
@@ -119,6 +127,7 @@ const SearchResults = () => {
                         alt="NO PICTURE"
                       />
 
+                      {/* Display name */}
                       <div id="Name">
                         <span>{item.name}</span>
                         {renderContent(search_type, item)}
