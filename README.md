@@ -60,8 +60,20 @@ urllib3==2.1.0
 
 # Running the Project
 
-1. Run `python manage.py makemigrations`
+1. change the default value in the model for `passcode` and `agora_uid` to empty strings in `musicrooms/models.py` and `user/models.py` respectively.
+1. `python manage.py makemigrations api user reviews musicrooms spotifyAPI`
+1. `python manage.py migrate`
+1. Revert the above default value changes.
+
+1. `python manage.py makemigrations user musicrooms`
+1. `python manage.py migrate`
+1. Inside frontend directory: run `npm install`
+1. Inside frontend directory run `npm run dev`
+1. At base directory: run `python manage.py runserver`
+1. Project will be available at `127.0.0.1:8000`
+
+<!-- 1. Run `python manage.py makemigrations`
 1. Run `python manage.py migrate`
 1. Run `python manage.py runserver`
 1. Inside frontend directory: run `npm install`
-1. Inside frontend directory: run `npm run dev`
+1. Inside frontend directory: run `npm run dev` -->
