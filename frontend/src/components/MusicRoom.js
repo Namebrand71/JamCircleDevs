@@ -4,7 +4,7 @@ import VideoCall from "./VideoCall";
 import SpotifyPlayer from "react-spotify-web-playback";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Container, Typography, TextField, Button, CircularProgress, List, ListItem, ListItemText, Box } from '@mui/material';
+import { Container, Typography, TextField, Button, CircularProgress, List, ListItemButton, ListItemText, Box } from '@mui/material';
 
 
 const Musicroom = () => {
@@ -181,12 +181,14 @@ const Musicroom = () => {
         ) : searchResults.length === 0 ? (
           <Typography>No results found.</Typography>
         ) : (
-          <List sx={{ bgcolor: 'background.paper' }}>
+          <List sx={{ bgcolor: 'background.black' }}> 
             {searchResults.map((result) => (
-              <ListItem button key={result.id} onClick={() => handleSearchResultClick(result.id)}>
+              <ListItemButton
+                key={result.id} 
+                onClick={() => handleSearchResultClick(result.id)}
+              >
                 <ListItemText primary={result.name} />
-                {/* Consider using Avatar or CardMedia for images */}
-              </ListItem>
+              </ListItemButton>
             ))}
           </List>
         )}
@@ -199,21 +201,30 @@ const Musicroom = () => {
       </Container>
 
       {accessToken && spotifyContentId && (
-        <SpotifyPlayer
-          token={accessToken}
-          uris={[`spotify:track:${spotifyContentId}`]}
-          layout={spotifyLayout}
-          hideAttribution={true}
-          styles={{
-            activeColor: '#fff',
-            bgColor: '#333',
-            color: '#fff',
-            loaderColor: '#fff',
-            sliderColor: '#1cb954',
-            trackArtistColor: '#ccc',
-            trackNameColor: '#fff',
+        <Box
+          sx={{
+            position: 'fixed',
+            right: 16, // Adjust the spacing from the right edge of the viewport
+            bottom: 16, // Adjust the spacing from the bottom edge of the viewport
+            zIndex: 1000, // Ensure it's above most other content
           }}
-        />
+        >
+          <SpotifyPlayer
+            token={accessToken}
+            uris={[`spotify:track:${spotifyContentId}`]}
+            layout={spotifyLayout}
+            hideAttribution={true}
+            styles={{
+              activeColor: '#fff',
+              bgColor: '#333',
+              color: '#fff',
+              loaderColor: '#fff',
+              sliderColor: '#1cb954',
+              trackArtistColor: '#ccc',
+              trackNameColor: '#fff',
+            }}
+          />
+        </Box>
       )}
     </>
   );

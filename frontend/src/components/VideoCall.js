@@ -33,64 +33,72 @@ const VideoCall = ({ appId: initialAppId, channel: initialChannel, token: initia
   const remoteUsers = useRemoteUsers();
 
   return (
-    <>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          {isConnected ? (
-            <>
-              <Grid item xs={8} sm={6} md={3}>
+    <Box sx={{ flexGrow: 1 }}>
+      {/* Camera Feeds Container */}
+      <Grid container spacing={2} justifyContent="center">
+        {isConnected ? (
+          <>
+            {/* Local User */}
+            <Grid item xs={12} sm={6} md={3}>
+              <div className="user">
+                <LocalUser
+                  audioTrack={localMicrophoneTrack}
+                  cameraOn={cameraOn}
+                  micOn={micOn}
+                  videoTrack={localCameraTrack}
+                  cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
+                >
+                  <samp className="user-name">You</samp>
+                </LocalUser>
+              </div>
+            </Grid>
+            {/* Remote Users */}
+            {remoteUsers.map((user) => (
+              <Grid item xs={12} sm={6} md={3} key={user.uid}>
                 <div className="user">
-                  <LocalUser
-                    audioTrack={localMicrophoneTrack}
-                    cameraOn={cameraOn}
-                    micOn={micOn}
-                    videoTrack={localCameraTrack}
-                    cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg"
-                  >
-                    <samp className="user-name">You</samp>
-                  </LocalUser>
+                  <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
+                    <samp className="user-name">{user.uid}</samp>
+                  </RemoteUser>
                 </div>
               </Grid>
-              {remoteUsers.map((user) => (
-                <Grid item xs={8} sm={6} md={3} key={user.uid}>
-                  <div className="user">
-                    <RemoteUser cover="https://www.agora.io/en/wp-content/uploads/2022/10/3d-spatial-audio-icon.svg" user={user}>
-                      <samp className="user-name">{user.uid}</samp>
-                    </RemoteUser>
-                  </div>
-                </Grid>
-              ))}
-            </>
-          ) : (
-            <Grid item xs={12}>
-              <Button variant="contained" onClick={() => setCalling(true)}>
-                Join Channel
-              </Button>
-            </Grid>
-          )}
-        </Grid>
-      </Box>
+            ))}
+          </>
+        ) : (
+          <Grid item xs={12}>
+            <Button variant="contained" onClick={() => setCalling(true)}>
+              Join Channel
+            </Button>
+          </Grid>
+        )}
+      </Grid>
 
+      {/* Action Icons Container */}
       {isConnected && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', p: 2 }}>
-          <Tooltip title="Toggle Microphone">
-            <IconButton color="primary" onClick={() => setMic((a) => !a)}>
-              {micOn ? <MicIcon /> : <MicOffIcon />}
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Toggle Camera">
-            <IconButton color="primary" onClick={() => setCamera((a) => !a)}>
-              {cameraOn ? <VideocamIcon /> : <VideocamOffIcon />}
-            </IconButton>
-          </Tooltip>
-          <Tooltip title={calling ? "Hang Up" : "Call"}>
-            <IconButton color="error" onClick={() => setCalling((a) => !a)}>
-              {calling ? <PhoneDisabledIcon /> : <PhoneIcon />}
-            </IconButton>
-          </Tooltip>
-        </Box>
+        <Grid container justifyContent="center" spacing={1} sx={{ marginTop: 0,marginLeft: 5 }}>
+          <Grid item>
+            <Tooltip title="Toggle Microphone">
+              <IconButton color="primary" onClick={() => setMic((a) => !a)}>
+                {micOn ? <MicIcon /> : <MicOffIcon />}
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <Tooltip title="Toggle Camera">
+              <IconButton color="primary" onClick={() => setCamera((a) => !a)}>
+                {cameraOn ? <VideocamIcon /> : <VideocamOffIcon />}
+              </IconButton>
+            </Tooltip>
+          </Grid>
+          <Grid item>
+            <Tooltip title={calling ? "Hang Up" : "Call"}>
+              <IconButton color="error" onClick={() => setCalling((a) => !a)}>
+                {calling ? <PhoneDisabledIcon /> : <PhoneIcon />}
+              </IconButton>
+            </Tooltip>
+          </Grid>
+        </Grid>
       )}
-    </>
+    </Box>
   );
 };
 
