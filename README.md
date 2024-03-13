@@ -12,6 +12,10 @@ Make sure you have brew installed
 
 Then `brew install postgresql`
 
+### Install Node.js
+
+[Download Link](https://nodejs.org/en/download)
+
 ### Once postgres is installed
 
 1. Create a user called jamcircle
