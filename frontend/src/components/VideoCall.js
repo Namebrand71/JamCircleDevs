@@ -9,6 +9,7 @@ import {
   useRemoteUsers,
 } from "agora-rtc-react";
 import React, { useState } from "react";
+import "../../static/css/VideoStyles.css";
 import { Grid, Button, IconButton, Tooltip, Box } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
