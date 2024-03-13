@@ -46,6 +46,7 @@ class MyComponent extends React.Component {
           Top Artists
         </Typography>
         <Grid container spacing={1}>
+          {/* Display top 10 artists */}
           {this.state.topArtists.slice(0, 10).map((artist, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
               <Link to={`/artist/${artist.id}`} className="TopTen">
@@ -54,9 +55,10 @@ class MyComponent extends React.Component {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    marginBottom: 7, // Adds some space between the image and the artist name
+                    marginBottom: 7,
                   }}
                 >
+                  {/* Artist's profile picture*/}
                   <Box
                     component="img"
                     sx={{
@@ -68,6 +70,7 @@ class MyComponent extends React.Component {
                     alt={artist.name}
                     src={artist.image_url}
                   />
+                  {/* Artist's name */}
                   <Typography align="center">
                     {index + 1}. {artist.name}
                   </Typography>

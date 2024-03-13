@@ -32,6 +32,8 @@ h2 {
   display: flex;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
 /* NavBar */
 
 .NavBar {
@@ -441,27 +443,6 @@ h2 {
   padding-bottom: 20px;
 }
 
-.profilepage {
-  min-height: 100vh;
-  width: 100%;
-  overflow-y: auto;
-}
-
-.homepage {
-  min-height: 100vh;
-  width: 100%;
-  overflow-y: auto;
-}
-
-.songpage {
-  min-height: 100vh;
-  width: 100%;
-}
-
-.songpage h1 {
-  color: white;
-}
-
 .artistcard {
   margin-top: 50px;
   width: 380px; /* or you can specify a width like 50% or 200px */
@@ -471,8 +452,6 @@ h2 {
   padding: 10px;
   background: #141414;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 /* REVIEW SECTION */
 .review-container {

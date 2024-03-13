@@ -45,6 +45,7 @@ class MyComponent extends React.Component {
           Top Tracks
         </Typography>
         <Grid container spacing={1}>
+          {/* Display top 10 tracks */}
           {this.state.topTracks.slice(0, 10).map((track, index) => (
             <Grid item xs={6} sm={4} md={3} lg={2.4} key={index}>
               <Link to={`/song/${track.id}`} className="TopTen">
@@ -56,6 +57,7 @@ class MyComponent extends React.Component {
                     marginBottom: 2, // Adds some space between the image and the artist name
                   }}
                 >
+                  {/* Album cover */}
                   <Box
                     component="img"
                     sx={{
@@ -66,6 +68,8 @@ class MyComponent extends React.Component {
                     alt={track.name}
                     src={track.album.images[0].url}
                   />
+
+                  {/* Track name and artist*/}
                   <Typography align="center">
                     {index + 1}. {track.name} -{" "}
                     {track.artists.map((artist) => artist.name).join(", ")}{" "}
