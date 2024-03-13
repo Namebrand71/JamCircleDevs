@@ -116,18 +116,15 @@ class Authenticated(APIView):
 
 class GetSpotifyProfile(APIView):
     def get(self, request, format=None):
-        print("GetSpotifyProfile endpoint hit!")
         if not request.session.exists(request.session.session_key):
             request.session.create()
         session_key = request.session.session_key
-        print("Session key: ", session_key)
         token = SpotifyToken.objects.filter(session_id=session_key).first()
 
         if is_authenticated(session_key):
             profile_response = getUserJSON(session_key)
             if profile_response:
                 return Response(profile_response, status=200)
-            print("Failed to fetch spotify profile")
             return Response({'error': 'Failed to fetch Spotify profile'}, status=400)
         else:
             return Response({'error': 'Authentication with Spotify failed or no token found'}, status=403)
@@ -144,7 +141,6 @@ def search_spotify_tracks(request, search_query):
 
 @api_view(['GET'])
 def search_spotify_albums(request, search_query):
-    print("GET ALBUMS CALLED")
     url_suffix = f"/search?q={search_query}&type=album"
     session_id = request.session.session_key
     response = spotify_api_request(
@@ -154,12 +150,10 @@ def search_spotify_albums(request, search_query):
 
 @api_view(['GET'])
 def search_spotify_artists(request, search_query):
-    print("GET ARTISTS CALLED")
     url_suffix = f"/search?q={search_query}&type=artist"
     session_id = request.session.session_key
     response = spotify_api_request(
         session_id=session_id, endpoint=url_suffix, ifPost=False, ifPut=False)
-    print(response)
     return JsonResponse(response)
 
 
@@ -171,7 +165,6 @@ def fetch_spotify_activity(request):
     @return: JSON response from SpotifyAPI containing 50 track items
     
     '''
-    print("fetch_spotify_activity called")
 
     endpoint = '/me/player/recently-played?limit=50'
 
@@ -184,11 +177,7 @@ def fetch_spotify_activity(request):
 
             response = spotify_api_request(
             user_token.session_id, endpoint, False, False)
-            #print(response)
             save_spotify_listening_history(user, response)
-            print(f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
-
-            # print(response.json())
 
     return JsonResponse(response, safe=False)
 
@@ -201,7 +190,6 @@ def get_currently_playing(request):
     @return: JSON item with (name, artist(s), cover image, track id, is playing?)
     '''
     
-    print("get_currently_playing called")
     session_id = request.session.session_key
     token = get_user_token(session_id=session_id)
     endpoint = "/me/player/currently-playing"
@@ -211,7 +199,6 @@ def get_currently_playing(request):
 
     response = get(SPOTIFY_URL + endpoint, headers=header)
 
-    print("CURRENTLY PLAYING TRACK RESPONSE: ", response)
     if response.status_code == 204:
         return JsonResponse({
             'songName': "song_name",

@@ -41,33 +41,15 @@ def album_page(request, spotify_content_id):
 
 @api_view(['POST'])
 def get_artist_info(request):
-    print("get_artist_info called with arg: ",
-          request.data.get('spotify_content_id'))
-
-    print("SESSIONID: ", request.session.session_key)
-
     endpoint = '/artists/' + request.data.get('spotify_content_id')
-
-    response = spotify_api_request(
-        request.session.session_key, endpoint, False, False)
-    print(response)
-
+    response = spotify_api_request(request.session.session_key, endpoint, False, False)
     return JsonResponse(response)
 
 
 @api_view(['POST'])
 def get_track_info(request):
-    print("get_track_info called with arg: ",
-          request.data.get('spotify_content_id'))
-
-    print("SESSIONID: ", request.session.session_key)
-
     endpoint = '/tracks/' + request.data.get('spotify_content_id')
-
-    response = spotify_api_request(
-        request.session.session_key, endpoint, False, False)
-    print(response)
-
+    response = spotify_api_request(request.session.session_key, endpoint, False, False)
     return JsonResponse(response)
 
 @api_view(['POST'])
@@ -77,12 +59,8 @@ def get_album_info(request):
 
     @param request: http request
     '''
-    #print("get_album_info called with arg: ", request.data.get('spotify_content_id'))
-    #print("SESSIONID: ", request.session.session_key)
-
     endpoint = '/albums/' + request.data.get('spotify_content_id')
     response = spotify_api_request(request.session.session_key, endpoint, False, False)
-    #print(response)
 
     return JsonResponse(response)
 
@@ -90,7 +68,6 @@ def get_album_info(request):
 @api_view(['POST'])
 def get_reviews(request):
     spotify_content_id = request.data.get('spotify_content_id')
-    #print("ACCESSING REVIEWS FOR ", spotify_content_id)
 
     # Fetch reviews with related user data
     reviews = Review.objects.filter(spotify_content_id=spotify_content_id).select_related('author')

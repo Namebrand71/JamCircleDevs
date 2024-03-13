@@ -11,13 +11,8 @@ from django.utils.dateparse import parse_datetime
 
 def is_authenticated(session_id):
     token = get_user_token(session_id)
-    print(token)
-    print("is_authenticated called")
-    print("Time now: ", timezone.now())
     if token:
-        print("Expires at: ", token.expires_at)
         if token.expires_at < timezone.now():
-            print("token has expired, getting a new token now")
             refresh_token(session_id)
             token = get_user_token(session_id)
         return {'isAuthenticated': True, 'accessToken': token.access_token, 'expiresAt': token.expires_at}
@@ -95,16 +90,12 @@ def spotify_api_request(session_id, endpoint, ifPost=False, ifPut=False):
         refresh_token(session_id)
         token = get_user_token(session_id)
         response = get(SPOTIFY_URL + endpoint)
-        print("RESPONSE:       ", response)
     return response.json()
 
 
 def get_top_10_artist(request):
     session_id = request.session.session_key
-    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
-    response = spotify_api_request(
-        session_id, "/me/top/artists?time_range=short_term&limit=10&offset=0", False, False)
-    # print("TOPTEN response: ", response)
+    response = spotify_api_request(session_id, "/me/top/artists?time_range=short_term&limit=10&offset=0", False, False)
     artist_list = response.get('items')
     # TODO: Check for 502 status code, if so return an error
     return JsonResponse(artist_list, safe=False)
@@ -112,10 +103,7 @@ def get_top_10_artist(request):
 
 def get_top_10_tracks(request):
     session_id = request.session.session_key
-    #  response = spotify_api_request(session_id, '/me/top/tracks?time_range=long&limit=10&offset=0', False, False)
-    response = spotify_api_request(
-        session_id, "/me/top/tracks?time_range=short_term&limit=10&offset=0", False, False)
-    # print(response)
+    response = spotify_api_request(session_id, "/me/top/tracks?time_range=short_term&limit=10&offset=0", False, False)
     track_list = response.get('items')
     return JsonResponse(track_list, safe=False)
 
@@ -155,8 +143,6 @@ def save_spotify_listening_history(user, response_data):
             )
 
 def get_spotify_activity(request):
-
-    user_list = ''
     endpoint = '/me/player/recently-played?limit=50'
 
     token = get_user_token(request.session.session_key)
@@ -164,10 +150,7 @@ def get_spotify_activity(request):
 
     response = spotify_api_request(
         request.session.session_key, endpoint, False, False)
-    print(response)
     save_spotify_listening_history(user, response)
-    print(
-        f"Total listening time for {user.display_name}: {get_total_listening_time(user)}")
 
 
 def get_total_listening_time(user):
@@ -219,5 +202,4 @@ def checkFollowing(session_id, list):
 
 def getUserJSON(session_id):
     response = spotify_api_request(session_id, "/me", False, False)
-    print(response)
     return response

@@ -43,15 +43,9 @@ def get_user_info(request, spotify_id):
     @param request: http request, contains session_key
     @param spotify_id: 
     '''
-    print("Request: ", request)
-    print("SESSIONID: ", request.session.session_key)
-
     endpoint = '/users/' + spotify_id
-    print("End: ", endpoint)
-
     response = spotify_api_request(
         request.session.session_key, endpoint, False, False)
-
     return JsonResponse(response)
 
 def get_user_top_10_artist(request, spotify_id):
@@ -95,10 +89,8 @@ def is_session_user(request, spotify_id):
     """
     current_user = get_user_from_session(request.session.session_key)
     if current_user.spotify_id == spotify_id:
-        print('found!')
         return JsonResponse(True, safe=False)
     else:
-        print('Not Found!')
         return JsonResponse(False, safe=False)
 
 
@@ -132,10 +124,8 @@ def get_users_friends(request, spotify_id):
     @param spotify_id: The spotify id of desired user
     '''
     user = get_object_or_404(User, spotify_id=spotify_id)
-    print(User)
     friends_list = list(user.friends.all().values(
         'spotify_id', 'display_name', 'profile_pic_url'))
-    print(friends_list)
     return JsonResponse(friends_list, safe=False)
 
 
@@ -148,7 +138,6 @@ def get_user_pending_friends(request):
     user = get_user_from_session(request.session.session_key)
     pending_friends_list = list(user.pending_friend_requests.all().values(
         'from_user__spotify_id', 'to_user__spotify_id', 'from_user__display_name'))
-    print(pending_friends_list)
     return JsonResponse(pending_friends_list, safe=False)
 
 
@@ -182,9 +171,7 @@ def accept_friend_request(request, spotify_id):
     '''
     to_user = get_user_from_session(request.session.session_key)
     from_user = User.objects.filter(spotify_id=spotify_id).first()
-    print(to_user.spotify_id, from_user.spotify_id)
-    friend_request = get_object_or_404(
-        Friend_Request, from_user=from_user, to_user=to_user)
+    friend_request = get_object_or_404(Friend_Request, from_user=from_user, to_user=to_user)
     to_user.friends.add(from_user)
     from_user.friends.add(to_user)
     to_user.pending_friend_requests.remove(friend_request)
@@ -201,8 +188,7 @@ def reject_friend_request(request, spotify_id):
     '''
     to_user = get_user_from_session(request.session.session_key)
     from_user = User.objects.filter(spotify_id=spotify_id).first()
-    friend_request, exists = to_user.pending_friend_requests.get(
-        from_user=from_user)
+    friend_request, exists = to_user.pending_friend_requests.get(from_user=from_user)
     if exists:
         to_user.pending_friend_requests.remove(from_user=from_user)
         from_user.pending_friend_requests.remove(to_user=to_user)
@@ -252,7 +238,6 @@ def get_user_stats(request, spotify_id):
     @param request: HTTP Request, contains session_key
     @param spotify_id: spotify id of user whos stats to get
     '''
-    print("Getting user stats for: ", spotify_id)
     try:
 
         user_obj = User.objects.get(spotify_id=spotify_id)

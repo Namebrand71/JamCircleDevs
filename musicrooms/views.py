@@ -23,7 +23,6 @@ def start_token_server(request):
 
 def get_agora_token(request, channel_name, uid):
     agora_token_server_url = "https://agora-token-server-qbmd.onrender.com/getToken"
-    print("THIS IS THE CHANNEL NAME: ", channel_name)
     data = {
         "tokenType": "rtc",
         "channel": channel_name,
@@ -115,7 +114,6 @@ def get_room_info(request):
         "current_user_id_list": list(room.current_users.values_list('display_name', flat=True)),
         "current_user_name_list": list(room.current_users.values_list('spotify_id', flat=True))
     }
-    print(room_list)
 
     return JsonResponse(room_list, safe=False)
 
