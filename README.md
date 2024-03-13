@@ -44,18 +44,34 @@ DATABASES = {
 Create a virtual environment called jamcircle and install these packages (also located in requirements.txt)
 
 ```
+amqp==5.2.0
+anyjson==0.3.3
 asgiref==3.7.2
+billiard==4.2.0
 certifi==2023.11.17
 charset-normalizer==3.3.2
+click==8.1.7
+click-didyoumean==0.3.0
+click-plugins==1.1.1
+click-repl==0.3.0
 Django==5.0.1
+django-compat==1.0.15
 django-cors-headers==4.3.1
+django4-background-tasks==1.2.9
 djangorestframework==3.14.0
 idna==3.6
+kombu==5.3.5
+prompt-toolkit==3.0.43
 psycopg2==2.9.9
+python-dateutil==2.8.2
 pytz==2023.3.post1
 requests==2.31.0
+six==1.16.0
 sqlparse==0.4.4
+tzdata==2024.1
 urllib3==2.1.0
+vine==5.1.0
+wcwidth==0.2.13
 ```
 
 # Running the Project
