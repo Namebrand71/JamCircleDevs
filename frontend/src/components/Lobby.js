@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Container, Typography, TextField, Button, Box } from '@mui/material';
+import { Container, Typography, TextField, Button, Box } from "@mui/material";
 
 const Lobby = () => {
   const [room_name, setRoomName] = useState("");
@@ -35,7 +35,6 @@ const Lobby = () => {
       });
   };
 
-
   const handleCreateRoom = async () => {
     // Logic to create a room...
     const apiBaseUrl = "musicrooms";
@@ -50,7 +49,7 @@ const Lobby = () => {
     });
 
     if (response.ok) {
-      window.location.href = '/musicroom';
+      window.location.href = "/musicroom";
     } else {
       // Handle error
       console.error("Failed to create room");
@@ -70,7 +69,7 @@ const Lobby = () => {
     });
 
     if (response.ok) {
-      window.location.href = '/musicroom';
+      window.location.href = "/musicroom";
     } else {
       // Handle error
       console.error("Failed to join room");
@@ -78,16 +77,41 @@ const Lobby = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ mt: 8, textAlign: 'center', backgroundColor: 'black', p: 3, borderRadius: 2 }}>
+    <Container
+      maxWidth="sm"
+      sx={{
+        mt: 8,
+        textAlign: "center",
+        backgroundColor: "#111111",
+        p: 3,
+        borderRadius: 2,
+        boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      }}
+    >
       {showLobby && (
         <Box>
-          <Typography variant="h6" gutterBottom sx={{ color: 'white' }}>
-            Static Text for Testing
+          <Typography variant="h4" gutterBottom sx={{ color: "white" }}>
+            Music Room
           </Typography>
-          <Button variant="contained" color="primary" sx={{ m: 1 }} onClick={() => { setShowCreateRoom(true); setShowJoinRoom(false); }}>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ m: 1 }}
+            onClick={() => {
+              setShowCreateRoom(true);
+              setShowJoinRoom(false);
+            }}
+          >
             Create Room
           </Button>
-          <Button variant="contained" color="secondary" onClick={() => { setShowJoinRoom(true); setShowCreateRoom(false); }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              setShowJoinRoom(true);
+              setShowCreateRoom(false);
+            }}
+          >
             Join Room
           </Button>
         </Box>
@@ -101,9 +125,13 @@ const Lobby = () => {
             placeholder="Room Name"
             value={room_name}
             onChange={(e) => setRoomName(e.target.value)}
-            sx={{ mb: 2, backgroundColor: 'white' }}
+            sx={{ mb: 2, backgroundColor: "white" }}
           />
-          <Button variant="contained" color="primary" onClick={handleCreateRoom}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCreateRoom}
+          >
             Create Room
           </Button>
         </Box>
@@ -117,7 +145,7 @@ const Lobby = () => {
             placeholder="Room Name"
             value={room_name}
             onChange={(e) => setRoomName(e.target.value)}
-            sx={{ mb: 2, backgroundColor: 'white' }}
+            sx={{ mb: 2, backgroundColor: "white" }}
           />
           <TextField
             fullWidth
@@ -125,7 +153,7 @@ const Lobby = () => {
             placeholder="Passcode"
             value={passcode}
             onChange={(e) => setPasscode(e.target.value)}
-            sx={{ mb: 2, backgroundColor: 'white' }}
+            sx={{ mb: 2, backgroundColor: "white" }}
           />
           <Button variant="contained" color="primary" onClick={handleJoinRoom}>
             Join Room

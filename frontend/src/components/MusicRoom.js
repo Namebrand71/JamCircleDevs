@@ -4,8 +4,17 @@ import VideoCall from "./VideoCall";
 import SpotifyPlayer from "react-spotify-web-playback";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Container, Typography, TextField, Button, CircularProgress, List, ListItemButton, ListItemText, Box } from '@mui/material';
-
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  List,
+  ListItemButton,
+  ListItemText,
+  Box,
+} from "@mui/material";
 
 const Musicroom = () => {
   const navigate = useNavigate();
@@ -142,15 +151,21 @@ const Musicroom = () => {
   return (
     <>
       {roomInfo && tokenInfo && (
-        <Container sx={{marginLeft: '240px'}}>
+        <Container sx={{ marginLeft: "240px" }}>
           <Typography variant="h6" gutterBottom>
             Room Name: {roomInfo.room_name}
           </Typography>
-          <Typography variant="h6">
-            Passcode: {roomInfo.passcode}
-          </Typography>
+          <Typography variant="h6">Passcode: {roomInfo.passcode}</Typography>
           <AgoraRTCProvider client={client}>
-            <Box sx={{ ...videoCallContainerStyle, backgroundColor: '#333',marginLeft: '240px' }}> {/* Adjust your styles accordingly */}
+            <Box
+              sx={{
+                ...videoCallContainerStyle,
+                backgroundColor: "#333",
+                marginLeft: "240px",
+              }}
+            >
+              {" "}
+              {/* Adjust your styles accordingly */}
               <VideoCall
                 appId={roomInfo.AGORA_ID}
                 channel={roomInfo.room_name}
@@ -162,8 +177,17 @@ const Musicroom = () => {
         </Container>
       )}
 
-      <Container sx={{marginLeft: '240px'}}>
-        <form onSubmit={handleSearch} autoComplete="off" style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '20px' }}>
+      <Container sx={{ marginLeft: "240px" }}>
+        <form
+          onSubmit={handleSearch}
+          autoComplete="off"
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            marginTop: "20px",
+          }}
+        >
           <TextField
             variant="outlined"
             name="search"
@@ -181,10 +205,10 @@ const Musicroom = () => {
         ) : searchResults.length === 0 ? (
           <Typography>No results found.</Typography>
         ) : (
-          <List sx={{ bgcolor: 'background.black' }}> 
+          <List sx={{ bgcolor: "background.black" }}>
             {searchResults.map((result) => (
               <ListItemButton
-                key={result.id} 
+                key={result.id}
                 onClick={() => handleSearchResultClick(result.id)}
               >
                 <ListItemText primary={result.name} />
@@ -195,7 +219,11 @@ const Musicroom = () => {
       </Container>
 
       <Container>
-        <Button variant="outlined" onClick={leaveRoom} sx={{ marginTop: '20px' }}>
+        <Button
+          variant="outlined"
+          onClick={leaveRoom}
+          sx={{ marginTop: "20px" }}
+        >
           Leave Room
         </Button>
       </Container>
@@ -203,7 +231,7 @@ const Musicroom = () => {
       {accessToken && spotifyContentId && (
         <Box
           sx={{
-            position: 'fixed',
+            position: "fixed",
             right: 16, // Adjust the spacing from the right edge of the viewport
             bottom: 16, // Adjust the spacing from the bottom edge of the viewport
             zIndex: 1000, // Ensure it's above most other content
@@ -215,13 +243,13 @@ const Musicroom = () => {
             layout={spotifyLayout}
             hideAttribution={true}
             styles={{
-              activeColor: '#fff',
-              bgColor: '#333',
-              color: '#fff',
-              loaderColor: '#fff',
-              sliderColor: '#1cb954',
-              trackArtistColor: '#ccc',
-              trackNameColor: '#fff',
+              activeColor: "#fff",
+              bgColor: "#333",
+              color: "#fff",
+              loaderColor: "#fff",
+              sliderColor: "#1cb954",
+              trackArtistColor: "#ccc",
+              trackNameColor: "#fff",
             }}
           />
         </Box>
