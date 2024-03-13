@@ -159,7 +159,6 @@ const Musicroom = () => {
             <Box
               sx={{
                 ...videoCallContainerStyle,
-                backgroundColor: "#333",
                 marginLeft: "240px",
               }}
             >
@@ -191,6 +190,7 @@ const Musicroom = () => {
             name="search"
             placeholder="Search..."
             fullWidth
+            style={{ backgroundColor: "white" }}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
