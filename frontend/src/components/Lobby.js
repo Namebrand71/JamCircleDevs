@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Grid, Button, TextField } from "@mui/material";
+import { Container, Typography, TextField, Button, Box } from "@mui/material";
 
 const Lobby = () => {
   const [room_name, setRoomName] = useState("");
@@ -77,152 +77,89 @@ const Lobby = () => {
   };
 
   return (
-    <Grid
-      container
-      spacing={4}
-      columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
+    <Container
+      maxWidth="sm"
+      sx={{
+        mt: 8,
+        textAlign: "center",
+        backgroundColor: "black",
+        p: 3,
+        borderRadius: 2,
+      }}
     >
-      <Grid
-        item
-        xs={20}
-        sm={20}
-        md={20}
-        lg={20}
-        xl={20}
-        style={{
-          paddingLeft: "220px",
-          textAlign: "center",
-          fontSize: "2rem",
-        }}
-      >
-        <h1>Music Rooms</h1>
-      </Grid>
-
-      {/* Make space for the Navbar */}
-      <Grid item xs={8} sm={6} md={0} lg={3} xl={0}>
-        {/* <Navbar /> */}
-      </Grid>
-
-      <Grid item xs={4} sm={6} md={9} lg={9} xl={12}>
-        {showLobby && (
-          // Lobby Page
-          <Grid
-            container
-            spacing={2}
-            alignItems="center"
-            justify="center"
-            style={{
-              marginLeft: "180px",
-              marginTop: "100px",
+      {showLobby && (
+        <Box>
+          <Typography variant="h6" gutterBottom sx={{ color: "white" }}>
+            Static Text for Testing
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ m: 1 }}
+            onClick={() => {
+              setShowCreateRoom(true);
+              setShowJoinRoom(false);
             }}
           >
-            <Grid
-              item
-              xs={6}
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => {
-                  setShowCreateRoom(true);
-                  setShowJoinRoom(false);
-                }}
-                style={{ width: "180px" }}
-              >
-                Create Room
-              </Button>
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => {
-                  setShowJoinRoom(true);
-                  setShowCreateRoom(false);
-                }}
-                style={{ width: "180px" }}
-              >
-                Join Room
-              </Button>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              {showCreateRoom && (
-                // Create Room Page
-                <div style={{ marginTop: "100px" }}>
-                  <div>
-                    <TextField
-                      placeholder="Room Name"
-                      fullWidth
-                      required
-                      value={room_name}
-                      onChange={(e) => setRoomName(e.target.value)}
-                      sx={{
-                        width: "500px",
-                        backgroundColor: "white",
-                        marginBottom: "20px",
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <Button variant="contained" onClick={handleCreateRoom}>
-                      Create Room
-                    </Button>
-                  </div>
-                </div>
-              )}
+            Create Room
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              setShowJoinRoom(true);
+              setShowCreateRoom(false);
+            }}
+          >
+            Join Room
+          </Button>
+        </Box>
+      )}
 
-              {showJoinRoom && (
-                // Join Room Page
-                <div style={{ marginTop: "100px" }}>
-                  <div>
-                    <TextField
-                      fullWidth
-                      placeholder="Room Name"
-                      required
-                      value={room_name}
-                      onChange={(e) => setRoomName(e.target.value)}
-                      sx={{
-                        width: "500px",
-                        backgroundColor: "white",
-                        marginBottom: "20px",
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <TextField
-                      fullWidth
-                      placeholder="Passcode"
-                      required
-                      value={passcode}
-                      onChange={(e) => setPasscode(e.target.value)}
-                      sx={{
-                        width: "500px",
-                        backgroundColor: "white",
-                        marginBottom: "20px",
-                      }}
-                    />
-                  </div>
-                  <div style={{ alignContent: "center" }}>
-                    <Button variant="contained" onClick={handleJoinRoom}>
-                      Join Room
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </Grid>
-          </Grid>
-        )}
-      </Grid>
-    </Grid>
+      {showCreateRoom && (
+        <Box>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Room Name"
+            value={room_name}
+            onChange={(e) => setRoomName(e.target.value)}
+            sx={{ mb: 2, backgroundColor: "white" }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleCreateRoom}
+          >
+            Create Room
+          </Button>
+        </Box>
+      )}
+
+      {showJoinRoom && (
+        <Box>
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Room Name"
+            value={room_name}
+            onChange={(e) => setRoomName(e.target.value)}
+            sx={{ mb: 2, backgroundColor: "white" }}
+          />
+          <TextField
+            fullWidth
+            variant="outlined"
+            placeholder="Passcode"
+            value={passcode}
+            onChange={(e) => setPasscode(e.target.value)}
+            sx={{ mb: 2, backgroundColor: "white" }}
+          />
+          <Button variant="contained" color="primary" onClick={handleJoinRoom}>
+            Join Room
+          </Button>
+        </Box>
+      )}
+    </Container>
   );
 };
 

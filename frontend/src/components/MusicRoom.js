@@ -4,7 +4,17 @@ import VideoCall from "./VideoCall";
 import SpotifyPlayer from "react-spotify-web-playback";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Grid, Button, TextField } from "@mui/material";
+import {
+  Container,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemText,
+  Box,
+} from "@mui/material";
 
 const Musicroom = () => {
   const navigate = useNavigate();
@@ -140,122 +150,103 @@ const Musicroom = () => {
 
   return (
     <>
-      <div>
-        <Grid
-          container
-          spacing={4}
-          columns={{ xs: 4, sm: 8, md: 12, lg: 20, xl: 20 }}
-          style={{ marginLeft: "220px" }}
-        >
-          <Grid
-            item
-            xs={20}
-            sm={20}
-            md={20}
-            lg={20}
-            xl={20}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "15px",
-            }}
-          >
-            {roomInfo && tokenInfo && (
-              <div style={{ marginLeft: "250px" }}>
-                <div>
-                  <h2>Room Name: {roomInfo.room_name}</h2>
-                </div>
-                <div>
-                  <h3>Passcode: {roomInfo.passcode}</h3>
-                </div>
-                <AgoraRTCProvider client={client}>
-                  <div style={videoCallContainerStyle}>
-                    <VideoCall
-                      appId={roomInfo.AGORA_ID}
-                      channel={roomInfo.room_name}
-                      token={tokenInfo.token}
-                      uid={roomInfo.current_user_uid}
-                    />
-                  </div>
-                </AgoraRTCProvider>
-              </div>
-            )}
-          </Grid>
-
-          <form onSubmit={handleSearch} autoComplete="off">
-            <input
-              type="text"
-              name="search"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button variant="contained" type="submit">
-              Search
-            </button>
-          </form>
-
-          <div>
-            {loadingSearch && <p>Loading...</p>}
-            {!loadingSearch && searchResults.length === 0 && (
-              <p>No results found.</p>
-            )}
-            {!loadingSearch && searchResults.length > 0 && (
-              <ul>
-                {searchResults.map((result) => (
-                  <li
-                    key={result.id}
-                    onClick={() => handleSearchResultClick(result.id)}
-                  >
-                    <div>
-                      <p>{result.name}</p>
-                      <img src={result.album.images[0].url} alt={result.name} />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-
-          <Grid
-            item
-            xs={20}
-            sm={20}
-            md={20}
-            lg={20}
-            xl={20}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <div>
-              <button onClick={leaveRoom}>Leave Room</button>
-            </div>
-            <div style={{ marginRight: "20px" }}>
-              <SpotifyPlayer
-                token={accessToken}
-                uris={
-                  spotifyContentId ? [`spotify:track:${spotifyContentId}`] : []
-                }
-                layout={spotifyLayout}
-                hideAttribution={true}
-                styles={{
-                  activeColor: "#fff",
-                  bgColor: "#333",
-                  color: "#fff",
-                  loaderColor: "#fff",
-                  sliderColor: "#1cb954",
-                  trackArtistColor: "#ccc",
-                  trackNameColor: "#fff",
-                }}
+      {roomInfo && tokenInfo && (
+        <Container sx={{ marginLeft: "240px" }}>
+          <Typography variant="h6" gutterBottom>
+            Room Name: {roomInfo.room_name}
+          </Typography>
+          <Typography variant="h6">Passcode: {roomInfo.passcode}</Typography>
+          <AgoraRTCProvider client={client}>
+            <Box
+              sx={{
+                ...videoCallContainerStyle,
+                backgroundColor: "#333",
+                marginLeft: "240px",
+              }}
+            >
+              {" "}
+              {/* Adjust your styles accordingly */}
+              <VideoCall
+                appId={roomInfo.AGORA_ID}
+                channel={roomInfo.room_name}
+                token={tokenInfo.token}
+                uid={roomInfo.current_user_uid}
               />
-            </div>
-          </Grid>
-        </Grid>
-      </div>
+            </Box>
+          </AgoraRTCProvider>
+        </Container>
+      )}
+
+      <Container sx={{ marginLeft: "240px" }}>
+        <form
+          onSubmit={handleSearch}
+          autoComplete="off"
+          style={{
+            display: "flex",
+            gap: "10px",
+            alignItems: "center",
+            marginTop: "20px",
+          }}
+        >
+          <TextField
+            variant="outlined"
+            name="search"
+            placeholder="Search..."
+            fullWidth
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Button variant="contained" type="submit">
+            Search
+          </Button>
+        </form>
+        {loadingSearch ? (
+          <CircularProgress />
+        ) : searchResults.length === 0 ? (
+          <Typography>No results found.</Typography>
+        ) : (
+          <List sx={{ bgcolor: "background.paper" }}>
+            {searchResults.map((result) => (
+              <ListItem
+                button
+                key={result.id}
+                onClick={() => handleSearchResultClick(result.id)}
+              >
+                <ListItemText primary={result.name} />
+                {/* Consider using Avatar or CardMedia for images */}
+              </ListItem>
+            ))}
+          </List>
+        )}
+      </Container>
+
+      <Container>
+        <Button
+          variant="outlined"
+          onClick={leaveRoom}
+          sx={{ marginTop: "20px" }}
+        >
+          Leave Room
+        </Button>
+      </Container>
+
+      {accessToken && spotifyContentId && (
+        <SpotifyPlayer
+          token={accessToken}
+          uris={[`spotify:track:${spotifyContentId}`]}
+          layout={spotifyLayout}
+          hideAttribution={true}
+          styles={{
+            activeColor: "#fff",
+            bgColor: "#333",
+            color: "#fff",
+            loaderColor: "#fff",
+            sliderColor: "#1cb954",
+            trackArtistColor: "#ccc",
+            trackNameColor: "#fff",
+          }}
+        />
+      )}
     </>
   );
 };
